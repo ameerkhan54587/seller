@@ -438,6 +438,14 @@
     
     </div>
     
+             <script>
+    // Check if the user is not logged in
+    if (localStorage.getItem('loggedIn') !== 'true') {
+      // Redirect the user back to the login page
+      window.location.href = 'index.html';
+    }
+  </script>
+            
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             
             <script src="js/kb-source.js"></script>
