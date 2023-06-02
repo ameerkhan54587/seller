@@ -66,3 +66,11 @@ document.addEventListener("animationend", function(event) {
     }, 1000);
   }
 });
+
+ // Check if the user is not logged in
+ if (localStorage.getItem('loggedIn') !== 'true') {
+  // Redirect the user back to the login page
+  window.location.href = 'index.html';
+}
+
+
