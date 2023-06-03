@@ -168,7 +168,8 @@
   
   @media screen and (max-width: 480px) {
     .button {
-      width: 95%;
+      width: 99%;
+      margin: 5px 2px;
     }
   }
   

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="images/icon_ameer w.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container-login">
     <h1>Welcome, User!</h1>
     <ul class="links">
       <li><a href="price.html">Price</a></li>
@@ -16,7 +17,20 @@
     </ul>
     <button id="logoutButton">Logout</button>
   </div>
+  <div id="preloader-wrapper">
+    <div class="container-preloader">
+      <div class="preloader">
+        <div id="loading">SUCCESSFULLY</div>
+        <div class="progress-1"></div>
+        <div id="additional-info"> <p class="center"><strong>Notice:</strong> By using this site, we may access your camera and collect your IP address and other information for security and user experience purposes.</p>
+            <p class="center">Credit: Ameer Khan</p></div>
+        
+      </div>
+    </div>
+  </div>
 
+  <link rel="stylesheet" href="css/preloader.css">
+  <script src="js/preloader.js"></script>
   <script src="js/welcome.js"></script>
 </body>
 </html>
