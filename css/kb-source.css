@@ -323,4 +323,11 @@ body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: 
       height: 35px; /* Set the desired height */
     }
     
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    
     
