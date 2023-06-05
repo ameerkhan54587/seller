@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="images/icon_ameer w.ico">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dc1q32wzt/image/upload/v1685918602/icon_ameer_w_adrrbk.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Price - Ameer Khan</title>
@@ -573,13 +573,7 @@
     </div>
   </div>
 
-<script>
-    // Check if the user is not logged in
-    if (localStorage.getItem('loggedIn') !== 'true') {
-      // Redirect the user back to the login page
-      window.location.href = 'index.html';
-    }
-  </script>
+
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         
@@ -593,4 +587,20 @@
         </div>
 
     </body>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+ <script src="js/index.js"></script>
+
+
+ <script> // Check if user is authenticated
+   firebase.auth().onAuthStateChanged(function(user) {
+     if (!user) {
+       // User is not signed in
+       // Redirect to login page
+       window.location.href = 'index.html';
+     }
+   });
+   </script>
     </html>

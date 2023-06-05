@@ -26,13 +26,14 @@ h1 {
 
 .form-group {
   margin-bottom: 30px; /* Increase the margin for more spacing between form groups */
+  margin: 15px auto;
 }
 
 label {
   color: #fff;
 }
 
-input[type="text"],
+input[type="email"],
 input[type="password"] {
   width: 100%;
   padding: 15px;
@@ -88,6 +89,34 @@ button:hover {
   
 
   
-  
+#loginButton {
+  position: relative;
+  padding: 10px 0px 15px 10px;
+  width: 115%;
+}
+
+#loginButton:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  animation: spin 1s infinite linear;
+  visibility: hidden;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.loading {
+  visibility: visible !important;
+}
   
   

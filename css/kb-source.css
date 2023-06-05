@@ -29,7 +29,7 @@
     }
   }
   #notification-area .notification.success {
-    background:#f06318;
+    background:#bd0000;
   }
 
   .fa-icon {
@@ -64,7 +64,7 @@
 margin: 25px auto;
 max-width: 1150px;
 }
-body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: Arial, sans-serif;}
+body, .main-wrapper {background-color: #121212; user-select: none; font-family: Arial, sans-serif;}
 
 
 .hidden {
@@ -77,10 +77,10 @@ body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: 
     }
     
     .btn {
-      border: 1px solid #030b30;
+      border: 1px solid rgb(31, 7, 7);
       outline: none;
       padding: 7px 10px;
-      background-color: #020c40;
+      background-color: #411;
       color: white;
       cursor: pointer;
       font-size: 18px;
@@ -88,7 +88,7 @@ body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: 
     
     .active,
     .btn:hover {
-      background-color: #0523ad;
+      background-color: #bd0000;
       color: white;
     }
     
@@ -259,7 +259,7 @@ body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: 
     
       #myTable tr {
         border-bottom: 1px solid #ddd;
-        background-color: #1d2129;
+        background-color: #121212;
       }
     
       .selected {
@@ -288,7 +288,7 @@ body, .main-wrapper {background-color: #1d2129; user-select: none; font-family: 
         background-image:url('https://res.cloudinary.com/dc1q32wzt/image/upload/v1685751275/search_eeh8e2.png');
         background-position: 10px 10px;
         background-repeat: no-repeat;
-        background-color: #1d2129;
+        background-color: #121212;
         color: white;
         width: 90%;
         font-size: 16px;

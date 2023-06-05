@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="images/icon_ameer w.ico">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dc1q32wzt/image/upload/v1685918602/icon_ameer_w_adrrbk.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
@@ -26,20 +26,63 @@
     <h1>Login Page</h1>
     <form id="loginForm">
       <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
+        <label>Email:</label>
+        <input type="email" id="email" placeholder="Email">
+        <div class="form-group">
+        <label>Password:</label>
         <input type="password" id="password" name="password" required>
+        <input type="text" id="hiddenInput" style="display: none;" required>
+        <div class="form-group">
+            <button  id="loginButton" onclick="login()">Login</button>
+          </div>
+
+       
+      
+    
+        
       </div>
-      <button type="submit">Login</button>
+
     </form>
   </div>
  
-  <script src="js/script.js"></script>
+
   <link rel="stylesheet" href="css/preloader.css">
   <script src="js/preloader.js"></script>
 
+
+
+
+
 </body>
+
+<script>
+  function login() {
+    var button = document.getElementById("loginButton");
+    button.disabled = true;
+    
+    // Add loading class to show the progress indicator
+    button.classList.add("loading");
+    
+    // Simulate a delay for the login process
+    setTimeout(function() {
+      // Reset the button state after the process is completed
+      button.disabled = false;
+      button.classList.remove("loading");
+      
+      // Perform the actual login process here
+      // ...
+    }, 2000); // 2000 milliseconds (2 seconds) delay for demonstration purposes
+  }
+</script>
+
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+ <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+ <!-- Our script must be loaded after firebase references -->
+ <script src="js/index.js"></script>
 </html>

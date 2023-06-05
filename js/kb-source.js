@@ -22,7 +22,12 @@ function copyToClipboard(text) {
   var tempTextarea = document.createElement('textarea');
   tempTextarea.style.position = 'fixed';
   tempTextarea.style.opacity = 0;
-  tempTextarea.value = text;
+
+  // Replace line breaks with actual line breaks
+  var textWithLineBreaks = text.replace(/<br\s*[\/]?>/gi, '\n');
+
+  tempTextarea.value = textWithLineBreaks;
+
   document.body.appendChild(tempTextarea);
 
   tempTextarea.select();
@@ -30,8 +35,22 @@ function copyToClipboard(text) {
 
   document.body.removeChild(tempTextarea);
 
-  notify("success", "Copy Successfully");
+  notify('success', 'Copy Successful');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var buttons = document.querySelectorAll('.kb-source');
 buttons.forEach(function(button) {
@@ -67,10 +86,6 @@ document.addEventListener("animationend", function(event) {
   }
 });
 
- // Check if the user is not logged in
- if (localStorage.getItem('loggedIn') !== 'true') {
-  // Redirect the user back to the login page
-  window.location.href = 'index.html';
-}
+
 
 
