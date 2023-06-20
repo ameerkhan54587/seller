@@ -330,4 +330,14 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
       height: auto;
     }
     
-    
+    .heading-top {
+      color: white;
+      display: flex;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      padding: 2px;
+      border-radius: 5px;
+      pointer-events: none;
+      user-select: none;
+    }
