@@ -18,7 +18,7 @@
     <div class="container-menu"> 
         <button id="button1" class="buttonp active">Local Route</button>
         <button id="button2" class="buttonp">Long Route</button>
- 
+        <button id="button3" class="buttonp">Button 3</button>
 
         <input id="myInput" onkeyup="myFunction()"  placeholder="Enter Postcode First 1 or 2 Alphabets..." type="text" />
         <br><br></div>
@@ -1295,7 +1295,7 @@
     const table = document.getElementById("myTable");
     const button1 = document.getElementById("button1");
     const button2 = document.getElementById("button2");
-   
+    const button3 = document.getElementById("button3");
 
     // Function to hide all rows except the header row
     function hideAllRows() {
@@ -1321,7 +1321,10 @@
         showRows(179, 391);
     });
 
-   
+    button3.addEventListener("click", function() {
+        hideAllRows();
+        showRows(2, 3);
+    });
 
     // Show rows based on the initially selected button (Button 1 in this case)
     hideAllRows();

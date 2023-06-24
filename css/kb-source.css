@@ -54,11 +54,7 @@
   border-radius: 8px;
 }
 
-.container-menu {
- 
-  margin: -5px auto;
-  max-width: 1150px;
-  }
+
 
 .container {
  
@@ -292,15 +288,15 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
         background-repeat: no-repeat;
         background-color: #121212;
         color: white;
-        width: 90%;
+        width: 95%;
         font-size: 16px;
         padding: 12px 20px 12px 40px;
         border: 1px solid #ddd;
-        margin-bottom: 12px;
-        position: fixed;
-        top: 1%;
+    
+        
+        
         left: 2.5%;
-        z-index: 9999;
+      
       }
 
       @media only screen and (max-width: 600px) {
@@ -342,4 +338,48 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
       border-radius: 5px;
       pointer-events: none;
       user-select: none;
+    }
+
+    .container-menu {
+      margin: -4px auto;
+      max-width: 1150px;
+     
+  }
+
+  .container-table {
+      margin-top: 0px;
+      margin-right: auto;
+      margin-bottom: 25px;
+      margin-left: auto;
+      max-width: 1150px;
+      overflow: auto;
+       margin-bottom: 12px;
+  }
+  
+  
+
+
+     .buttonp {
+        border: 1px solid rgb(31, 7, 7);
+        outline: none;
+        padding: 7px 10px;
+        background-color: #411;
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 7px;
+    }
+    
+    .active,
+    .buttonp:hover {
+        background-color: #bd0000;
+        color: white;
+    }
+    
+    @media screen and (max-width: 480px) {
+        .buttonp {
+            padding: 10px 11px;
+            font-size: 13px;
+            width: 23%;
+        }
     }
