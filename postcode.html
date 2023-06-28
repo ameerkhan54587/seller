@@ -1257,6 +1257,8 @@
         <div id="notification-area">
         </div>
 
+        <button id="scroll-to-top">&#129137;</button>
+
         </body>
 
           <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -1264,6 +1266,17 @@
  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
  <script src="js/index.js"></script>
 
+ <script>
+   const scrollToTop = () => {
+       window.scrollTo({ top: 0, behavior: "smooth" });
+   };
+
+   window.addEventListener("scroll", () => {
+       document.getElementById("scroll-to-top").style.display = (window.scrollY > 20) ? "block" : "none";
+   });
+
+   document.getElementById("scroll-to-top").addEventListener("click", scrollToTop);
+</script>
 
  <script> // Check if user is authenticated
    firebase.auth().onAuthStateChanged(function(user) {

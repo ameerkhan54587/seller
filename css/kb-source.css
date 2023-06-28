@@ -383,3 +383,25 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
             width: 23%;
         }
     }
+
+    #scroll-to-top {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: #ff1919;
+      color: #fff;
+      font-size: 20px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+  }
+
+  #scroll-to-top:hover {
+      background: #d60000;
+  }
