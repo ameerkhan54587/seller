@@ -150,7 +150,7 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
     }
   
     .portsmouthr::after {
-      content: "Tuesday and Friday";
+      content: "Tue and Fri (other suplr:(Tue to Sun)";
       font-size: 0.8em;
     
       top: -1.1em;
@@ -172,7 +172,7 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
     }
   
     .cornwallr::after {
-      content: "Thursday and Sunday";
+      content: "Thur and Sun (other suplr:(Tue to Sun)";
       font-size: 0.8em;
       
       top: -1.1em;
@@ -194,7 +194,7 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
     }
   
     .aberdeenr::after {
-      content: "Wed and Sat";
+      content: "Wed and Sat (other suplr:(Tue to Sun)";
       font-size: 0.8em;
      
       top: -1.1em;
