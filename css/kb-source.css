@@ -166,6 +166,29 @@ body, .main-wrapper {background-color: #121212; user-select: none; font-family: 
       left: 2em;
     }
       }
+
+      .n-ireland {
+        position: relative;
+      }
+    
+      .n-ireland::after {
+        content: "3 to 5 Days EST Delivery";
+        font-size: 0.8em;
+        
+        top: -1.1em;
+        left: 2em;
+        color: #ff8800;
+      }
+      
+       @media only screen and (max-width: 600px) {
+            .n-ireland::after {
+        font-size: 0.7em;
+        position: absolute;
+        top: -1.3em;
+        left: 2em;
+      }
+        }
+
     
     .cornwallr {
       position: relative;
