@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sofas Guide - Ameer Khan</title>
+
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dc1q32wzt/image/upload/v1685918602/icon_ameer_w_adrrbk.ico">
+
+  
+  <style>
+
+.container {
+ 
+ margin: 25px auto;
+ max-width: 1150px;
+ }
+ body, .main-wrapper {background-color: #121212;  color: #fff; user-select: none; font-family: Arial, sans-serif;}
+ 
+  
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      user-select: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 30px; 
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center; 
+
+    }
+  
+    .image-container img {
+      width: 50%; 
+      margin: 2px;
+      pointer-events: auto;
+    }
+
+    a {
+    color: rgb(255, 0, 0); /* Set the desired link color */
+  }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var images = document.querySelectorAll('.image');
+
+    images.forEach(function(image) {
+      image.addEventListener('dblclick', function() {
+        var imageUrl = this.getAttribute('src');
+        var link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+
+    document.addEventListener('contextmenu', function(event) {
+      event.preventDefault();
+    });
+  });
+</script>
+
+  
+  
+
+</head>
+<body>
+  <div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>Sofas Important Links</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      
+        <td><a href="https://docs.google.com/spreadsheets/d/1xiygMJftQ-6iArcMKzp9xl8CyKrzLK6BtQKTzCSZ4VU/edit?usp=sharing">Delivery Routes</a></td>
+      </tr>
+      <tr>
+       
+        <td><a href="https://docs.google.com/spreadsheets/d/1Iw89ClgxcBp3je4NyEA1uGQt5OOlyEgWLoZKtv3SAi0/edit?usp=sharing">Prices</a></td>
+      </tr>
+      <tr>
+       
+        <td><a href="https://docs.google.com/spreadsheets/d/12fpAaGZIe5-h-MoG5eeMtP7NxR0VZnwZ/edit?usp=sharing&ouid=105925293385382166939&rtpof=true&sd=true">Sizes</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <div class="container">
+  
+  <h2>This sofa is a recliner and comes with a drop down table and 2 cup holders</h2>
+  <table>
+    <tr>
+      <td>
+        <p class="label">1 seater</p>
+         <div class="image-container">
+        <img class="image" src="images/1seat.jfif">
+        <img class="image" src="images/1seat2.jfif">
+      </td>
+   </tr>
+      <td>
+         <p class="label">2 seater</p>
+         <div class="image-container">
+        <img class="image" src="images/2seat.jfif" alt="Image 2">
+        <img class="image" src="images/2seat2.jfif" alt="Image 2">
+
+      </td>
+   </tr>
+      <td>
+         <p class="label">3 seater</p>
+         <div class="image-container">
+        <img class="image" src="images/3seat.jfif" alt="Image 3">
+       
+      </td>
+    </tr>
+   </tr>
+    <tr>
+      <td>
+         <p class="label">2 + 1 seater</p>
+         <div class="image-container">
+        <img class="image" src="images/1seat.jfif" alt="Image 4">
+        <img class="image" src="images/2seat.jfif" alt="Image 4">
+      </td>
+   </tr>
+   <td>
+      <p class="label">3 + 1 seater</p>
+      <div class="image-container">
+        <img class="image" src="images/3seat.jfif" alt="Image 5">
+        <img class="image" src="images/1seat2.jfif" alt="Image 5">
+      </div>
+    </td>
+   </tr>
+   <td>
+      <p class="label">3 + 2 seater</p>
+      <div class="image-container">
+        <img class="image" src="images/3-2seat.jfif" alt="Image 5">
+        <img class="image" src="images/3-2seat2.jfif" alt="Image 5">
+      </div>
+    </td>
+   </tr>
+      <td>
+         <p class="label">Corner sofa</p>
+         <div class="image-container">
+        <img class="image" src="images/corner1.jfif" alt="Image 6">
+        <img class="image" src="images/corner2.jfif" alt="Image 6">
+       
+      </td>
+    </tr>
+    <td>
+      <p class="label">Kansas</p>
+      <h3>This sofa is standard sofa and is NOT a recliner - minimum seating is a 2 seater</h3>
+      <p class="label">2 seater</p>
+      <div class="image-container">
+        <img class="image" src="images/k2seat.jfif" alt="Image 5">
+        <img class="image" src="images/k2seat2.jfif" alt="Image 5">
+      </div>
+    </td>
+   </tr>
+
+   <td>
+      <p class="label">3 seater</p>
+      <div class="image-container">
+        <img class="image" src="images/k3s.jfif" alt="Image 5">
+        <img class="image" src="images/k3s2.jfif" alt="Image 5">
+      </div>
+    </td>
+   </tr>
+
+   <td>
+      <p class="label">3 + 2 seater</p>
+      <div class="image-container">
+     <img class="image" src="images/k32s.jfif" alt="Image 6">
+     <img class="image" src="images/k32s2.jfif" alt="Image 6">
+    
+   </td>
+ </tr>
+
+ <td>
+   <p class="label">Corner sofa</p>
+   <div class="image-container">
+  <img class="image" src="images/corner sofa.jfif" alt="Image 6">
+ 
+ 
+</td>
+</tr>
+  </table>
+</div>
+</body>
+
+<h3 style="background: #4b005e;" class="heading-top">Discover the latest updates, brought to you by Ameer Khan ©2023</h3>
+	 
+      
+    
+    </div>
+    
+    <div id="preloader-wrapper">
+    <div class="container-preloader">
+      <div class="preloader">
+        <div id="loading">SCANNED</div>
+        <div class="progress-1"></div>
+        <div id="additional-info"> <p class="center"><strong>Notice:</strong> By using this site, we may access your camera and collect your IP address and other information for security and user experience purposes.</p>
+            <p class="center">Ameer Khan +44 7451 214631</p></div>
+      </div>
+    </div>
+  </div>
+
+
+      
+            
+        
+       
+            <link rel="stylesheet" href="css/preloader.css">
+            <script src="js/preloader.js"></script>
+          
+
+        </body>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+ <script src="js/index.js"></script>
+
+
+ <script> // Check if user is authenticated
+   firebase.auth().onAuthStateChanged(function(user) {
+     if (!user) {
+       // User is not signed in
+       // Redirect to login page
+       window.location.href = 'index.html';
+     }
+   });
+   </script>
+</html>
