@@ -125,54 +125,76 @@
         
         // Save data logic
         function saveData() {
-        Object.keys(goingListInputs).forEach(day => {
-            const goingInput = goingListInputs[day];
+    Object.keys(goingListInputs).forEach(day => {
+        const goingInput = goingListInputs[day];
+        const goingValue = goingInput.value;
 
-            // Update data in Firebase
-            database.ref(`going/${day}`).set(goingInput.value);
+        // Update data in Firebase
+        database.ref(`going/${day}`).set(goingValue);
 
-            console.log(`Saved Going List for ${day}: ${goingInput.value}`);
-        });
+        // Update data in localStorage
+        localStorage.setItem(`going${day}`, goingValue);
 
-        Object.keys(cancellationInputs).forEach(day => {
-            const cancellationInput = cancellationInputs[day];
+        console.log(`Saved Going List for ${day}: ${goingValue}`);
+    });
 
-            // Update data in Firebase
-            database.ref(`cancellation/${day}`).set(cancellationInput.value);
+    Object.keys(cancellationInputs).forEach(day => {
+        const cancellationInput = cancellationInputs[day];
+        const cancellationValue = cancellationInput.value;
 
-            console.log(`Saved Cancellation List for ${day}: ${cancellationInput.value}`);
-        });
+        // Update data in Firebase
+        database.ref(`cancellation/${day}`).set(cancellationValue);
 
-        alert("Data saved!");
-    }
+        // Update data in localStorage
+        localStorage.setItem(`cancellation${day}`, cancellationValue);
 
-    // Show only Monday input boxes on page load
-    window.onload = function() {
-            loadAndPopulateData();
-            showDay('monday'); // Show input fields for Monday by default
-        };
+        console.log(`Saved Cancellation List for ${day}: ${cancellationValue}`);
+    });
+
+    alert("Data saved!");
+}
+
+// Show only Monday input boxes on page load
+window.onload = function() {
+    loadAndPopulateData();
+    showDay('monday'); // Show input fields for Monday by default
+};
 
         function loadAndPopulateData() {
-            const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
-            days.forEach(day => {
-                database.ref(`going/${day}`).once("value").then(snapshot => {
-                    const goingInput = document.getElementById(`going${day}`);
-                    const goingValue = snapshot.val();
-                    goingInput.value = goingValue || "";
-                }).catch(error => {
-                    console.error("Error fetching going data:", error);
-                });
+    days.forEach(day => {
+        const goingInput = document.getElementById(`going${day}`);
+        const goingValue = localStorage.getItem(`going${day}`) || ""; // Load from localStorage
 
-                database.ref(`cancellation/${day}`).once("value").then(snapshot => {
-                    const cancellationInput = document.getElementById(`cancellation${day}`);
-                    const cancellationValue = snapshot.val();
-                    cancellationInput.value = cancellationValue || "";
-                }).catch(error => {
-                    console.error("Error fetching cancellation data:", error);
-                });
-            });
-        }
+        // Populate the input field with data from Firebase or localStorage
+        goingInput.value = goingValue;
+
+        const cancellationInput = document.getElementById(`cancellation${day}`);
+        const cancellationValue = localStorage.getItem(`cancellation${day}`) || ""; // Load from localStorage
+
+        // Populate the input field with data from Firebase or localStorage
+        cancellationInput.value = cancellationValue;
+
+        // Fetch data from Firebase and update localStorage
+        database.ref(`going/${day}`).once("value").then(snapshot => {
+            const goingValue = snapshot.val() || "";
+            goingInput.value = goingValue;
+            localStorage.setItem(`going${day}`, goingValue); // Save to localStorage
+        }).catch(error => {
+            console.error("Error fetching going data:", error);
+        });
+
+        database.ref(`cancellation/${day}`).once("value").then(snapshot => {
+            const cancellationValue = snapshot.val() || "";
+            cancellationInput.value = cancellationValue;
+            localStorage.setItem(`cancellation${day}`, cancellationValue); // Save to localStorage
+        }).catch(error => {
+            console.error("Error fetching cancellation data:", error);
+        });
+    });
+}
+
 
 </script>
 
