@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dc1q32wzt/image/upload/v1685918602/icon_ameer_w_adrrbk.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Data</title>
+</head>
+<body>
+    <h1>Going and Cancellation Postcode Finder</h1>
+    
+    
+    
+    <!-- Search form -->
+    <form id="searchForm">
+        <input type="text" id="searchQuery" name="q" placeholder="Enter postcode">
+        <button id="searchButton" type="submit">Search</button>
+    </form>
+    
+    <!-- Display search results -->
+    <div id="searchResults"></div>
+    
+  
+
+<div id="credit">Credit by Ameer Khan</div>
+</body>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+      
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .bold-green {
+    
+    color: green;
+}
+
+.bold-red {
+    
+    color: red;
+}
+
+h1 {
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-align: center; /* Center the text */
+        }
+
+    #searchForm {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    #searchQuery {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+    }
+
+    #searchQuery::placeholder {
+        color: #999;
+    }
+
+    #searchButton {
+        background-color: #d40000;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+
+    #searchButton:hover {
+        background-color: #555;
+    }
+
+    #searchResults {
+        background-color: #202020;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        width: 600px;
+        max-width: 90%;
+    }
+
+    @media (max-width: 768px) {
+    #searchResults {
+        width: 350px; 
+    }
+}
+
+    #searchResults div {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+    }
+
+    
+
+      
+
+
+        #credit {
+    text-align: center;
+    margin-top: 20px;
+    color: #999;
+}
+</style>
+
+
+
+
+<script>
+
+
+
+
+const searchResultsContainer = document.getElementById("searchResults");
+        
+function displayResult(resultText, isGoing) {
+    const resultDiv = document.createElement("div");
+    resultDiv.className = isGoing ? "bold-green" : "bold-red";
+    resultDiv.textContent = resultText;
+
+    searchResultsContainer.appendChild(resultDiv);
+}
+
+function searchAndDisplayResults(query) {
+    searchResultsContainer.innerHTML = ""; // Clear previous results
+    let resultsFound = false; // Flag to track if any results were found
+
+    if (!query.trim()) {
+        displayResult("Please enter a postcode to search.");
+        return; // Exit the function if the query is blank
+    }
+
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+    for (const day of days) {
+        database.ref(`going/${day}`).once("value").then(snapshot => {
+            const goingList = snapshot.val();
+            if (goingList) {
+                const lines = goingList.split('\n');
+                for (const line of lines) {
+                    if (line.includes(query)) {
+                        displayResult(`Day: In ${day}\nVan/Going List: ${query}`, true);
+                        resultsFound = true;
+                    }
+                }
+            }
+        }).catch(error => {
+            console.error("Error fetching going data:", error);
+        });
+
+        database.ref(`cancellation/${day}`).once("value").then(snapshot => {
+            const cancellationList = snapshot.val();
+            if (cancellationList) {
+                const lines = cancellationList.split('\n');
+                for (const line of lines) {
+                    if (line.includes(query)) {
+                        displayResult(`Day: ${day}\nCancellation: ${line}`, false);
+                        resultsFound = true;
+                    }
+                }
+            }
+        }).catch(error => {
+            console.error("Error fetching cancellation data:", error);
+        });
+    }
+
+    // Display error message if no results were found
+    if (!resultsFound) {
+        displayResult("Contact Ameer if postcode not found.");
+    }
+}
+
+
+
+
+// Handle form submission
+const searchForm = document.getElementById("searchForm");
+searchForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    const searchQuery = document.getElementById("searchQuery").value;
+    searchAndDisplayResults(searchQuery);
+});
+
+// Helper function to get the next day
+function getNextDay(currentDay) {
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    const currentIndex = days.indexOf(currentDay);
+    const nextIndex = (currentIndex + 1) % 7;
+    return days[nextIndex];
+}
+
+
+
+
+</script>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+
+
+<script>
+
+    // Replace with your Firebase configuration
+    const firebaseConfig = {
+  apiKey: "AIzaSyBX6ozbZ4N3lIS2116W-M-gtwJCh-5-aA0",
+  authDomain: "van-finder-d87f0.firebaseapp.com",
+  projectId: "van-finder-d87f0",
+  storageBucket: "van-finder-d87f0.appspot.com",
+  messagingSenderId: "1025653106851",
+  appId: "1:1025653106851:web:1c7452232933825e94b716"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+</html>
