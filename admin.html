@@ -51,107 +51,134 @@
     </div>
     
     <script>
-        const goingListBoxes = document.getElementById("goingListBoxes");
-        const selectedGoingDayLabel = document.getElementById("selectedGoingDayLabel");
-        const goingListInputs = {};
-        
-        const cancellationContainer = document.getElementById("cancellationContainer");
-        const cancellationListBoxes = document.getElementById("cancellationListBoxes");
-        const selectedCancellationDayLabel = document.createElement("div");
-        selectedCancellationDayLabel.id = "selectedCancellationDayLabel";
-        cancellationContainer.insertBefore(selectedCancellationDayLabel, cancellationContainer.firstChild);
-        
-        const cancellationTables = document.querySelectorAll("#cancellationContainer table");
-        cancellationTables.forEach(table => {
+       const goingListBoxes = document.getElementById("goingListBoxes");
+const selectedGoingDayLabel = document.getElementById("selectedGoingDayLabel");
+const goingListInputs = {};
+
+const cancellationContainer = document.getElementById("cancellationContainer");
+const cancellationListBoxes = document.getElementById("cancellationListBoxes");
+const selectedCancellationDayLabel = document.createElement("div");
+selectedCancellationDayLabel.id = "selectedCancellationDayLabel";
+cancellationContainer.insertBefore(selectedCancellationDayLabel, cancellationContainer.firstChild);
+
+const cancellationTables = document.querySelectorAll("#cancellationContainer table");
+cancellationTables.forEach(table => {
+    table.style.display = "none";
+});
+
+const cancellationInputs = {};
+
+function hideAllGoingListInputs() {
+    Object.values(goingListInputs).forEach(input => {
+        input.style.display = "none";
+    });
+}
+
+function hideAllCancellationInputs() {
+    Object.values(cancellationInputs).forEach(input => {
+        input.style.display = "none";
+    });
+}
+
+async function showDay(day) {
+    hideAllGoingListInputs();
+    hideAllCancellationInputs();
+
+    if (!goingListInputs[day]) {
+        const input = document.createElement("textarea");
+        input.id = `going${day}`;
+        input.rows = "7";
+        input.cols = "30";
+        input.placeholder = `Enter ${day} going list`;
+        input.value = localStorage.getItem(`going${day}`) || '';
+
+        goingListInputs[day] = input;
+        goingListBoxes.appendChild(input);
+    }
+
+    goingListInputs[day].style.display = "block";
+    selectedGoingDayLabel.textContent = day.charAt(0).toUpperCase() + day.slice(1);
+
+    if (!cancellationInputs[day]) {
+        const input = document.createElement("textarea");
+        input.id = `cancellation${day}`;
+        input.rows = "7";
+        input.cols = "30";
+        input.placeholder = `Enter ${day} cancellation`;
+        input.value = localStorage.getItem(`cancellation${day}`) || '';
+
+        cancellationInputs[day] = input;
+        cancellationListBoxes.appendChild(input);
+    }
+
+    cancellationInputs[day].style.display = "block";
+    selectedCancellationDayLabel.textContent = day.charAt(0).toUpperCase() + day.slice(1);
+
+    cancellationTables.forEach(table => {
+        if (table.querySelector(`#${day}`)) {
+            table.style.display = "block";
+        } else {
             table.style.display = "none";
-        });
-        
-        const cancellationInputs = {};
-        
-        function hideAllGoingListInputs() {
-            Object.values(goingListInputs).forEach(input => {
-                input.style.display = "none";
-            });
         }
-        
-        function hideAllCancellationInputs() {
-            Object.values(cancellationInputs).forEach(input => {
-                input.style.display = "none";
-            });
-        }
-        
-        function showDay(day) {
-            hideAllGoingListInputs();
-            hideAllCancellationInputs();
-            
-            if (!goingListInputs[day]) {
-                const input = document.createElement("textarea");
-                input.id = `going${day}`;
-                input.rows = "7"; // Set to 7 rows for multiple lines
-                input.cols = "30"; // Adjust cols for the desired width
-                input.placeholder = `Enter ${day} going list`;
-                input.value = localStorage.getItem(`going${day}`) || '';
-                
-                goingListInputs[day] = input;
-                goingListBoxes.appendChild(input);
-            }
-            
-            goingListInputs[day].style.display = "block";
-            selectedGoingDayLabel.textContent = day.charAt(0).toUpperCase() + day.slice(1);
-            
-            if (!cancellationInputs[day]) {
-                const input = document.createElement("textarea");
-                input.id = `cancellation${day}`;
-                input.rows = "7"; // Set to 7 rows for multiple lines
-                input.cols = "30"; // Adjust cols for the desired width
-                input.placeholder = `Enter ${day} cancellation`;
-                input.value = localStorage.getItem(`cancellation${day}`) || '';
-                
-                cancellationInputs[day] = input;
-                cancellationListBoxes.appendChild(input);
-            }
-            
-            cancellationInputs[day].style.display = "block";
-            selectedCancellationDayLabel.textContent = day.charAt(0).toUpperCase() + day.slice(1);
-            
-            cancellationTables.forEach(table => {
-                if (table.querySelector(`#${day}`)) {
-                    table.style.display = "block";
-                } else {
-                    table.style.display = "none";
-                }
-            });
-        }
-        
-        // Save data logic
-        function saveData() {
-    Object.keys(goingListInputs).forEach(day => {
+    });
+}
+
+async function saveData() {
+    const goingPromises = Object.keys(goingListInputs).map(async day => {
         const goingInput = goingListInputs[day];
         const goingValue = goingInput.value;
 
-        // Update data in Firebase
-        database.ref(`going/${day}`).set(goingValue);
-
-        // Update data in localStorage
-        localStorage.setItem(`going${day}`, goingValue);
+        // Update data in Firebase and localStorage
+        await Promise.all([
+            database.ref(`going/${day}`).set(goingValue),
+            localStorage.setItem(`going${day}`, goingValue)
+        ]);
 
         console.log(`Saved Going List for ${day}: ${goingValue}`);
     });
 
-    Object.keys(cancellationInputs).forEach(day => {
+    const cancellationPromises = Object.keys(cancellationInputs).map(async day => {
         const cancellationInput = cancellationInputs[day];
         const cancellationValue = cancellationInput.value;
 
-        // Update data in Firebase
-        database.ref(`cancellation/${day}`).set(cancellationValue);
-
-        // Update data in localStorage
-        localStorage.setItem(`cancellation${day}`, cancellationValue);
+        // Update data in Firebase and localStorage
+        await Promise.all([
+            database.ref(`cancellation/${day}`).set(cancellationValue),
+            localStorage.setItem(`cancellation${day}`, cancellationValue)
+        ]);
 
         console.log(`Saved Cancellation List for ${day}: ${cancellationValue}`);
     });
 
+    await Promise.all([...goingPromises, ...cancellationPromises]);
+
     alert("Data saved!");
+}
+
+async function loadAndPopulateData() {
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+    days.forEach(day => {
+        const goingInput = document.getElementById(`going${day}`);
+        const cancellationInput = document.getElementById(`cancellation${day}`);
+
+        // Fetch data from Firebase and update input fields
+        database.ref(`going/${day}`).once("value").then(snapshot => {
+            const goingValue = snapshot.val() || "";
+            goingInput.value = goingValue;
+            localStorage.setItem(`going${day}`, goingValue); // Save to localStorage
+        }).catch(error => {
+            console.error("Error fetching going data:", error);
+        });
+
+        database.ref(`cancellation/${day}`).once("value").then(snapshot => {
+            const cancellationValue = snapshot.val() || "";
+            cancellationInput.value = cancellationValue;
+            localStorage.setItem(`cancellation${day}`, cancellationValue); // Save to localStorage
+        }).catch(error => {
+            console.error("Error fetching cancellation data:", error);
+        });
+    });
 }
 
 // Show only Monday input boxes on page load
@@ -159,6 +186,7 @@ window.onload = function() {
     loadAndPopulateData();
     showDay('monday'); // Show input fields for Monday by default
 };
+
 
         function loadAndPopulateData() {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -199,36 +227,7 @@ window.onload = function() {
 </script>
 
 
-<script>
-    // Password for admin access
-    const adminPassword = "apple"; 
 
-    function askPassword() {
-        // Prompt the user for the password
-        const enteredPassword = prompt("Please enter the admin password:");
-
-        if (enteredPassword === adminPassword) {
-            // Correct password, show admin panel
-            loadAndPopulateData();
-            showAdminPanel();
-        } else {
-            alert("Incorrect password. Access denied.");
-            askPassword(); // Ask for password again
-        }
-    }
-
-    askPassword();
-
-    function showAdminPanel() {
-        // Your admin panel content here
-        document.body.innerHTML = `
-            <h1>Admin Panel</h1>
-            <!-- Rest of your admin panel content -->
-        `;
-    }
-
-    // Rest of your script
-</script>
 
 
 
@@ -236,10 +235,10 @@ window.onload = function() {
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-  // Replace with your Firebase configuration
   const firebaseConfig = {
   apiKey: "AIzaSyBX6ozbZ4N3lIS2116W-M-gtwJCh-5-aA0",
   authDomain: "van-finder-d87f0.firebaseapp.com",
+  databaseURL: "https://van-finder-d87f0-default-rtdb.firebaseio.com",
   projectId: "van-finder-d87f0",
   storageBucket: "van-finder-d87f0.appspot.com",
   messagingSenderId: "1025653106851",
@@ -250,6 +249,7 @@ window.onload = function() {
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 </script>
+
 
 </body>
 </html>
