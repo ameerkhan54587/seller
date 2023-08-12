@@ -48,6 +48,21 @@ async function searchAndDisplayResults(query) {
                         }
                     }
                 }
+
+                // Update the last updated timestamp after displaying the results
+                const lastUpdatedGoingLabel = document.getElementById(`lastUpdatedGoing${day}`);
+                const lastUpdatedCancellationLabel = document.getElementById(`lastUpdatedCancellation${day}`);
+
+                database.ref(`going/${day}`).on("value", snapshot => {
+                    const goingData = snapshot.val() || {};
+                    lastUpdatedGoingLabel.textContent = `Last Updated: ${formatTimeSince(goingData.timestamp)}`;
+                });
+
+                database.ref(`cancellation/${day}`).on("value", snapshot => {
+                    const cancellationData = snapshot.val() || {};
+                    lastUpdatedCancellationLabel.textContent = `Last Updated: ${formatTimeSince(cancellationData.timestamp)}`;
+                });
+
             }).catch(error => {
                 console.error("Error fetching data:", error);
             })
