@@ -239,6 +239,48 @@ window.onload = function() {
 
 </script>
 
+<div id="adminPanelContainer"></div>
+    
+<script>
+    // Password for admin access (this is just an example; in real-world scenarios, you'd store the password securely)
+    const adminPassword = "apple"; 
+
+    function askPassword() {
+        // Check if the user has already entered the password before
+        const hasEnteredPassword = localStorage.getItem("hasEnteredPassword");
+
+        if (hasEnteredPassword) {
+            // Password was already entered before, show admin panel
+            showAdminPanel();
+        } else {
+            // Prompt the user for the password
+            const enteredPassword = prompt("Please enter the admin password:");
+
+            if (enteredPassword === adminPassword) {
+                // Correct password, show admin panel and remember access
+                localStorage.setItem("hasEnteredPassword", "true");
+                showAdminPanel();
+            } else {
+                alert("Incorrect password. Access denied.");
+            }
+        }
+    }
+
+    askPassword();
+
+    function showAdminPanel() {
+        const adminPanelContainer = document.getElementById("adminPanelContainer");
+        
+        // Replace the content of the admin panel container with your admin panel content
+        adminPanelContainer.innerHTML = `
+            <h1>Admin Panel</h1>
+            <!-- Rest of your admin panel content -->
+        `;
+    }
+
+
+</script>
+
 
 
 <div id="progressIndicator" class="progress-indicator">
