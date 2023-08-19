@@ -14,10 +14,13 @@ async function searchAndDisplayResults(query) {
     // Show loading indicator
     loadingIndicator.style.display = "block";
 
-    searchResultsContainer.innerHTML = ""; // Clear previous results
-    let resultsFound = false; // Flag to track if any results were found
+    // Remove leading and trailing spaces using regular expression
+    query = query.replace(/^\s+|\s+$/g, '');
 
-    if (!query.trim()) {
+    searchResultsContainer.innerHTML = ""; // Clear previous results
+    let resultsFound = false;
+
+    if (!query) {
         displayResult("Please enter a postcode to search.");
         return; // Exit the function if the query is blank
     }
@@ -69,16 +72,16 @@ async function searchAndDisplayResults(query) {
         );
     }
 
-    // Wait for all fetch operations to complete
-    await Promise.all(fetchPromises);
+   // Wait for all fetch operations to complete
+   await Promise.all(fetchPromises);
 
-    // Hide loading indicator
-    loadingIndicator.style.display = "none";
+   // Hide loading indicator
+   loadingIndicator.style.display = "none";
 
-    // Display error message if no results were found
-    if (!resultsFound) {
-        displayResult("Contact Ameer if postcode not found.");
-    }
+   // Display error message if no results were found
+   if (!resultsFound) {
+       displayResult("Contact Ameer if postcode not found.");
+   }
 }
 
 
