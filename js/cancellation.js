@@ -140,4 +140,4 @@ function getNextDay(currentDay) {
 }
 
 
-// Helper function to get the next day
+
