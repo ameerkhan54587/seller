@@ -116,6 +116,19 @@ searchForm.addEventListener("submit", async function(event) {
     await searchAndDisplayResults(searchQuery);
 });
 
+// Function to paste text from clipboard and trigger search
+function pasteTextFromClipboard() {
+    navigator.clipboard.readText()
+        .then(pastedText => {
+            document.getElementById("searchQuery").value = pastedText;
+            searchForm.dispatchEvent(new Event("submit")); // Trigger form submission
+        })
+        .catch(error => {
+            console.error("Error pasting text:", error);
+        });
+}
+
+
 
 
 // Helper function to get the next day
