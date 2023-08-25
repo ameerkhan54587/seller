@@ -36,14 +36,21 @@
     
     <!-- Day Selector Buttons -->
     <div class="day-buttons">
-        <button onclick="showDay('monday')">Monday</button>
-        <button onclick="showDay('tuesday')">Tuesday</button>
-        <button onclick="showDay('wednesday')">Wednesday</button>
-        <button onclick="showDay('thursday')">Thursday</button>
-        <button onclick="showDay('friday')">Friday</button>
-        <button onclick="showDay('saturday')">Saturday</button>
-        <button onclick="showDay('sunday')">Sunday</button>
+        <button class="day-button" data-day="monday" onclick="showDay('monday')">Monday</button>
+        <button class="day-button" data-day="tuesday" onclick="showDay('tuesday')">Tuesday</button>
+        <button class="day-button" data-day="wednesday" onclick="showDay('wednesday')">Wednesday</button>
+        <button class="day-button" data-day="thursday" onclick="showDay('thursday')">Thursday</button>
+        <button class="day-button" data-day="friday" onclick="showDay('friday')">Friday</button>
+        <button class="day-button" data-day="saturday" onclick="showDay('saturday')">Saturday</button>
+        <button class="day-button" data-day="sunday" onclick="showDay('sunday')">Sunday</button>
     </div>
+    
+    <style>
+        .day-button.active {
+    background-color: #c00000;
+    color: white;
+}
+</style>
     
     <!-- Save Button -->
     <div class="save-button">
@@ -121,7 +128,20 @@ async function showDay(day) {
             table.style.display = "none";
         }
     });
+
+    // Remove the 'active' class from all day buttons
+    const dayButtons = document.querySelectorAll(".day-button");
+    dayButtons.forEach(button => {
+        button.classList.remove("active");
+    });
+
+    // Add the 'active' class to the selected day button
+    const selectedButton = document.querySelector(`.day-button[data-day="${day}"]`);
+    if (selectedButton) {
+        selectedButton.classList.add("active");
+    }
 }
+
 
 async function saveData() {
     const progressIndicator = document.getElementById("progressIndicator");
