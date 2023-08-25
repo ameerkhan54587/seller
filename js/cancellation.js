@@ -1,5 +1,5 @@
 const searchResultsContainer = document.getElementById("searchResults");
-        
+
 function displayResult(resultText, isGoing) {
     const resultDiv = document.createElement("div");
     resultDiv.className = isGoing ? "bold-green" : "bold-red";
@@ -8,12 +8,11 @@ function displayResult(resultText, isGoing) {
     searchResultsContainer.appendChild(resultDiv);
 }
 
+let emptyQueryMessageDisplayed = false;
+
 const loadingIndicator = document.getElementById("loadingIndicator");
 
 async function searchAndDisplayResults(query) {
-    // Show loading indicator
-    loadingIndicator.style.display = "block";
-
     // Remove leading and trailing spaces using regular expression
     query = query.replace(/^\s+|\s+$/g, '');
 
@@ -21,9 +20,17 @@ async function searchAndDisplayResults(query) {
     let resultsFound = false;
 
     if (!query) {
-        displayResult("Please enter a postcode to search.");
+        if (!emptyQueryMessageDisplayed) {
+            displayResult("Please enter a postcode to search.");
+            emptyQueryMessageDisplayed = true;
+        }
         return; // Exit the function if the query is blank
+    } else {
+        emptyQueryMessageDisplayed = false; // Reset the flag
     }
+
+    // Show loading indicator
+    loadingIndicator.style.display = "block";
 
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
     const fetchPromises = [];
@@ -72,33 +79,40 @@ async function searchAndDisplayResults(query) {
         );
     }
 
-   // Wait for all fetch operations to complete
-   await Promise.all(fetchPromises);
+ // Wait for all fetch operations to complete
+    await Promise.all(fetchPromises);
 
-   // Hide loading indicator
-   loadingIndicator.style.display = "none";
+    // Hide loading indicator
+    loadingIndicator.style.display = "none";
 
-   // Display error message if no results were found
-   if (!resultsFound) {
-       displayResult("Contact Ameer if postcode not found.");
-   }
+    // Display error message if no results were found
+    if (!resultsFound) {
+        displayResult("Contact Ameer if postcode not found.");
+    }
 }
-
-
-
 
 // Handle form submission
 const searchForm = document.getElementById("searchForm");
 searchForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-    const searchQuery = document.getElementById("searchQuery").value;
-    searchAndDisplayResults(searchQuery);
+   event.preventDefault();
+   const searchQuery = document.getElementById("searchQuery").value;
+
+   // Reset the flag when a new search query is submitted
+   emptyQueryMessageDisplayed = false;
+
+   // Check if the searchQuery is empty
+   if (!searchQuery.trim()) {
+       displayResult("Please enter a postcode to search.");
+       return;
+   }
+
+   searchAndDisplayResults(searchQuery);
 });
 
 // Helper function to get the next day
 function getNextDay(currentDay) {
-    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-    const currentIndex = days.indexOf(currentDay);
-    const nextIndex = (currentIndex + 1) % 7;
-    return days[nextIndex];
+   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+   const currentIndex = days.indexOf(currentDay);
+   const nextIndex = (currentIndex + 1) % 7;
+   return days[nextIndex];
 }
