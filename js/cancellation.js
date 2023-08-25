@@ -125,3 +125,6 @@ function getNextDay(currentDay) {
    const nextIndex = (currentIndex + 1) % 7;
    return days[nextIndex];
 }
+
+
+// Helper function to get the next day
