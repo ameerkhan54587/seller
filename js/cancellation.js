@@ -93,21 +93,30 @@ async function searchAndDisplayResults(query) {
 
 // Handle form submission
 const searchForm = document.getElementById("searchForm");
-searchForm.addEventListener("submit", function(event) {
-   event.preventDefault();
-   const searchQuery = document.getElementById("searchQuery").value;
+searchForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const searchQuery = document.getElementById("searchQuery").value;
 
-   // Reset the flag when a new search query is submitted
-   emptyQueryMessageDisplayed = false;
+    // Check if the searchQuery is empty
+    if (!searchQuery.trim()) {
+        if (!emptyQueryMessageDisplayed) {
+            displayResult("Please enter a postcode to search.");
+            emptyQueryMessageDisplayed = true;
+        }
+        return;
+    }
 
-   // Check if the searchQuery is empty
-   if (!searchQuery.trim()) {
-       displayResult("Please enter a postcode to search.");
-       return;
-   }
+    // Reset the flag when a new search query is submitted
+    emptyQueryMessageDisplayed = false;
 
-   searchAndDisplayResults(searchQuery);
+    // Clear the search results container
+    searchResultsContainer.innerHTML = "";
+
+    // Search and display results
+    await searchAndDisplayResults(searchQuery);
 });
+
+
 
 // Helper function to get the next day
 function getNextDay(currentDay) {
