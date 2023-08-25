@@ -11,27 +11,44 @@
     
     
     
-    <!-- Search form -->
-    <form id="searchForm">
+   <!-- Search form -->
+<form id="searchForm">
+    <div id="searchInputGroup">
         <input type="text" id="searchQuery" name="q" placeholder="Enter postcode">
-        <button id="searchButton" type="submit">Search</button>
-    </form>
-    
-    <div id="loadingIndicator" style="display: none;">Loading...</div>
+        <div id="pasteIcon" onclick="pasteTextFromClipboard()"><img src="images/paste.svg" alt="Paste"></div>
+    </div>
+    <button id="searchButton" type="submit">Find Postcode</button>
+</form>
 
-    <!-- Display search results -->
-    <div id="searchResults"></div>
-    
-  
+<div id="loadingIndicator" style="display: none;">Loading...</div>
+<!-- Display search results -->
+<div id="searchResults"></div>
 
 <div id="credit">Credit by Ameer Khan</div>
+
+<script>
+    function pasteTextFromClipboard() {
+        const searchQueryInput = document.getElementById('searchQuery');
+        
+        navigator.clipboard.readText().then(pastedText => {
+            searchQueryInput.value = pastedText;
+        }).catch(error => {
+            console.error('Error pasting text:', error);
+        });
+    }
+</script>
+
+
+
 </body>
+
+
+
 
 
 <style>
     body {
         font-family: Arial, sans-serif;
-      
         margin: 0;
         padding: 0;
         display: flex;
@@ -42,20 +59,18 @@
     }
 
     .bold-green {
-    
-    color: rgb(0, 255, 0);
-}
+        color: rgb(0, 255, 0);
+    }
 
-.bold-red {
-    
-    color: rgb(255, 0, 0);
-}
+    .bold-red {
+        color: rgb(255, 0, 0);
+    }
 
-h1 {
-            margin-bottom: 20px;
-            color: #ffffff;
-            text-align: center; /* Center the text */
-        }
+    h1 {
+        margin-bottom: 20px;
+        color: #ffffff;
+        text-align: center; /* Center the text */
+    }
 
     #searchForm {
         display: flex;
@@ -97,10 +112,10 @@ h1 {
     }
 
     @media (max-width: 768px) {
-    #searchResults {
-        width: 350px; 
+        #searchResults {
+            width: 350px;
+        }
     }
-}
 
     #searchResults div {
         margin-bottom: 10px;
@@ -109,18 +124,13 @@ h1 {
         border-radius: 5px;
     }
 
-    
+    #credit {
+        text-align: center;
+        margin-top: 20px;
+        color: #999;
+    }
 
-      
-
-
-        #credit {
-    text-align: center;
-    margin-top: 20px;
-    color: #999;
-}
-
-#loadingIndicator {
+    #loadingIndicator {
         display: none;
         position: fixed;
         top: 52%;
@@ -131,7 +141,38 @@ h1 {
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
+
+    #searchInputGroup {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden; /* To prevent the paste icon from overflowing */
+    }
+
+    #searchQuery {
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        flex-grow: 1; /* Expand the input to fill available space */
+    }
+
+    #pasteIcon {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    #pasteIcon img {
+        width: 16px; /* Adjust the size of the icon as needed */
+        height: 16px;
+        display: block;
+    }
+
+    #pasteIcon:hover {
+        background-color: #555;
+    }
 </style>
+
 
 
 
