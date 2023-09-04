@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - Ameer Khan</title>
+
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dc1q32wzt/image/upload/v1685918602/icon_ameer_w_adrrbk.ico">
+</head>
+<body>
+
+
+    <style>
+        /* Style for the language selection container */
+        div {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    
+        /* Style for the label */
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    
+        /* Style for the language dropdown */
+        select {
+            padding: 7px;
+            border: 1px solid #ff0000; /* Darken the border color */
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 500px;
+            text-align: center;
+            background-color: #4e0000; /* Dark background color */
+            color: white; /* White text color */
+            font-weight: bold; /* Bold text */
+        }
+    
+        /* Style for the button */
+        .button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Add smooth transition */
+        }
+    
+        /* Style to hide elements with the "hidden" class by default */
+        .hidden {
+            display: none;
+        }
+    </style>
+    
+    <div>
+        <label for="language"></label>
+        <select id="language">
+            <option value="english">English - EN</option>
+            <option value="dutch">Dutch - NL</option>
+            <option value="french">French - FR</option>
+            <option value="german">German - DE</option>
+            <option value="luxembourgish">Luxembourgish - LB</option>
+        </select>
+    </div>
+    
+    
+    
+    
+    
+    
+
+<div class="container">
+
+
+<button class="button button5 kb-source fa-icon">Yes, It's available<br>Which size are you looking for?
+        <p class="hidden" id="l-text" 
+        data-english="Yes, It's available<br>Which size are you looking for?" 
+            data-dutch="Ja, het is beschikbaar<br>Welke maat zoekt u?" 
+            data-french="Oui, il est disponible<br>Quelle taille recherchez-vous ?" 
+            data-german="Ja, es ist verfügbar<br>Welche Größe suchen Sie?" 
+            data-luxembourgish="Jo, et ass verfügbar<br>Wéi eng Gréisst sicht Dir?"></p>
+    </button>
+          
+        
+        
+        
+        <button class="button button-4row kb-source fa-icon">
+        High-quality
+        <p class="hidden" >Our beds are made of high-quality materials and are designed to provide excellent comfort and support. We use only the best materials to ensure that our beds are both durable and long-lasting. Additionally, we stand behind the quality of our products and offer a warranty to provide our customers with peace of mind.
+            <p class="hidden" id="l-text" 
+        data-english="English" 
+            data-dutch="Dutch" 
+            data-french="French" 
+            data-german="German" 
+            data-luxembourgish="Luxembourgish"></p>
+         </button> 
+        
+        <button style="background-color: #0b0f14;" class="button button-4row kb-source fa-icon"  >
+          1 Year Warranty, Cash💰
+         <p class="hidden" > 
+          We offer free home delivery with a 1 year warranty and cash on delivery for your convenience
+         </p>
+         <p class="hidden" id="l-text" 
+         data-english="English" 
+             data-dutch="Dutch" 
+             data-french="French" 
+             data-german="German" 
+             data-luxembourgish="Luxembourgish"></p>
+        </button>
+          
+          <button style="background-color: #2e3300;" class="button button-4row kb-source fa-icon"  >
+        BED Instructions🎴
+         <p class="hidden" > 
+        We'll send you the bed assembly instructions
+         </p>
+         <p class="hidden" id="l-text" 
+         data-english="English" 
+             data-dutch="Dutch" 
+             data-french="French" 
+             data-german="German" 
+             data-luxembourgish="Luxembourgish"></p>
+            </button>
+          
+          <button style="background-color: #012087;" class="button button-4row kb-source fa-icon"  >
+        ⭐Upgrade 3D Matress
+         <p class="hidden" > 
+        We can upgrade your mattress to an 11 inch depth and best quality in an additional £30. This upgrade will provide you with a more comfortable and luxurious sleep experience.
+         </p></button>
+        
+        
+          
+        
+        
+        <button class="button button-4row kb-source fa-icon"  >
+        Free Delivery
+        <p class="hidden" > 
+          Free home delivery
+         </button> 
+          
+        <button class="button button-4row kb-source fa-icon">
+        Pay on Delivery
+        <p class="hidden" > 
+          Pay on Delivery
+         </button> 
+
+
+         <button style="background-color: #401f14;" class="button button-4row kb-source fa-icon">
+          Mattresses All Detail💎💎
+          <p class="hidden" > 
+            Mattresses Options:<br><br>3D Mattress £30 extra<br>Full Memory Foam Mattress £40 extra<br>1000 Pocket Mattress £40 extra<br>2000 Pocket Mattress £60 extra
+           </button> 
+          
+          <button style="background-color: #8f005f;" class="button button-4row kb-source fa-icon"  >
+        🛠️🛠️Drawers Charges🛠️
+         <p class="hidden" > 
+Drawers are optional:
+1x drawer £15 extra
+2x drawer £30 extra
+4x drawer £60 extra
+Large footend drawer £20 extra
+         </button> 
+        
+        
+        <button class="button button-3row kb-source fa-icon"  >
+        We offer Factory Prices, retail shop
+        
+        <p class="hidden" > 
+        We offer factory prices to our customers as we are the direct manufacturers of the beds. Our prices are lower compared to retail shop prices.
+         </button> 
+
+         <button class="button button-3row kb-source fa-icon"  >
+          Free Advertisement
+          
+          <p class="hidden" > 
+            Oops! 😔 Apologies for the incorrect price in the ad. But don't worry, we have an incredible range of bed sizes 🛏️ (single, small double, double, king, and super king) available in a variety of colors 🌈 and designs 🎨. Our Support team is here to assist you promptly. Simply reach out to us on WhatsApp at +44 7451 214631<br>Thank you❤️
+           </button> 
+
+
+  <button style="background-color: #013619;" class="button button-3row kb-source fa-icon"  >
+        All Bed and 🔊Mattress Brand New🔊
+
+         <p class="hidden" > Our beds and mattresses are all brand new, high-quality, and factory-packed. You can check them before paying as well
+        </button> 
+        
+        
+        
+         <button  style="background-color: #132942;" class="button button5 kb-source fa-icon">You can message me anytime here, and I'll be happy to assist you!❤️
+            <p class="hidden">You can message me anytime here, and I'll be happy to assist you!❤️</p></button>
+        
+        
+       
+        
+        
+        
+        
+        
+        
+        <button class="button button-5row kb-source fa-icon">£25 Assembly Divan
+        <p class="hidden" >Bed assembly is available at an extra charge of £25, payable to the driver.
+         </button> 
+        
+        <button style="background-color: #0b0f14;" class="button button-5row kb-source fa-icon"  >
+        Upstairs £10🏠🚶‍♂️
+         <p class="hidden" > 
+        Upstairs delivery is available with a £10 fee payable to the driver.
+         </p></button>
+
+         <button style="background-color: #0b0f14;" class="button button-5row kb-source fa-icon"  >
+          Divan Assm Video▶️
+           <p class="hidden" >Divan Bed Instructions
+
+Connect your base
+https://youtube.com/shorts/aa5sCmzopN0
+            
+Connect headboard to a base
+https://youtube.com/shorts/1ytMxUOiZVE
+            
+Locate the headboard threads on your base
+https://youtube.com/shorts/T7dN1WbsdR8</p></button>
+          
+          <button class="button button-5row kb-source fa-icon"  >
+Ottoman Video▶️
+         <p class="hidden" >Ottoman Bed Instructions
+
+https://youtu.be/Uj4hE11gpeg</p></button>
+        
+
+          <button style="background-color: #2c1440;" class="button button-5row kb-source fa-icon"  >
+        WhatsApp Team📞
+         <p class="hidden" > 
+        Our Support team WhatsApp number is +44 7451 214631
+         </p></button>
+        
+         <button style="background-color: #b35100;" class="button button-2row kb-source fa-icon"  >
+          SEND YOUR POSTCODE
+          
+          <p class="hidden" > 
+            Send us your Postcode and we'll let you know by checking the delivery route.
+           </button> 
+    <button style="background-color: #244600;" class="button button-2row kb-source fa-icon"  >
+          Send Full Address and Phone Number?✅
+  
+           <p class="hidden" >Send your full Address,including Postal code and Phone number#?
+          </button> 
+        
+       
+    
+    
+        
+        
+        
+        
+        
+        
+        <button style="background-color: #31263d;" class="button button-4row kb-source fa-icon"  >
+       
+        We based in Dewsbury🛣️🛣️
+        
+        <p class="hidden" > 
+        Our factory based in Dewsbury! We offer delivery to your home
+         </button> 
+          
+          <button class="button button-4row kb-source fa-icon"  >
+       
+        Big Order/Deposit/Split
+        
+        <p class="hidden" > 
+        For large orders, a deposit is required. Additionally, our delivery team will contact you one day before the scheduled delivery to request the deposit. Alternatively, we can split the order, delivering a portion first (e.g., 1 or 2 beds) and the rest at a later time.
+         </button> 
+
+         <button style="background-color: #006a72;" class="button button-4row kb-source fa-icon"  >
+       
+          Would you like to buy?
+          
+          <p class="hidden" > 
+          Would you like to buy?
+           </button> 
+        
+        <button style="background-color: #3b321c;" class="button button-4row kb-source fa-icon"  >
+     
+        Factory not Allow Customers
+
+        <p class="hidden" > 
+          🚧 For safety reasons, customer visits to our factory are not permitted due to strict guidelines. Thank you for your understanding.
+      </button> 
+        
+        
+        
+    
+         <button  style="background-color: #0d0047;" class="button button-2row kb-source fa-icon">
+            1 hour before arrival! 
+            <p class="hidden">1 hour before arrival! the driver will call you to let you know they are on their way</p></button>
+        
+            <button  style="background-color: #6c007a;" class="button button-2row kb-source fa-icon">
+             IRELAND DELIVERY - 3 TO 5 DAYS
+              <p class="hidden">Bed will be delivered promptly within the estimated timeframe of 3 to 5 days</p></button>
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Monday <p class="hidden" >Delivery will be on Monday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Tuesday<p class="hidden" >Delivery will be on Tuesday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Wednesday<p class="hidden" >Delivery will be on Wednesday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Thursday<p class="hidden" >Delivery will be on Thursday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Friday<p class="hidden" >Delivery will be on Friday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Saturday<p class="hidden" >Delivery will be on Saturday</p>
+        <button style="background-color: #b35100;" class="button button-7row kb-source fa-icon"  >
+        Sunday<p class="hidden" >Delivery will be on Sunday</p>
+         </button>
+          
+         
+        
+    
+          
+         <button  style="background-color: #0070c0;" class="button button5 kb-source fa-icon">
+            Please choose a color? 🌈🎨
+            <p class="hidden">Please choose a color? 🌈🎨</p></button>
+        
+          
+          <button class="button button-3row kb-source fa-icon"  >
+       
+        3D Mattress Verities
+        
+        
+        
+        <p class="hidden" > 
+        Our 3D mattress, with a depth of 11 to 12 inches, is available in a variety of colors including Black, Grey, Silver, Cream, Suede, Mayfair, and Richmond. Experience a unique and customizable sleep experience with its adjustable air pressure and built-in 3D structures.
+         </button> 
+        
+          
+          <button class="button button-3row kb-source fa-icon"  >
+ 
+        
+        3D Mattress Specs
+        
+        
+        <p class="hidden" > 
+        A 3D mattress typically has a depth of 11 to 12 inches and is designed to provide a unique sleeping experience with built-in three-dimensional structures. These structures, along with adjustable air pressure, allow for personalized support and comfort, helping to reduce pressure points and regulate temperature.
+      </button> 
+        
+        
+        
+        <button style="background-color: #002e2c;" class="button button-3row kb-source fa-icon"  >
+      
+        
+        Orthophedic Mattress Specs
+
+        <p class="hidden" >Our 8-inch deep orthopedic mattress provides superior support for back pain and proper spinal alignment. Experience ultimate orthopedic sleep support in a compact and convenient design.
+        </button>
+        
+        
+        
+         <button style="background: linear-gradient(to right, #009900 0%, #0000ff 100%);" class="button button-3row kb-source fa-icon"  >
+        £25 delivery charges
+        
+        <p class="hidden" > 
+        Unfortunately, we do not deliver to your area. There is a £25 delivery charge for orders outside of our service area.
+         </button> 
+
+
+         <button style="background-color: #006d5e;" class="button button-3row kb-source fa-icon"  >
+          Drawers Charges IRELAND
+           <p class="hidden" >Drawers are optional:<br>2x drawer £40 extra<br>4x drawer £80 extra
+            
+           </button> 
+
+
+          <button style="background-color: #43344a" class="button button-3row kb-source fa-icon"  >
+        £5 discount bed💴
+        
+        <p class="hidden" > 
+        Our prices are already very competitive, however as you are a new customer we are happy to offer you a £5 discount on each bed 
+      </button> 
+          <button style="background-color: #45191c" class="button button-4row kb-source fa-icon"  >
+        #Number Issue
+        
+        <p class="hidden" > 
+        I understand your concern, but having a phone number is important for a few reasons. Firstly, our driver needs to be able to contact you before delivery to ensure that you're available to receive the order. Additionally, our factory may need to contact you if there are any issues with your order.</button> 
+            <button style="background-color: #45191c" class="button button-4row kb-source fa-icon"  >
+        Today/Tomorrow delivery
+        
+        <p class="hidden" > 
+        We strive for fast and efficient delivery, but can't offer same/next-day service. Our standard delivery is in 2 days
+         </button> 
+          <button style="background-color: #45191c" class="button button-4row kb-source fa-icon"  >
+        Payment Plan⛔
+        
+        <p class="hidden" > 
+        At this time, we do not offer payment plans for our products. However, we do accept cash on delivery, and we can work with you to schedule a convenient delivery time</p></button> 
+            <button style="background-color: #45191c" class="button button-4row kb-source fa-icon"  >
+        Replace/Refund✅
+        
+        <p class="hidden" > 
+         Our policy is to offer a replacement or a refund for any damaged items during transit. Please contact us as soon as possible if you receive a damaged item, and we will work with you to resolve any issues. Photos of the damaged item and packaging may be required to process your claim.</p></button> 
+          
+          
+        
+        
+          <button style="background-color: #634400;" class="button button-3row kb-source fa-icon"  >
+      
+        𝐏𝐨𝐫𝐭𝐬𝐦𝐨𝐮𝐭𝐡 Route - Tue,Fri
+        
+        <p class="hidden" > 
+        We have Delivery routes for Different areas. In your area, we are Delivering on Tuesday and Friday
+         </button> 
+        
+          
+          <button style="background-color: #634400;" class="button button-3row kb-source fa-icon"  >
+      
+        𝐂𝐨𝐫𝐧𝐰𝐚𝐥𝐥 Route - Thu,Sun
+        
+        <p class="hidden" > 
+        We have Delivery routes for Different areas. In your area, we are Delivering on Thursday and Sunday
+         </button> 
+        
+        <button style="background-color: #634400;" class="button button-3row kb-source fa-icon"  >
+       
+        𝐀𝐛𝐞𝐫𝐝𝐞𝐞𝐧 Route - Wed,Sat
+       
+        <p class="hidden" >
+        We have Delivery routes for Different areas. In your area, we are Delivering on Wednesday and Saturday
+         </p>  </button>
+          
+        
+          
+        
+        
+        
+        
+        
+          
+            <button style="background-color: #008797" class="button button-2row kb-source fa-icon">
+        Say 🛃 confirm order
+        
+        <p class="hidden" > 
+        Apologies. Please respond to confirmation team about tomorrow's delivery as order is unconfirmed. Thank you.
+         </button> 
+          <button style="background-color: #012e33" class="button button-2row kb-source fa-icon">
+        2PM Confirmation🚧
+        
+        <p class="hidden" > 
+         Hi, I apologize for any inconvenience caused. The confirmation team has notified me that your order was not confirmed before 2pm. If you would still like to receive your delivery, may I rebook your order?</p></button> 
+        
+          
+          <button style="background-color: #FF0101" class="button button-3row kb-source fa-icon"  >
+       
+        Van Broken
+        
+        
+        
+        <p class="hidden" > 
+        We apologize for the delay. Our delivery van broke down and couldn't be repaired. Could you reschedule for ++++++++++? Our sincere apologies for the inconvenience.
+         </button> 
+        
+          
+          <button style="background-color: #7A1E1E" class="button button-3row kb-source fa-icon"  >
+       
+        
+        Driver Issue
+        
+        
+        <p class="hidden" > 
+        We apologize for the inconvenience. Due to family issues, our driver is unavailable. If it's possible, could we reschedule for ***********? Thank you for your understanding.
+         </button> 
+        
+        
+        
+        <button style="background-color: #FF8181" class="button button-3row kb-source fa-icon"  >
+      
+        Not Enough Orders
+         
+            
+          <p class="hidden" > 
+        Hi, we won't be able to deliver your order tomorrow due to a shortage of orders. Can we reschedule for ********** instead? We apologize for the inconvenience and appreciate your understanding.
+            </button>
+            
+            
+            
+            
+            
+            <button style="background-color: #01452c" class="button button-5row kb-source fa-icon"  >
+        Tomorow confirmtion
+        
+        <p class="hidden" > 
+        Hi! I hope you are doing well! Tomorrow our confirmation will contact you by text/call, please reply on time.  
+Please recheck your phone number.<br>Thank you
+         </button> 
+            
+            <button class="button button-5row kb-source fa-icon"  >
+IF Delivery Delays 
+        
+        <p class="hidden" >Your order is currently in transit for today's delivery. While we strive for timely delivery, please be aware that occasional delays may occur due to factors such as heavy traffic, the driver's meal break, or additional stops for other customers may cause minor delays. However, rest assured that we are committed to ensuring the prompt delivery of your order.
+         </button> 
+            
+            <button class="button button-5row kb-source fa-icon"  >
+        Chek Phone Number
+        
+        <p class="hidden" > 
+          Please check your phone number and address to make sure they are correct.
+         </button> 
+            
+         
+    
+          <button  style="background-color: #63003c;" class="button button-5row kb-source fa-icon">
+           Have you got bed?
+            <p class="hidden">Hi! Have you got your bed?</p></button>
+            
+            <button  class="button button-5row kb-source fa-icon">
+              Next Day🚐
+              <p class="hidden">Unfortunately, we are unable to facilitate a delivery today as all our vans are currently en route. However, we would be more than happy to schedule a delivery for tomorrow if you would like to proceed.</p></button>
+            
+         
+        
+        
+          
+          
+          
+        
+        
+            <button  style="background-color: #260085;" class="button button5 kb-source fa-icon">
+              📞📦Attention: Team will contact you 1 day before delivery. Reply before 2pm, thanks!
+                <p class="hidden">📞📦Attention: Team will contact you 1 day before delivery. Reply before 2pm, thanks!</button>
+        
+        
+        
+            
+                <button  style="background-color: #012087;" class="button button5 kb-source fa-icon">
+                  📞📦 Our Factory will contact you the day before your scheduled delivery via phone call or text message. Please respond before 2PM ⏰ to avoid order rescheduling for the next available delivery day.
+<br><br>
+                  🚚 On the delivery day, the driver will contact you approximately one hour before arrival.
+                  <br><br>
+                  📲WhatsApp: +44 7451 214631
+                  <br><br>
+                  Feel free to message me anytime, and I'll gladly assist you! ❤️
+    
+    <p class="hidden">📞📦 Our Factory will contact you the day before your scheduled delivery via phone call or text message. Please respond before 2PM ⏰ to avoid order rescheduling for the next available delivery day.
+
+🚚 On the delivery day, the driver will contact you approximately one hour before arrival.
+      
+📲WhatsApp: +44 7451 214631
+      
+Feel free to message me anytime, and I'll gladly assist you! ❤️</p></button>
+        
+        
+        
+        
+<h3 style="background: #4b005e;" class="heading-top">Discover the latest updates, brought to you by Ameer Khan ©2023</h3>
+	 
+      
+    
+    </div>
+    
+    <div id="preloader-wrapper">
+    <div class="container-preloader">
+      <div class="preloader">
+        <div id="loading">SCANNED</div>
+        <div class="progress-1"></div>
+        <div id="additional-info"> <p class="center"><strong>Notice:</strong> By using this site, we may access your camera and collect your IP address and other information for security and user experience purposes.</p>
+            <p class="center">Ameer Khan +44 7451 214631</p></div>
+      </div>
+    </div>
+  </div>
+
+  
+
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            
+            <script src="js/kb-source.js"></script>
+            
+            <link rel="stylesheet" href="css/kb-source.css">
+            <link rel="stylesheet" href="css/buttons.css">
+            <link rel="stylesheet" href="css/preloader.css">
+            <script src="js/preloader.js"></script>
+            <div id="notification-area">
+            </div>
+
+        </body>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+ <script src="js/index.js"></script>
+
+
+ <script> // Check if user is authenticated
+   firebase.auth().onAuthStateChanged(function(user) {
+     if (!user) {
+       // User is not signed in
+       // Redirect to login page
+       window.location.href = 'index.html';
+     }
+   });
+   </script>
+
+
+
+<script>
+    // Function to update the text of all paragraphs based on the selected language
+    function updateParagraphs() {
+        const selectedLanguage = document.getElementById("language").value;
+        const paragraphs = document.querySelectorAll('.button .hidden');
+
+        paragraphs.forEach(paragraph => {
+            // Get the text from the data attribute
+            let text = paragraph.getAttribute("data-" + selectedLanguage);
+
+            // Replace <br> tags with line breaks
+            text = text.replace(/<br>/g, '\n');
+
+            // Set the paragraph text
+            paragraph.innerText = text;
+        });
+
+        // Save the selected language in local storage
+        localStorage.setItem("selectedLanguage", selectedLanguage);
+    }
+
+    // Add an event listener to the language dropdown to update the paragraphs
+    document.getElementById("language").addEventListener("change", updateParagraphs);
+
+    // Check if a language preference exists in local storage
+    const storedLanguage = localStorage.getItem("selectedLanguage");
+
+    // Set the dropdown to the stored language or default to English
+    if (storedLanguage) {
+        document.getElementById("language").value = storedLanguage;
+    }
+
+    // Initial update based on the selected language or the default language
+    updateParagraphs();
+</script>
+        </html>
