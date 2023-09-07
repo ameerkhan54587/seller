@@ -54,7 +54,11 @@
   border-radius: 8px;
 }
 
-
+.containereu {
+ 
+  margin: -15px auto;
+  max-width: 1150px;
+  }
 
 .container {
  
