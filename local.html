@@ -10,6 +10,34 @@
 </head>
 <body>
 
+    <style>
+
+
+        
+    
+
+        label {
+          
+            color:white;
+            margin-right: 10px;
+        }
+    
+
+        select {
+            padding: 5px;
+            border: 3px solid #ff0000; 
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 50%;
+            text-align: center;
+            background-color: #4e0000; /* Dark background color */
+            color: white; /* White text color */
+            font-weight: bold; /* Bold text */
+        }
+    
+    
+
+    </style>
     
     <div class="container-menu" class="topbar" id="myDIV">
         <button class="btn active" onclick="toggleVisibility('Menu1');">Normal Route</button>
@@ -28,19 +56,92 @@
   
 <div class="container">
 
+ 
+  <div>
+    <label for="language">Design by Ameer</label>
+    <select id="language">
+      <option value="english">English - EN</option>
+      <option value="dutch">Dutch - NL</option>
+      <option value="french">French - FR</option>
+      <option value="german">German - DE</option>
+      <option value="luxembourgish">Luxembourgish - LB</option>
+    </select>
+  </div>
+
+
+
+   
+
 
 <div id="Menu1">
+
+   
+          
+        
+             
+         
+     
 
 <h2 style="background: #00640F;" class="heading-top">🚖BED WITH MATTRESS🚖</h2>
 
 
+
+
   
 <p onclick="notifySuccess()">
-<button class="button button5 fullbed" onclick="setClipboard('£125 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 fullbed" onclick="setClipboard('£155 for double size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 fullbed" onclick="setClipboard('£155 for small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Small Double</button>
-<button class="button button5 fullbed" onclick="setClipboard('£175 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 fullbed" onclick="setClipboard('£210 for super king size base and Matching Buttons headboard with  super orthopedic memory foam mattress  + 1 year warranty (Cash on delivery)')">Super King</button>
+
+   
+
+    <button class="button button5 fullbed" 
+    data-text="Single" 
+    data-english-sentence="£125 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€355 voor de eenpersoonsmaat bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€355 pour la base de taille simple et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€355 für die Einzelbettgröße mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€355 fir d'Single Gréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single</button>
+  
+  <button class="button button5 fullbed" 
+    data-text="Double"
+    data-english-sentence="£155 for double size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€375 voor tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€375 pour la base de taille double et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€375 für die Doppelbettgröße mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€375 fir d'Double Gréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double</button>
+
+  <button class="button button5 fullbed" 
+  data-text="Small Double" 
+  data-english-sentence="£155 for small double size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€375 voor kleine dubbele basis en Matching Buttons-hoofdeinde met superorthopedisch traagschuimmatras + 1 jaar garantie (onder rembours)"
+  data-french-sentence="€375 pour une base de petite taille et une tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€375 für die Größe Klein Doppelbett mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€375 fir eng kleng Doppelgréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Small Double</button>
+
+<button class="button button5 fullbed" 
+  data-text="King"
+  data-english-sentence="£175 for the king size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€385 voor de kingsize bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€385 pour la base de taille roi et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€385 für die Kingsize-Bettbasis mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€385 fir d'Kinngréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>King</button>
+
+<button class="button button5 fullbed" 
+  data-text="Super King"
+  data-english-sentence="£210 for super king size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€475 voor een zeer groot bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€475 pour une base de très grande taille et une tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€475 für die Größe Super Kingsize-Bettbasis mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€475 fir eng super Këniggréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Super King</button>
+  
 </p>
   
 
@@ -49,11 +150,56 @@
      <h2 style="background: #570000;" class="heading-top">🛏️Base/Frame Only🛏️</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 base7" onclick="setClipboard('£95 for the single size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 base7" onclick="setClipboard('£105 for the double size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 base7" onclick="setClipboard('£105 for the small double size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')"> Smal Double</button>
-<button class="button button5 base7" onclick="setClipboard('£125 for the king size base and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 base7" onclick="setClipboard('£165 for the super king size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Super King</button>
+    <button class="button button5 base7" 
+    data-text="Single" 
+    data-english-sentence="£95 for the single size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€330 voor de eenpersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€330 pour la base de taille simple et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€330 für die Einzelbettgröße mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€330 fir d'Single Gréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single</button>
+  
+  <button class="button button5 base7" 
+    data-text="Double"
+    data-english-sentence="£105 for the double size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€345 voor tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€345 pour la base de taille double et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€345 für die Doppelbettgröße mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€345 fir d'Double Gréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double</button>
+  
+  <button class="button button5 base7" 
+    data-text="Small Double"
+    data-english-sentence="£105 for the small double size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€345 voor kleine tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€345 pour une petite base de lit double et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€345 für die Größe Klein Doppelbett mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€345 fir kleng Doppelgréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double</button>
+  
+  <button class="button button5 base7" 
+    data-text="King"
+    data-english-sentence="£125 for the king size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€360 voor de kingsize bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€360 pour la base de taille roi et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€360 für die Größe Kingsize-Bettbasis mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€360 fir d'Kinngréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King</button>
+  
+  <button class="button button5 base7" 
+    data-text="Super King"
+    data-english-sentence="£165 for the super king size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="€455 voor een zeer grote bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="€455 pour une base de lit de très grande taille et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="€455 für die Größe Super Kingsize-Bettbasis mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="€455 fir eng super Këniggréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King</button>
+  
 </p>
   
     
@@ -61,74 +207,45 @@
 
                 <h2 style="background: #740080;" class="heading-top">🥦>MATTRESS ONLY>🥦</h2>
 <p onclick="notifySuccess()">
-<button class="button button5 mattress5" onclick="setClipboard('£75 for Single size  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 mattress5" onclick="setClipboard('£85 for double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 mattress5" onclick="setClipboard('£85 for small double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')"> Smal Double</button>
-<button class="button button5 mattress5" onclick="setClipboard('£105 for king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 mattress5" onclick="setClipboard('£125 for super king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Super King</button>
-
-
+    <button class="button button5 mattress5" 
+    data-text="Single" 
+    data-english-sentence="£75 for Single size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single</button>
+  
+  <button class="button button5 mattress5" 
+    data-text="Double"
+    data-english-sentence="£85 for double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+   
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double</button>
+  
+  <button class="button button5 mattress5" 
+    data-text="Small Double"
+    data-english-sentence="£85 for small double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double</button>
+  
+  <button class="button button5 mattress5" 
+    data-text="King"
+    data-english-sentence="£105 for king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+   
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King</button>
+  
+  <button class="button button5 mattress5" 
+    data-text="Super King"
+    data-english-sentence="£125 for super king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+   
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King</button>
+  
 
 
 </p>
 
-
-
-  <h2 style="background: #3E0EAC;" class="heading-top">Beds With Mattress + 2️⃣2X DR🅰WERS</h2>
-<p onclick="notifySuccess()">
-<button class="button button5 bed2drawer" onclick="setClipboard('£155 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 bed2drawer" onclick="setClipboard('£185 for double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 bed2drawer" onclick="setClipboard('£185 for small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')"> Small Double</button>
-<button class="button button5 bed2drawer" onclick="setClipboard('£205 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress 2x drawers + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 bed2drawer" onclick="setClipboard('£240 for super king size base and Matching Buttons headboard with  super orthopedic memory foam mattress 2x drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-</p>
-
-
-
-
- 
-   <h2 style="background: #A24500;" class="heading-top">Beds With Mattress + 4̶X DRAWERS</h2>
-<p onclick="notifySuccess()">
-<button class="button button5 bed4drawer" onclick="setClipboard('£215 for the double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 bed4drawer" onclick="setClipboard('£215 for the small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Small Double</button>
-<button class="button button5 bed4drawer" onclick="setClipboard('£235 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')"> King</button>
-<button class="button button5 bed4drawer" onclick="setClipboard('£270 for the super king size base and Matching Buttons headboard with super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-
-
-</p>
-
-
-
-
- 
-
-
-
-
-
-
-
-      <h2 style="background: #004280;" class="heading-top">🛥️🛥️Base Only + 2x Drawers🛥️🛥️</h2>
-<p onclick="notifySuccess()">
-<button class="button button5 base2draw" onclick="setClipboard('£125 for the single size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 base2draw" onclick="setClipboard('£135 for the double size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 base2draw" onclick="setClipboard('£135 for the small double size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')"> Small Double</button>
-<button class="button button5 base2draw" onclick="setClipboard('£155 for the king size base and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 base2draw" onclick="setClipboard('£190 for the super king size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-</p>
-
-
-
-
-
-      <h2 style="background: #806A00;" class="heading-top">⛱️Base Only + 4x Drawers⛱️</h2>
-
-<p onclick="notifySuccess()">
-<button class="button button5 base4draw" onclick="setClipboard('£165 for the double size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 base4draw" onclick="setClipboard('£165 for the small double size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">Small Double</button>
-<button class="button button5 base4draw" onclick="setClipboard('£185 for the king size base and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 base4draw" onclick="setClipboard('£220 for the super king size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-</p>
 
 
 
@@ -136,11 +253,41 @@
 
         <h2 style="background: #806A00;" class="heading-top">📊Headboards Only📊</h2>
 <p onclick="notifySuccess()">
-<button class="button button5 headboardonly" onclick="setClipboard('£45 for the Single size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Single</button>
-<button class="button button5 headboardonly" onclick="setClipboard('£50 for the Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Double</button>
-<button class="button button5 headboardonly" onclick="setClipboard('£50 for the Small Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')"> Smal Double</button>
-<button class="button button5 headboardonly" onclick="setClipboard('£55 for the King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">King</button>
-<button class="button button5 headboardonly" onclick="setClipboard('£65 for the Super King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Super King</button>
+    <button class="button button5 headboardonly" 
+    data-text="Single"
+    data-english-sentence="£45 for the Single size Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single</button>
+  
+  <button class="button button5 headboardonly" 
+    data-text="Double"
+    data-english-sentence="£50 for the Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+   
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double</button>
+  
+  <button class="button button5 headboardonly" 
+    data-text="Small Double"
+    data-english-sentence="£50 for the Small Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double</button>
+  
+  <button class="button button5 headboardonly" 
+    data-text="King"
+    data-english-sentence="£55 for the King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King</button>
+  
+  <button class="button button5 headboardonly" 
+    data-text="Super King"
+    data-english-sentence="£65 for the Super King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+    
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King</button>
+  
 
 </p>
 
@@ -181,96 +328,201 @@
 
   
     <h2 style="background: #00640F;" class="heading-top">🚖BED WITH MATTRESS🚖⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales fullbed" onclick="setClipboard('£145 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales fullbed" onclick="setClipboard('£180 for double size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales fullbed" onclick="setClipboard('£180 for small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')"> Small Double</button>
-    <button class="button button8wales fullbed" onclick="setClipboard('£205 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales fullbed" onclick="setClipboard('£240 for super king size base and Matching Buttons headboard with  super orthopedic memory foam mattress  + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-      
-      
-    
- 
-           <h2 style="background: #570000;" class="heading-top">🛏️Base/Frame Only🛏️⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales base7" onclick="setClipboard('£115 for the single size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales base7" onclick="setClipboard('£125 for the double size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales base7" onclick="setClipboard('£125 for the small double size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')"> Smal Double</button>
-    <button class="button button8wales base7" onclick="setClipboard('£155 for the king size base and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales base7" onclick="setClipboard('£195 for the super king size base  and Matching Buttons headboard  only + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-    
-    
-    
- 
-           <h2 style="background: #740080;" class="heading-top">🥦>MATTRESS ONLY>🥦⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales mattress5" onclick="setClipboard('£95 for Single size  super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales mattress5" onclick="setClipboard('£105 for double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales mattress5" onclick="setClipboard('£105 for small double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')"> Smal Double</button>
-    <button class="button button8wales mattress5" onclick="setClipboard('£125 for king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales mattress5" onclick="setClipboard('£145 for super king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-      
-    
-    
-  
-      <h2 style="background: #3E0EAC;" class="heading-top">Beds With Mattress + 2️⃣2X DR🅰WERS⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales bed2drawer" onclick="setClipboard('£175 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales bed2drawer" onclick="setClipboard('£210 for double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales bed2drawer" onclick="setClipboard('£210 for small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 2x drawers + 1 year warranty (Cash on delivery)')">Small Double</button>
-    <button class="button button8wales bed2drawer" onclick="setClipboard('£235 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress 2x drawers + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales bed2drawer" onclick="setClipboard('£270 for super king size base and Matching Buttons headboard with  super orthopedic memory foam mattress 2x drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-    
-    
-    
-      
-       <h2 style="background: #A24500;" class="heading-top">>Beds With Mattress + 4X DRAWERS⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales bed4drawer" onclick="setClipboard('£240 for the double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales bed4drawer" onclick="setClipboard('£240 for the small double size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Small Double</button>
-    <button class="button button8wales bed4drawer" onclick="setClipboard('£265 for the king size base and Matching Buttons headboard with  super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')"> King</button>
-    <button class="button button8wales bed4drawer" onclick="setClipboard('£300 for the super king size base and Matching Buttons headboard with super orthopedic memory foam mattress with 4 x drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-    
-    
-    
-    
-    
-      
-          <h2 style="background: #004280;" class="heading-top">🛥️🛥️Base Only + 2x Drawers🛥️🛥️⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales base2draw" onclick="setClipboard('£145 for the single size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales base2draw" onclick="setClipboard('£155 for the double size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales base2draw" onclick="setClipboard('£155 for the small double size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')"> Small Double</button>
-    <button class="button button8wales base2draw" onclick="setClipboard('£185 for the king size base and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales base2draw" onclick="setClipboard('£230 for the super king size base  and Matching Buttons headboard  only with 2x Drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-    
-      
-    
-        
-          <h2 style="background: #806A00;" class="heading-top">⛱️Base Only + 4x Drawers⛱️⭐🌟 L͙D͙R͙ 🌟⭐</h2>
-    <p onclick="notifySuccess()">
-    <button class="button button8wales base4draw" onclick="setClipboard('£185 for the double size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales base4draw" onclick="setClipboard('£185 for the small double size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')"> Small Double</button>
-    <button class="button button8wales base4draw" onclick="setClipboard('£215 for the king size base and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales base4draw" onclick="setClipboard('£255 for the super king size base  and Matching Buttons headboard  only with 4x Drawers + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
-    
+     
+<p onclick="notifySuccess()">
+
    
-            <h2 style="background: #6D8300;" class="heading-top">📊Headboards Only📊⭐🌟 L͙D͙R͙ 🌟⭐</h2>
+
+  <button class="button button8wales fullbed" 
+  data-text="Single" 
+  data-english-sentence="£145 for the single size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€355 voor de eenpersoonsmaat bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€355 pour la base de taille simple et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€355 für die Einzelbettgröße mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€355 fir d'Single Gréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Single</button>
+
+<button class="button button8wales fullbed" 
+  data-text="Double"
+  data-english-sentence="£180 for double size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€375 voor tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€375 pour la base de taille double et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€375 für die Doppelbettgröße mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€375 fir d'Double Gréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Double</button>
+
+<button class="button button8wales fullbed" 
+data-text="Small Double" 
+data-english-sentence="£180 for small double size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+data-dutch-sentence="€375 voor kleine dubbele basis en Matching Buttons-hoofdeinde met superorthopedisch traagschuimmatras + 1 jaar garantie (onder rembours)"
+data-french-sentence="€375 pour une base de petite taille et une tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+data-german-sentence="€375 für die Größe Klein Doppelbett mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+data-luxembourgish-sentence="€375 fir eng kleng Doppelgréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Small Double</button>
+
+<button class="button button8wales fullbed" 
+data-text="King"
+data-english-sentence="£205 for the king size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+data-dutch-sentence="€385 voor de kingsize bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+data-french-sentence="€385 pour la base de taille roi et la tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+data-german-sentence="€385 für die Kingsize-Bettbasis mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+data-luxembourgish-sentence="€385 fir d'Kinngréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>King</button>
+
+<button class="button button8wales fullbed" 
+data-text="Super King"
+data-english-sentence="£240 for super king size base and Matching Buttons headboard with super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+data-dutch-sentence="€475 voor een zeer groot bedbodem en bijpassend Buttons hoofdbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+data-french-sentence="€475 pour une base de très grande taille et une tête de lit assortie Buttons avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+data-german-sentence="€475 für die Größe Super Kingsize-Bettbasis mit passendem Buttons-Kopfteil und super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+data-luxembourgish-sentence="€475 fir eng super Këniggréisst Matpassendem Buttons Koppteil mam super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Super King</button>
+
+</p>
+
+
+   
+
+   <h2 style="background: #570000;" class="heading-top">🛏️Base/Frame Only🛏️ ⭐🌟 L͙D͙R͙ 🌟⭐</h2>
+
+<p onclick="notifySuccess()">
+  <button class="button button8wales base7" 
+  data-text="Single" 
+  data-english-sentence="£115 for the single size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€330 voor de eenpersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€330 pour la base de taille simple et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€330 für die Einzelbettgröße mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€330 fir d'Single Gréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Single</button>
+
+<button class="button button8wales base7" 
+  data-text="Double"
+  data-english-sentence="£125 for the double size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€345 voor tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€345 pour la base de taille double et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€345 für die Doppelbettgröße mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€345 fir d'Double Gréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Double</button>
+
+<button class="button button8wales base7" 
+  data-text="Small Double"
+  data-english-sentence="£125 for the small double size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€345 voor kleine tweepersoonsmaat bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€345 pour une petite base de lit double et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€345 für die Größe Klein Doppelbett mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€345 fir kleng Doppelgréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Small Double</button>
+
+<button class="button button8wales base7" 
+  data-text="King"
+  data-english-sentence="£155 for the king size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€360 voor de kingsize bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€360 pour la base de taille roi et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€360 für die Größe Kingsize-Bettbasis mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€360 fir d'Kinngréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>King</button>
+
+<button class="button button8wales base7" 
+  data-text="Super King"
+  data-english-sentence="£195 for the super king size base and Matching Buttons headboard only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="€455 voor een zeer grote bedbodem en bijpassend Buttons hoofdbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="€455 pour une base de lit de très grande taille et la tête de lit assortie Buttons seulement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="€455 für die Größe Super Kingsize-Bettbasis mit passendem Buttons-Kopfteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="€455 fir eng super Këniggréisst Matpassendem Buttons Koppteil nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Super King</button>
+
+</p>
+
+  
+            
+
+              <h2 style="background: #740080;" class="heading-top">🥦>MATTRESS ONLY>🥦 ⭐🌟 L͙D͙R͙ 🌟⭐</h2>
+<p onclick="notifySuccess()">
+  <button class="button button8wales mattress5" 
+  data-text="Single" 
+  data-english-sentence="£95 for Single size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Single</button>
+
+<button class="button button8wales mattress5" 
+  data-text="Double"
+  data-english-sentence="£105 for double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+ 
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Double</button>
+
+<button class="button button8wales mattress5" 
+  data-text="Small Double"
+  data-english-sentence="£105 for small double size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+  
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Small Double</button>
+
+<button class="button button8wales mattress5" 
+  data-text="King"
+  data-english-sentence="£125 for king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+ 
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>King</button>
+
+<button class="button button8wales mattress5" 
+  data-text="Super King"
+  data-english-sentence="£145 for super king size super orthopedic memory foam mattress + 1 year warranty (Cash on delivery)"
+ 
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Super King</button>
+
+
+
+</p>
+
+
+
+
+
+
+      <h2 style="background: #806A00;" class="heading-top">📊Headboards Only📊 ⭐🌟 L͙D͙R͙ 🌟⭐</h2>
+      <p onclick="notifySuccess()">
+        <button class="button button8wales headboardonly" onclick="setClipboard('£65 for the Single size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Single</button>
+        <button class="button button8wales headboardonly" onclick="setClipboard('£70 for the Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Double</button>
+        <button class="button button8wales headboardonly" onclick="setClipboard('£70 for the Small Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Small Double</button>
+        <button class="button button8wales headboardonly" onclick="setClipboard('£75 for the King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">King</button>
+        <button class="button button8wales headboardonly" onclick="setClipboard('£85 for the Super King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Super King</button>
+        </p>
+
+        
+<img src="images/IRELAND.jpg"display: block; margin: 0 auto; max-width: 100%; height: auto;>
+
     
-    <p onclick="notifySuccess()">
-    <button class="button button8wales headboardonly" onclick="setClipboard('£65 for the Single size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Single</button>
-    <button class="button button8wales headboardonly" onclick="setClipboard('£70 for the Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Double</button>
-    <button class="button button8wales headboardonly" onclick="setClipboard('£70 for the Small Double size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Small Double</button>
-    <button class="button button8wales headboardonly" onclick="setClipboard('£75 for the King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">King</button>
-    <button class="button button8wales headboardonly" onclick="setClipboard('£85 for the Super King size Matching Buttons headboard only + 1 year warranty (Cash on delivery)')">Super King</button>
-    </p>
+<h2 style="background: #ce0000;" class="heading-top">BED WITH MATTRESS - IRELAND</h2>
+<p onclick="notifySuccess()">
+<button class="button button-green fullbed" onclick="setClipboard('£200 for the single size base and Cube Shape Headboard with 10 inch depth Memory Foam Mattress + 1 year warranty (Cash on delivery)')">Single</button>
+<button class="button button-green fullbed" onclick="setClipboard('£250 for double size base and Cube Shape Headboard with 10 inch depth Memory Foam Mattress + 1 year warranty (Cash on delivery)')">Double</button>
+<button class="button button-green fullbed" onclick="setClipboard('£250 for small double size base and Cube Shape Headboard with 10 inch depth Memory Foam Mattress + 1 year warranty (Cash on delivery)')">Small Double</button>
+<button class="button button-green fullbed" onclick="setClipboard('£260 for the king size base and Cube Shape Headboard with 10 inch depth Memory Foam Mattress + 1 year warranty (Cash on delivery)')">King</button>
+<button class="button button-green fullbed" onclick="setClipboard('£360 for super king size base and Cube Shape Headboard with 10 inch depth Memory Foam Mattress + 1 year warranty (Cash on delivery)')">Super King</button>
+
+
+<h2 style="background: #ce0000;" class="heading-top">Base/Frame Only - IRELAND</h2>
+
+<p onclick="notifySuccess()">
+<button class="button button-green base7" onclick="setClipboard('£150 for the single size base and Cube Shape Headboard only + 1 year warranty (Cash on delivery)')">Single</button>
+<button class="button button-green base7" onclick="setClipboard('£175 for the double size base and Cube Shape Headboard only + 1 year warranty (Cash on delivery)')">Double</button>
+<button class="button button-green base7" onclick="setClipboard('£175 for the small double size base and Cube Shape Headboard only + 1 year warranty (Cash on delivery)')">Small Double</button>
+<button class="button button-green base7" onclick="setClipboard('£185 for the king size base and Cube Shape Headboard only + 1 year warranty (Cash on delivery)')">King</button>
+<button class="button button-green base7" onclick="setClipboard('£220 for the super king size base and Cube Shape Headboard only + 1 year warranty (Cash on delivery)')">Super King</button>
+</p>
   
 <h3 style="background: #4b005e;" class="heading-top">Discover the latest updates, brought to you by Ameer Khan ©2023</h3>
 	 
@@ -292,29 +544,114 @@
 <h2 style="background: #150040;" class="heading-top">FLORIDA BED WITH MATTRESS - Local Route</h2>
 
 <p onclick="notifySuccess()">
+    <button class="button button5 bed-gn" 
+    data-text="Single F-BM"
+    data-english-sentence="£180 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£180 voor eenpersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofdbord en voetbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="180 £ pour la base de taille simple Florida/Arizona/Vivienne avec tête et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£180 für Einzelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£180 fir d'Single Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädeschem Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single F-BM</button>
+  
+  <button class="button button5 bed-gn" 
+    data-text="Double F-BM"
+    data-english-sentence="£210 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£210 voor tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofdbord en voetbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="210 £ pour la base de taille double Florida/Arizona/Vivienne avec tête et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£210 für Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£210 fir d'Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädeschem Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double F-BM</button>
+  
+  <button class="button button5 bed-gn" 
+    data-text="Small Double F-BM"
+    data-english-sentence="£210 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£210 voor kleine tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofdbord en voetbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="210 £ pour la base de taille petite double Florida/Arizona/Vivienne avec tête et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£210 für Klein Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£210 fir kleng Doppelgréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädeschem Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double F-BM</button>
+  
+  <button class="button button5 bed-gn" 
+    data-text="King F-BM"
+    data-english-sentence="£230 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£230 voor kingsize Florida/Arizona/Vivienne bedbodem met hoofdbord en voetbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="230 £ pour la base de taille king Florida/Arizona/Vivienne avec tête et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£230 für König Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£230 fir Kinneg Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädeschem Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King F-BM</button>
+  
+  <button class="button button5 bed-gn" 
+    data-text="Super King F-BM"
+    data-english-sentence="£310 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£310 voor Super Kingsize Florida/Arizona/Vivienne bedbodem met hoofdbord en voetbord met super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="310 £ pour la base de taille super king Florida/Arizona/Vivienne avec tête et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£310 für Super Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£310 fir Super King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädeschem Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King F-BM</button>
+  
 
-<button class="button button5 bed-gn" onclick="setClipboard('£180 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Single F-BM</i></button>
-
-<button class="button button5 bed-gn" onclick="setClipboard('£210 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Double F-BM</button>
-<button class="button button5 bed-gn" onclick="setClipboard('£210 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Small Double F-BM</button>
-
-<button class="button button5 bed-gn" onclick="setClipboard('£230 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">King F-BM</button>
-
-<button class="button button5 bed-gn" onclick="setClipboard('£310 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Super King F-BM</button>
 </p>
 
 
 <h2 style="background: #403600;" class="heading-top">FLORIDA BASE/Frame ONLY - Local Route</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 base-gn" onclick="setClipboard('£140 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Single B-F</button>
+    <button class="button button5 base-gn" 
+  data-text="Single B-F"
+  data-english-sentence="£140 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="£140 voor eenpersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="140 £ pour la base de taille simple Florida/Arizona/Vivienne avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="£140 für Einzelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil allein + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="£140 fir d'Single Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Single B-F</button>
 
-<button class="button button5 base-gn" onclick="setClipboard('£160 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Double B-F</button>
+<button class="button button5 base-gn" 
+  data-text="Double B-F"
+  data-english-sentence="£160 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="£160 voor tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="160 £ pour la base de taille double Florida/Arizona/Vivienne avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="£160 für Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil allein + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="£160 fir d'Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Double B-F</button>
 
-<button class="button button5 base-gn" onclick="setClipboard('£160 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Small Double B-F</button>
-<button class="button button5 base-gn" onclick="setClipboard('£180 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">King B-F</button>
+<button class="button button5 base-gn" 
+  data-text="Small Double B-F"
+  data-english-sentence="£160 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="£160 voor kleine tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="160 £ pour la base de taille petite double Florida/Arizona/Vivienne avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="£160 für Klein Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil allein + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="£160 fir kleng Doppelgréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Small Double B-F</button>
 
-<button class="button button5 base-gn" onclick="setClipboard('£230 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Super B-F</button>
+<button class="button button5 base-gn" 
+  data-text="King B-F"
+  data-english-sentence="£180 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="£180 voor kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="180 £ pour la base de taille king Florida/Arizona/Vivienne avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="£180 für König Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil allein + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="£180 fir Kinneg Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>King B-F</button>
+
+<button class="button button5 base-gn" 
+  data-text="Super B-F"
+  data-english-sentence="£230 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+  data-dutch-sentence="£230 voor Super Kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+  data-french-sentence="230 £ pour la base de taille super king Florida/Arizona/Vivienne avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+  data-german-sentence="£230 für Super Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil allein + 1 Jahr Garantie (Zahlung bei Lieferung)"
+  data-luxembourgish-sentence="£230 fir Super King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+  onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+>Super B-F</button>
+
+
 </p>
 <br><br><br>
 
@@ -325,27 +662,114 @@
 <h2 style="background: #319b00;" class="heading-top">BED WITH MATTRESS + Gaslift/Ottoman - Local Route</h2>
 
 <p onclick="notifySuccess()">
+    <button class="button button5 ottoman" 
+    data-text="Single FGM"
+    data-english-sentence="£280 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£280 voor eenpersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord met super orthopedisch traagschuimmatras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="280 £ pour la base de taille simple Florida/Arizona/Vivienne avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£280 für Einzelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£280 fir d'Single Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single FGM</button>
+  
+  <button class="button button5 ottoman" 
+    data-text="Double FGM"
+    data-english-sentence="£310 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£310 voor tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord met super orthopedisch traagschuimmatras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="310 £ pour la base de taille double Florida/Arizona/Vivienne avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£310 für Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£310 fir d'Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double FGM</button>
+  
+  <button class="button button5 ottoman" 
+    data-text="Small Double FGM"
+    data-english-sentence="£310 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£310 voor kleine tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord met super orthopedisch traagschuimmatras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="310 £ pour la base de taille petite double Florida/Arizona/Vivienne avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£310 für Klein Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£310 fir klenge Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double FGM</button>
+  
+  <button class="button button5 ottoman" 
+    data-text="King FGM"
+    data-english-sentence="£330 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£330 voor kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord met super orthopedisch traagschuimmatras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="330 £ pour la base de taille king Florida/Arizona/Vivienne avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£330 für Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£330 fir King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King FGM</button>
+  
+  <button class="button button5 ottoman" 
+    data-text="Super King FGM"
+    data-english-sentence="£410 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£410 voor Super Kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord met super orthopedisch traagschuimmatras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="410 £ pour la base de taille super king Florida/Arizona/Vivienne avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£410 für Super Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£410 fir Super King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King FGM</button>
+  
 
-<button class="button button5 ottoman" onclick="setClipboard('£280 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Single FGM</button>
-
-<button class="button button5 ottoman" onclick="setClipboard('£310 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Double FGM</button>
-<button class="button button5 ottoman" onclick="setClipboard('£310 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Small Double FGM</button>
-<button class="button button5 ottoman" onclick="setClipboard('£330 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">King FGM</button>
-
-<button class="button button5 ottoman" onclick="setClipboard('£410 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Super King FGM</button>
 </p>
 
 
 <h2 style="background: #004d96;" class="heading-top">Frame/Base Only Gaslift/Ottoman - Local Route</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 ottoman-frame" onclick="setClipboard('£240 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Single FFG</button>
+    <button class="button button5 ottoman-frame" 
+    data-text="Single FFG"
+    data-english-sentence="£240 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£240 voor eenpersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord zonder matras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="240 £ pour la base de taille simple Florida/Arizona/Vivienne avec tête de lit et pied de lit sans matelas + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£240 für Einzelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil ohne Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£240 fir d'Single Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel ouni Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single FFG</button>
+  
+  <button class="button button5 ottoman-frame" 
+    data-text="Double FFG"
+    data-english-sentence="£260 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£260 voor tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord zonder matras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="260 £ pour la base de taille double Florida/Arizona/Vivienne avec tête de lit et pied de lit sans matelas + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£260 für Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil ohne Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£260 fir d'Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel ouni Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double FFG</button>
+  
+  <button class="button button5 ottoman-frame" 
+    data-text="Small Double FFG"
+    data-english-sentence="£260 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£260 voor kleine tweepersoonsmaat Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord zonder matras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="260 £ pour la base de taille petite double Florida/Arizona/Vivienne avec tête de lit et pied de lit sans matelas + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£260 für Klein Doppelbettgröße Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil ohne Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£260 fir klenge Double Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel ouni Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double FFG</button>
+  
+  <button class="button button5 ottoman-frame" 
+    data-text="King FFG"
+    data-english-sentence="£280 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£280 voor kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord zonder matras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="280 £ pour la base de taille king Florida/Arizona/Vivienne avec tête de lit et pied de lit sans matelas + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£280 für Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil ohne Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£280 fir King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel ouni Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King FFG</button>
+  
+  <button class="button button5 ottoman-frame" 
+    data-text="Super King FFG"
+    data-english-sentence="£330 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£330 voor super kingsize Florida/Arizona/Vivienne bedbodem met hoofd- en voetbord zonder matras + Ottomaanse gaslift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="330 £ pour la base de taille super king Florida/Arizona/Vivienne avec tête de lit et pied de lit sans matelas + Ottomane à gaz + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£330 für Super Kingsize Florida/Arizona/Vivienne Basis mit Kopf- und Fußteil ohne Matratze + Ottoman Gaslift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£330 fir Super King Gréisst Florida/Arizona/Vivienne Basis mat Koppt- an Fousendeel ouni Matratz + Ottomanesch Gaslift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King FFG</button>
+  
 
-<button class="button button5 ottoman-frame" onclick="setClipboard('£260 for Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Double FFG</i></button>
-<button class="button button5 ottoman-frame" onclick="setClipboard('£260 for Small Double size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Small Double FFG</i></button>
-<button class="button button5 ottoman-frame" onclick="setClipboard('£280 for King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">King FFG</button>
-
-<button class="button button5 ottoman-frame" onclick="setClipboard('£330 for Super King size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Super King FFG</i></button>
 </p>
 
 
@@ -418,7 +842,7 @@
 
 
 
-<h2 style="background: #6b003e;" class="heading-top">Frame/Base Only Gaslift/Ottoman - Local Route</h2>
+<h2 style="background: #6b003e;" class="heading-top">Frame/Base Only Gaslift/Ottoman - LDR</h2>
 
 <p onclick="notifySuccess()">
 <button class="button button8wales ottoman-frame" onclick="setClipboard('£260 for single size Florida/Arizona/Vivienne Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Single FFG</button>
@@ -451,26 +875,113 @@
 <h2 style="background: #004029;" class="heading-top">SLEIGH BED WITH MATTRESS</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 b-border" onclick="setClipboard('£230 for Single size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Single S-B<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£260 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Double S-B<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£260 for Small Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Small Double S-B<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£280 for King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">King S-B<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£360 for Super King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)')">Super King S-B<i class="fa fa-copy fa-pull-right"></i></button>
+    <button class="button button5 b-border"
+    data-text="Single S-B"
+    data-english-sentence="£230 for Single size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£230 voor eenpersoonsmaat SLEIGH bedbodem met hoofd- en voetbord en super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="230 £ pour la base de taille simple SLEIGH avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£230 für Einzelbettgröße SLEIGH Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£230 fir d'Single Gréisst SLEIGH Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single S-B<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Double S-B"
+    data-english-sentence="£260 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£260 voor tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord en super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="260 £ pour la base de taille double SLEIGH avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£260 für Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£260 fir d'Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double S-B<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Small Double S-B"
+    data-english-sentence="£260 for Small Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£260 voor kleine tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord en super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="260 £ pour la base de taille petite double SLEIGH avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£260 für Klein Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£260 fir klenge Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double S-B<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="King S-B"
+    data-english-sentence="£280 for King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£280 voor kingsize SLEIGH bedbodem met hoofd- en voetbord en super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="280 £ pour la base de taille king SLEIGH avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£280 für Kingsize SLEIGH Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£280 fir King Gréisst SLEIGH Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King S-B<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Super King S-B"
+    data-english-sentence="£360 for Super King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£360 voor super kingsize SLEIGH bedbodem met hoofd- en voetbord en super orthopedisch traagschuimmatras + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="360 £ pour la base de taille super king SLEIGH avec tête de lit et pied de lit avec matelas super orthopédique en mousse à mémoire de forme + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£360 für Super Kingsize SLEIGH Basis mit Kopf- und Fußteil mit super orthopädischer Memory-Foam-Matratze + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£360 fir Super King Gréisst SLEIGH Basis mat Koppt- an Fousendeel mat super orthopädesche Memory-Foam-Matratz + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King S-B<i class="fa fa-copy fa-pull-right"></i></button>
+  
 </p>
 
 
 <h2 style="background: #004029;" class="heading-top">Frame/Base Only</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 b-border" onclick="setClipboard('£180 for single size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Single F-S<i class="fa fa-copy fa-pull-right"></i></button>
+    <button class="button button5 b-border"
+    data-text="Single F-S"
+    data-english-sentence="£180 for single size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£180 voor eenpersoonsmaat SLEIGH bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="180 £ pour la base de taille simple SLEIGH avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£180 für Einzelbettgröße SLEIGH Basis mit Kopf- und Fußteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£180 fir d'Single Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single F-S<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Double F-S"
+    data-english-sentence="£210 for Double size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£210 voor tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="210 £ pour la base de taille double SLEIGH avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£210 für Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£210 fir d'Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double F-S<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Small Double F-S"
+    data-english-sentence="£210 for Double size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£210 voor kleine tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="210 £ pour la base de taille petite double SLEIGH avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£210 für Klein Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£210 fir klenge Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double F-S<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="King SF-S"
+    data-english-sentence="£230 for King size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£230 voor kingsize SLEIGH bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="230 £ pour la base de taille king SLEIGH avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£230 für Kingsize SLEIGH Basis mit Kopf- und Fußteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£230 fir King Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King SF-S<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Super King F-S"
+    data-english-sentence="£280 for Super King size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£280 voor super kingsize SLEIGH bedbodem met hoofd- en voetbord alleen + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="280 £ pour la base de taille super king SLEIGH avec tête de lit et pied de lit uniquement + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£280 für Super Kingsize SLEIGH Basis mit Kopf- und Fußteil nur + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£280 fir Super King Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King F-S<i class="fa fa-copy fa-pull-right"></i></button>
+  
 
-<button class="button button5 b-border" onclick="setClipboard('£210 for Double size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Double F-S<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£210 for Double size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Small Double F-S<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£230 for King size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">King SF-S<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£280 for Super King size SLEIGH Base with Headboard and Footboard Only + 1 year warranty (Cash on delivery)')">Super King F-S<i class="fa fa-copy fa-pull-right"></i></button>
 </p>
   
   
@@ -480,26 +991,113 @@
 <h2 style="background: #001b75;" class="heading-top">BEDS WITH MATTRESS + Ottoman/Gaslift</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 b-border" onclick="setClipboard('£330 for Single size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Single Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£360 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Double Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£360 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Small Double<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£380 for King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">King Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£460 for Super King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Gas Lift + 1 year warranty (Cash on delivery)')">Super King Otmn<i class="fa fa-copy fa-pull-right"></i></button>
+    <button class="button button5 b-border"
+    data-text="Single Ottoman"
+    data-english-sentence="£330 for Single size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£330 voor eenpersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, super orthopedisch traagschuimmatras en Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="330 £ pour la base de taille simple SLEIGH avec tête de lit et pied de lit, matelas super orthopédique en mousse à mémoire de forme et Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£330 für Einzelbettgröße SLEIGH Basis mit Kopf- und Fußteil, super orthopädischer Memory-Foam-Matratze und Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£330 fir d'Single Gréisst SLEIGH Basis mat Koppt- an Fousendeel, super orthopädesche Memory-Foam-Matratz an Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Double Ottoman"
+    data-english-sentence="£360 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£360 voor tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, super orthopedisch traagschuimmatras en Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="360 £ pour la base de taille double SLEIGH avec tête de lit et pied de lit, matelas super orthopédique en mousse à mémoire de forme et Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£360 für Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil, super orthopädischer Memory-Foam-Matratze und Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£360 fir d'Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel, super orthopädesche Memory-Foam-Matratz an Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Small Double Ottoman"
+    data-english-sentence="£360 for Double size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£360 voor kleine tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, super orthopedisch traagschuimmatras en Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="360 £ pour la base de taille petite double SLEIGH avec tête de lit et pied de lit, matelas super orthopédique en mousse à mémoire de forme et Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£360 für Klein Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil, super orthopädischer Memory-Foam-Matratze und Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£360 fir klenge Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel, super orthopädesche Memory-Foam-Matratz an Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="King Ottoman"
+    data-english-sentence="£380 for King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£380 voor kingsize SLEIGH bedbodem met hoofd- en voetbord, super orthopedisch traagschuimmatras en Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="380 £ pour la base de taille king SLEIGH avec tête de lit et pied de lit, matelas super orthopédique en mousse à mémoire de forme et Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£380 für Kingbettgröße SLEIGH Basis mit Kopf- und Fußteil, super orthopädischer Memory-Foam-Matratze und Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£380 fir King Gréisst SLEIGH Basis mat Koppt- an Fousendeel, super orthopädesche Memory-Foam-Matratz an Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King Ottoman<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Super King Otmn"
+    data-english-sentence="£460 for Super King size SLEIGH Base with Headboard and Footboard with super orthopedic memory foam Mattress + Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£460 voor super kingsize SLEIGH bedbodem met hoofd- en voetbord, super orthopedisch traagschuimmatras en Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="460 £ pour la base de taille super king SLEIGH avec tête de lit et pied de lit, matelas super orthopédique en mousse à mémoire de forme et Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£460 für Super King Größe SLEIGH Basis mit Kopf- und Fußteil, super orthopädischer Memory-Foam-Matratze und Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£460 fir Super King Gréisst SLEIGH Basis mat Koppt- an Fousendeel, super orthopädesche Memory-Foam-Matratz an Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King Otmn<i class="fa fa-copy fa-pull-right"></i></button>
+  
 </p>
 
 
 <h2 style="background: #001b75;" class="heading-top">Frame/Base Only - Ottoman/Gaslift</h2>
 
 <p onclick="notifySuccess()">
-<button class="button button5 b-border" onclick="setClipboard('£280 for single size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Single F+O<i class="fa fa-copy fa-pull-right"></i></button>
 
-<button class="button button5 b-border" onclick="setClipboard('£310 for Double size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Double F+O<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£310 for Double size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Small Double O<i class="fa fa-copy fa-pull-right"></i></button>
-<button class="button button5 b-border" onclick="setClipboard('£330 for King size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">King F+O<i class="fa fa-copy fa-pull-right"></i></button>
-
-<button class="button button5 b-border" onclick="setClipboard('£380 for Super King size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)')">Super King F+O<i class="fa fa-copy fa-pull-right"></i></button>
+    <button class="button button5 b-border"
+    data-text="Single F+O"
+    data-english-sentence="£280 for single size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£280 voor eenpersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, alleen Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="280 £ pour la base de taille simple SLEIGH avec tête de lit et pied de lit seulement + Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£280 für Einzelbettgröße SLEIGH Basis mit Kopf- und Fußteil, nur Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£280 fir d'Single Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Single F+O<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Double F+O"
+    data-english-sentence="£310 for Double size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£310 voor tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, alleen Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="310 £ pour la base de taille double SLEIGH avec tête de lit et pied de lit seulement + Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£310 für Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil, nur Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£310 fir d'Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Double F+O<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Small Double O"
+    data-english-sentence="£310 for Double size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£310 voor kleine tweepersoonsmaat SLEIGH bedbodem met hoofd- en voetbord, alleen Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="310 £ pour la base de taille petite double SLEIGH avec tête de lit et pied de lit seulement + Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£310 für Klein Doppelbettgröße SLEIGH Basis mit Kopf- und Fußteil, nur Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£310 fir klenge Double Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Small Double O<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="King F+O"
+    data-english-sentence="£330 for King size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£330 voor kingsize SLEIGH bedbodem met hoofd- en voetbord, alleen Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="330 £ pour la base de taille king SLEIGH avec tête de lit et pied de lit seulement + Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£330 für Kingbettgröße SLEIGH Basis mit Kopf- und Fußteil, nur Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£330 fir King Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >King F+O<i class="fa fa-copy fa-pull-right"></i></button>
+  
+  <button class="button button5 b-border"
+    data-text="Super King F+O"
+    data-english-sentence="£380 for Super King size SLEIGH Base with Headboard and Footboard Only + Ottoman Gas Lift + 1 year warranty (Cash on delivery)"
+    data-dutch-sentence="£380 voor super kingsize SLEIGH bedbodem met hoofd- en voetbord, alleen Ottoman Gas Lift + 1 jaar garantie (Betalen bij levering)"
+    data-french-sentence="380 £ pour la base de taille super king SLEIGH avec tête de lit et pied de lit seulement + Ottoman Gas Lift + garantie d'un an (Paiement à la livraison)"
+    data-german-sentence="£380 für Super King Größe SLEIGH Basis mit Kopf- und Fußteil, nur Ottoman Gas Lift + 1 Jahr Garantie (Zahlung bei Lieferung)"
+    data-luxembourgish-sentence="£380 fir Super King Gréisst SLEIGH Basis mat Koppt- an Fousendeel nëmmen + Ottoman Gas Lift + 1 Joer Garantie (Bezuelung bei der Liwwerung)"
+    onclick="setClipboard(this.getAttribute('data-' + document.getElementById('language').value + '-sentence'))"
+  >Super King F+O<i class="fa fa-copy fa-pull-right"></i></button>
+  
 </p>
 
 
@@ -919,33 +1517,78 @@ In Stock: Dak Grey Leather, Black Leather
 
 
 
-
 <div id="preloader-wrapper">
-    <div class="container-preloader">
-      <div class="preloader">
-        <div id="loading">SCANNED</div>
-        <div class="progress-1"></div>
-        <div id="additional-info"> <p class="center"><strong>Notice:</strong> By using this site, we may access your camera and collect your IP address and other information for security and user experience purposes.</p>
-            <p class="center">Ameer Khan +44 7451 214631</p></div>
-        
-      </div>
+  <div class="container-preloader">
+    <div class="preloader">
+      <div id="loading">SCANNED</div>
+      <div class="progress-1"></div>
+      <div id="additional-info"> <p class="center"><strong>Notice:</strong> By using this site, we may access your camera and collect your IP address and other information for security and user experience purposes.</p>
+          <p class="center">Ameer Khan +44 7451 214631</p></div>
+      
     </div>
   </div>
+</div>
 
-  <link rel="stylesheet" href="css/sofa.css">
-  <script src="js/copy.js"></script>
-  <script src="js/sofa.js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        
-        <script src="js/canva-source.js"></script>
-        <script src="js/top-menu.js"></script>
-        <link rel="stylesheet" href="css/kb-source.css">
-        <link rel="stylesheet" href="css/price-buttons.css">
-         <link rel="stylesheet" href="css/preloader.css">
-            <script src="js/preloader.js"></script>
-        <div id="notification-area">
-        </div>
+<link rel="stylesheet" href="css/sofa.css">
+<script src="js/copy.js"></script>
+<script src="js/sofa.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
+      <script src="js/canva-source.js"></script>
+      <script src="js/top-menu.js"></script>
+      <link rel="stylesheet" href="css/kb-source.css">
+      <link rel="stylesheet" href="css/price-buttons.css">
+       <link rel="stylesheet" href="css/preloader.css">
+          <script src="js/preloader.js"></script>
+      <div id="notification-area">
+      </div>
+
+        <script>
+  // Function to set the clipboard text based on the selected language
+  function setClipboardText(text) {
+    const selectedLanguage = document.getElementById('language').value;
+    const textToCopy = text.getAttribute('data-' + selectedLanguage + '-sentence');
+    if (textToCopy) {
+      setClipboard(textToCopy); // Use the setClipboard function
+    }
+  }
+
+  // Add click event listeners to the buttons
+  document.querySelectorAll('.button').forEach(button => {
+    button.addEventListener('click', function () {
+      setClipboardText(this);
+    });
+  });
+
+  // Function to copy text to the clipboard
+  function setClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+  }
+
+// Get the select element and set its value based on the saved value in localStorage
+const languageSelect = document.getElementById("language");
+const savedLanguage = localStorage.getItem("selectedLanguage");
+if (savedLanguage) {
+  languageSelect.value = savedLanguage;
+}
+
+// Add change event listener to the select element to save the selected value in localStorage
+languageSelect.addEventListener('change', function () {
+  const selectedLanguage = this.value;
+  localStorage.setItem("selectedLanguage", selectedLanguage);
+});
+
+
+</script>
+
 
     </body>
 
@@ -964,4 +1607,11 @@ In Stock: Dak Grey Leather, Black Leather
      }
    });
    </script>
+
+
+
+
+
+   
+
     </html>
