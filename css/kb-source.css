@@ -56,13 +56,13 @@
 
 .containereu {
  
-  margin: -15px auto;
+  margin: 15px auto;
   max-width: 1150px;
   }
 
 .container {
  
-margin: 25px auto;
+margin: 15px auto;
 max-width: 1150px;
 }
 body, .main-wrapper {background-color: #121212; user-select: none; font-family: Arial, sans-serif;}

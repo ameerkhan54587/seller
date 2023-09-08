@@ -60,14 +60,14 @@ var alphabet = [
         container.style.display = "block"; // Show the website content
       }, 500); // Fade out time
     } else {
-      setTimeout(hidePreloader, 3000 - elapsedTime);
+      setTimeout(hidePreloader, 1000 - elapsedTime);
     }
   }
   
   window.addEventListener("load", function() {
     document.body.style.overflow = "hidden"; // Hide body overflow
     write();
-    setTimeout(inc, 3000); // Delay the completion of the animation after 3 seconds
+    setTimeout(inc, 1000); // Delay the completion of the animation after 3 seconds
     hidePreloader(); // Start hiding the preloader after 3 seconds
   });
   
