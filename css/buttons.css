@@ -6,19 +6,18 @@
     padding: 6px 32px;
     text-align: left;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 2.1px 2px;
     transition: outline-offset 200ms ease;
     cursor: pointer;
     color: white;
     border: 1.5px solid #555555;
   }
   
-    .button:hover,
-    .button:focus{
-    outline: var(--outline);
-    outline-offset: -6px;
-      color: white;
-    
+  .button:hover,
+  .button:focus {
+    outline: 2px solid white; 
+    outline-offset: -4px; 
+    color: rgb(255, 18, 18);
   }
   
   
