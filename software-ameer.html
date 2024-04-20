@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            margin-top: 20vh;
+        }
+        .credits {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+        .note {
+            font-size: 18px;
+            color: #ff0000;
+        }
+        .small-note {
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="credits" class="credits"></div>
+        <div id="note" class="note"></div>
+        <div id="small-note" class="small-note"></div>
+    </div>
+
+    <script>
+        var creditsText = "All credits of this software go to Ameer Khan";
+        var noteText = "Don't copy my software if you one father child";
+        var smallNoteText = "Please respect the integrity of this software by refraining from unauthorized duplication or reproduction. Remember, innovation flourishes through originality, not imitation.";
+
+        document.getElementById("credits").innerText = creditsText;
+        document.getElementById("note").innerText = noteText;
+        document.getElementById("small-note").innerText = smallNoteText;
+    </script>
+</body>
+</html>
