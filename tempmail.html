@@ -110,7 +110,7 @@
     </style>
 </head>
 <body>
-    <h1>Temporary Email Generator</h1>
+    <h1>Temp Data by Ameer Khan</h1>
     <div id="createBox">
         <div class="container">
             <div class="input-container">
@@ -285,7 +285,7 @@ $("#generateBtn").click(function(){
             function generateCustomEmail(emailInput, selectedDomain) {
                 if (selectedDomain) {
                     email = emailInput + "@" + selectedDomain;
-                    $("#generatedEmail").html('<p>Your temporary email address is: <strong>' + email + '</strong> <button class="copy-button" data-copy="' + email + '">Copy</button></p>');
+                    $("#generatedEmail").html('<p><strong>' + email + '</strong> <button class="copy-button" data-copy="' + email + '">Copy</button></p>');
                     addEmailToHistory(email);
                     saveGeneratedData('email', email);
                     getInbox();
@@ -364,7 +364,7 @@ $("#generateBtn").click(function(){
                     });
 
                     emailListItem.click(function() {
-                        $("#generatedEmail").html('<p>Your temporary email address is: <strong>' + email + '</strong></p>');
+                        $("#generatedEmail").html('<p><strong>' + email + '</strong></p>');
                         getInbox();
                     });
 
@@ -391,7 +391,7 @@ $("#generateBtn").click(function(){
                     });
 
                     emailListItem.click(function() {
-                        $("#generatedEmail").html('<p>Your temporary email address is: <strong>' + email + '</strong></p>');
+                        $("#generatedEmail").html('<p><strong>' + email + '</strong></p>');
                         getInbox();
                     });
 
@@ -407,7 +407,7 @@ $("#generateBtn").click(function(){
             function loadGeneratedData() {
                 if (generatedData.email) {
                     email = generatedData.email;
-                    $("#generatedEmail").html('<p>Your temporary email address is: <strong>' + generatedData.email + '</strong> <button class="copy-button" data-copy="' + generatedData.email + '">Copy</button></p>');
+                    $("#generatedEmail").html('<p><strong>' + generatedData.email + '</strong> <button class="copy-button" data-copy="' + generatedData.email + '">Copy</button></p>');
                     getInbox();
                 }
                 if (generatedData.randomNumber) {
