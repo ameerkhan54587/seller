@@ -1,3 +1,20 @@
+import tkinter as tk
+from tkinter import Label, Entry, Button, Text, Scrollbar, messagebox, filedialog, END, Checkbutton
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains  # Import this
+from selenium.webdriver.chrome.service import Service as ChromeService
+import firebase_admin
+from firebase_admin import credentials, auth
+import time
+import random
+import json
+import requests
+
 def run_facebook_automation():
     save_user_data()
 
