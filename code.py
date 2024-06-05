@@ -1,4 +1,4 @@
-
+def run_facebook_automation():
     save_user_data()
 
     # Configuring Chrome options
@@ -418,4 +418,3 @@
     
     messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
     driver.quit()
-
