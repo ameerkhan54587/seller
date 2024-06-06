@@ -7,10 +7,10 @@ def run_facebook_automation():
     chrome_options.add_argument("--no-first-run")
 
     # Specifying the path to chromedriver
-    chromedriver_path = 'C:\\chromedriver.exe'
+    chromedriver_path = os.path.join(os.getcwd(), 'chromedriver-win32', 'chromedriver.exe')
 
     # Creating a Chrome service
-    service = webdriver.ChromeService(executable_path=chromedriver_path)
+    service = ChromeService(executable_path=chromedriver_path)
 
     # Initializing the Chrome driver
     driver = webdriver.Chrome(service=service, options=chrome_options)
