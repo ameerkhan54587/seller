@@ -127,8 +127,8 @@ def run_facebook_automation():
 
 
         try:
-            more_details_elem = driver.find_element(By.XPATH, '//span[contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "more details")]')
-            driver.execute_script("arguments[0].click();", more_details_elem)
+            more_details_button = driver.find_element(By.XPATH, '//span[text()="More details"]')
+            ActionChains(driver).move_to_element(more_details_button).click().perform()
             print("Clicked on 'More details'")
         except NoSuchElementException:
             print("Element 'More details' not found. Skipping the click action.")        
@@ -210,8 +210,9 @@ def run_facebook_automation():
         description = description_entry.get("1.0", "end-1c")  # Retrieve description text from GUI
         try:
             description_field = WebDriverWait(driver, 5).until(
-                EC.visibility_of_element_located((By.XPATH, '//span[text()="Description"]/following::textarea[1]'))
+                EC.visibility_of_element_located((By.XPATH, '//label[@aria-label="Description"]//textarea'))
             )
+            description_element.clear()
             description_field.send_keys(description)
         except TimeoutException:
             print("Description field not found. Skipping the process.")
