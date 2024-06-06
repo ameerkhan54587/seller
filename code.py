@@ -1,4 +1,4 @@
-# New: 5:47 pm Thursday, 6 June 2024
+# New: 6:19 pm Thursday, 6 June 2024
 
 # Previous: 5:47 pm Thursday, 6 June 2024
 
@@ -212,7 +212,7 @@ def run_facebook_automation():
             description_field = WebDriverWait(driver, 5).until(
                 EC.visibility_of_element_located((By.XPATH, '//label[@aria-label="Description"]//textarea'))
             )
-            description_element.clear()
+            description_field.clear()
             description_field.send_keys(description)
         except TimeoutException:
             print("Description field not found. Skipping the process.")
