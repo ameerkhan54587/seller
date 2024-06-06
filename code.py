@@ -206,7 +206,7 @@ def run_facebook_automation():
         description = description_entry.get("1.0", "end-1c")  # Retrieve description text from GUI
         try:
             description_field = WebDriverWait(driver, 5).until(
-                EC.visibility_of_element_located((By.XPATH, '//span[text()="Description"]//following-sibling::textarea'))
+                EC.visibility_of_element_located((By.XPATH, '//span[text()="Description"]/following::textarea[1]'))
             )
             description_field.send_keys(description)
         except TimeoutException:
