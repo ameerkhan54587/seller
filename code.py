@@ -1,5 +1,4 @@
-# New: 9:27 pm Thursday, 6 June 2024
-
+# New: 9:32 pm Thursday, 6 June 2024
 # Previous: 5:47 pm Thursday, 6 June 2024
 
 def run_facebook_automation():
@@ -8,9 +7,6 @@ def run_facebook_automation():
     # Update button state and UI
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
     root.update_idletasks()
-
-    perform_long_running_task()
-    task_completed()
 
     # Configuring Chrome options
     chrome_options = webdriver.ChromeOptions()
