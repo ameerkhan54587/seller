@@ -9,6 +9,9 @@ def run_facebook_automation():
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
     root.update_idletasks()
 
+    perform_long_running_task()
+    task_completed()
+
     # Configuring Chrome options
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
