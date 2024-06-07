@@ -3,13 +3,10 @@
 
 def run_facebook_automation():
     save_user_data()
-
-    # Update button state and UI
+    
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
     root.update_idletasks()
-    
-    perform_long_running_task()
-     task_completed()
+    root.after(1000, task_completed)
 
     # Configuring Chrome options
     chrome_options = webdriver.ChromeOptions()
