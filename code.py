@@ -1,4 +1,4 @@
-# New: 9:37 pm Thursday, 7 June 2024
+# New: 5:59 pm Thursday, 7 June 2024
 # Previous: 5:47 pm Thursday, 6 June 2024
 
 def run_facebook_automation():
@@ -29,7 +29,7 @@ def run_facebook_automation():
     cookies_str = cookie_entry.get("1.0", "end-1c")
 
     if selected_option == "Normal Facebook":
-        driver.get("https://ameerkhan54587.github.io/seller/software-ameer.html")
+        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
         time.sleep(1)
         driver.get("https://www.facebook.com/login/")
         email_elem = driver.find_element(By.ID, "email")
@@ -40,7 +40,7 @@ def run_facebook_automation():
         login_button_elem.click()
   
     elif selected_option == "Opera Facebook":
-        driver.get("https://ameerkhan54587.github.io/seller/software-ameer.html")
+        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
         time.sleep(1)
         driver.get("https://www.facebook.com/login.php?skip_api_login=1&api_key=449838951736891&kid_directed_site=0&app_id=449838951736891&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.12%2Fdialog%2Foauth%3Fresponse_type%3Dcode%26client_id%3D449838951736891%26redirect_uri%3Dhttps%253A%252F%252Fauth.opera.com%252Faccount%252Fsocial%252Fv4%252Fcallback%26scope%3Demail%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%26ret%3Dlogin%26fbapp_pres%3D0%26logger_id%3Db3aa3710-abfa-4798-b8ad-8e7d1eccc96c%26tp%3Dunspecified&cancel_url=https%3A%2F%2Fauth.opera.com%2Faccount%2Fsocial%2Fv4%2Fcallback%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%23_%3D_&display=page&locale=en_GB&pl_dbl=0")
         email_elem = driver.find_element(By.ID, "email")
@@ -51,7 +51,7 @@ def run_facebook_automation():
         login_button_elem.click()
    
     elif selected_option == "Cookies Access Token":
-        driver.get("https://ameerkhan54587.github.io/seller/software-ameer.html")
+        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
         time.sleep(1)
         driver.get("https://www.facebook.com")
 
