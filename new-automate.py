@@ -28,40 +28,68 @@ def fill_form(driver, item_title, image_path, price, description, location):
         title_elem = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, '//span[text()="Title"]//following-sibling::input'))
         )
+        title_elem.send_keys(item_title)
+    except TimeoutException:
+        print("Title element not found.")
+
+    try:
         price_elem = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, '//span[text()="Price"]//following-sibling::input'))
         )
-        title_elem.send_keys(item_title)
         price_elem.send_keys(price)
-        
-        if image_path:
+    except TimeoutException:
+        print("Price element not found.")
+
+    if image_path:
+        try:
             image_input = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.XPATH, "//input[@type='file']"))
             )
             image_input.send_keys(image_path)
-        
-        more_details_button = driver.find_element(By.XPATH, '//span[text()="More details"]')
+        except TimeoutException:
+            print("Image input element not found.")
+
+    try:
+        more_details_button = WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[text()="More details"]'))
+        )
         ActionChains(driver).move_to_element(more_details_button).click().perform()
-        
-        category_parent_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Category")]')
+    except TimeoutException:
+        print("More details button not found.")
+
+    try:
+        category_parent_elem = WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Category")]'))
+        )
         driver.execute_script("arguments[0].click();", category_parent_elem)
         WebDriverWait(driver, 2).until(
             EC.presence_of_element_located((By.XPATH, '//div[@class="x8aayfw"]/span[text()="Furniture"]'))
         ).click()
-        
-        condition_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Condition")]')
+    except TimeoutException:
+        print("Category selection not found.")
+
+    try:
+        condition_elem = WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Condition")]'))
+        )
         driver.execute_script("arguments[0].click();", condition_elem)
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, '//div[@class="x6s0dn4 x78zum5 x1q0g3np x1iyjqo2 x1qughib xeuugli"][//span[text()="New"]]'))
         ).click()
-        
+    except TimeoutException:
+        print("Condition selection not found.")
+
+    try:
         description_field = WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located((By.XPATH, '//label[@aria-label="Description"]//textarea'))
         )
         description_field.clear()
         description_field.send_keys(description)
-        
-        location_elem = WebDriverWait(driver, 8).until(
+    except TimeoutException:
+        print("Description field not found.")
+
+    try:
+        location_elem = WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located((By.XPATH, '//span[text()="Location"]//following-sibling::input'))
         )
         location_elem.click()
@@ -71,23 +99,24 @@ def fill_form(driver, item_title, image_path, price, description, location):
         WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
         ).click()
-        
-        next_button = WebDriverWait(driver, 10).until(
+    except TimeoutException:
+        print("Location element not found.")
+
+    try:
+        next_button = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Next")]'))
         )
         driver.execute_script("arguments[0].click();", next_button)
-        
-        publish_button = WebDriverWait(driver, 10).until(
+    except TimeoutException:
+        print("Next button not found.")
+
+    try:
+        publish_button = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Publish")]'))
         )
         driver.execute_script("arguments[0].click();", publish_button)
-        
-    except TimeoutException as e:
-        print(f"TimeoutException: {str(e)}")
-    except NoSuchElementException as e:
-        print(f"NoSuchElementException: {str(e)}")
-    except ElementClickInterceptedException as e:
-        print(f"ElementClickInterceptedException: {str(e)}")
+    except TimeoutException:
+        print("Publish button not found.")
 
 def run_facebook_automation():
     save_user_data()
