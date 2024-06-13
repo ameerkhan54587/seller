@@ -1,4 +1,4 @@
-# New: 5:59 pm Thursday, 7 June 2024
+# New: 12:23 am Thursday, 14 June 2024
 # Previous: 5:47 pm Thursday, 6 June 2024
 
 def run_facebook_automation():
@@ -155,10 +155,11 @@ def run_facebook_automation():
         # Select the category from the dropdown menu
 
         try:
-            element = WebDriverWait(driver, 2).until(
+            element = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.XPATH, '//div[@class="x8aayfw"]/span[text()="Furniture"]'))
             )
-            element.click()
+            driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            driver.execute_script("arguments[0].click();", element)
         except TimeoutException:
             print("Furniture option not found. Skipping the process.")
             try:
@@ -245,18 +246,12 @@ def run_facebook_automation():
                     EC.element_to_be_clickable((By.XPATH, '//span[contains(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"list as in stock")]'))
                 )
                 print("List as In Stocks' found")
+                driver.execute_script("arguments[0].scrollIntoView(true);", in_stock_option)
+                driver.execute_script("arguments[0].click();", in_stock_option)
+                print("List as In Stocks' Click first")
             except TimeoutException:
                 print("Element 'List as In Stocks' not found. Skipping the process.")
 
-            if in_stock_option is not None:
-                try:
-                    driver.execute_script("arguments[0].scrollIntoView(true);", in_stock_option)
-                    overlay_present = driver.find_elements(By.CSS_SELECTOR, 'div.overlay-class')
-                    if overlay_present:
-                        WebDriverWait(driver, 5).until_not(EC.invisibility_of_element_located((By.CSS_SELECTOR, 'div.overlay-class')))
-                    in_stock_option.click()
-                except ElementClickInterceptedException:
-                    print("List as In Stock is not clickable. Skipping click action.")
 
                 
             
