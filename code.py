@@ -1,4 +1,4 @@
-# New: 7:56 am Thursday, 16 June 2024
+# New: 3:35 am Thursday, 17 June 2024
 
 
 def run_facebook_automation():
@@ -12,6 +12,17 @@ def run_facebook_automation():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--disable-autofill")
+    chrome_options.add_argument("--enable-resource-prefetching")
+    chrome_options.add_argument("--disable-popup-blocking")
+    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--disable-web-security")
+    chrome_options.add_argument("--no-default-browser-check")
+    chrome_options.add_argument("--disable-speech-api")
+    chrome_options.add_argument("--disable-hang-monitor")
+    chrome_options.add_argument("--disable-client-side-phishing-detection")
+    chrome_options.add_argument("--disable-sync") 
 
     # Specifying the path to chromedriver
     chromedriver_path = os.path.join(os.getcwd(), 'chromedriver-win32', 'chromedriver.exe')
@@ -187,24 +198,31 @@ def run_facebook_automation():
         # Select the condition from the dropdown menu
 
         try:
-            condition_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Condition")]')
+            condition_elem = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Condition")]'))
+            )
             driver.execute_script("arguments[0].click();", condition_elem)
+           
         except TimeoutException:
             print("Condition button not found. Skipping other processes.")
 
         actions = ActionChains(driver)
-        actions.move_to_element(condition_elem)
-        actions.perform()
+        actions.move_to_element(condition_elem).perform()
+ 
 
         try:
             element = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//div[@class="x6s0dn4 x78zum5 x1q0g3np x1iyjqo2 x1qughib xeuugli"][//span[text()="New"]]'))
             )
             print("New button find")
-            element.click()
+            WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, '//div[@class="x6s0dn4 x78zum5 x1q0g3np x1iyjqo2 x1qughib xeuugli"]//span[text()="New"]'))
+            ).click()
             print("New button Clicked")
         except TimeoutException:
             print("New button not found. Skipping other processes.")
+        except NoSuchElementException:
+            print("New button element does not exist. Skipping other processes.")
   
         
         
