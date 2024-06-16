@@ -1,5 +1,5 @@
-# New: 12:23 am Thursday, 14 June 2024
-# Previous: 5:47 pm Thursday, 6 June 2024
+# New: 7:56 am Thursday, 16 June 2024
+
 
 def run_facebook_automation():
     save_user_data()
@@ -155,7 +155,7 @@ def run_facebook_automation():
         # Select the category from the dropdown menu
 
         try:
-            element = WebDriverWait(driver, 5).until(
+            element = WebDriverWait(driver, 2).until(
                 EC.presence_of_element_located((By.XPATH, '//div[@class="x8aayfw"]/span[text()="Furniture"]'))
             )
             driver.execute_script("arguments[0].scrollIntoView(true);", element)
@@ -224,23 +224,22 @@ def run_facebook_automation():
         
 
         if availability_checkbox_state.get():
-    # Perform availability-related tasks
+        # Perform availability-related tasks
             try:
                 availability_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Availability")]')
             except NoSuchElementException:
-                availability_elem = find_element_with_similar_xpath(driver, [
-                    '//div[contains(@aria-label, "Availability")]',
-                    '//span[contains(text(),"Availability")]'
-                ])
+                print("Availability element not found. Skipping availability-related tasks.")
+                availability_elem = None
+                   
 
-            if availability_elem is not None:
+            if availability_elem:
                 driver.execute_script("arguments[0].click();", availability_elem)
 
-            actions = ActionChains(driver)
-            actions.move_to_element(availability_elem)
-            actions.perform()
+                actions = ActionChains(driver)
+                actions.move_to_element(availability_elem).perform()
+         
 
-            in_stock_option = None
+         
             try:
                 in_stock_option = WebDriverWait(driver, 5).until(
                     EC.element_to_be_clickable((By.XPATH, '//span[contains(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"list as in stock")]'))
@@ -251,7 +250,8 @@ def run_facebook_automation():
                 print("List as In Stocks' Click first")
             except TimeoutException:
                 print("Element 'List as In Stocks' not found. Skipping the process.")
-
+       
+            
 
                 
             
