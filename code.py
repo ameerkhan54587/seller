@@ -1,3 +1,5 @@
+# 1:51am 18 june
+
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
@@ -221,59 +223,70 @@ def set_location(driver, location):
         '//input[contains(@aria-label, "Location")]',
         '//input[@name="location"]'
     ]
+    
+    attempts = 0
+    max_attempts = 5
+    location_set = False
 
-    try:
-        location_elem = WebDriverWait(driver, 8).until(
-            EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
-        )
-
-        location_elem.click()  # Ensure the element is in view
-        location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
-        location_elem.send_keys(Keys.DELETE)  # Delete the selected text
-        location_elem.send_keys(location)  # Enter the new location
-
-        matching_location = WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
-        )
-        matching_location.click()
-
-    except TimeoutException:
-        print("Location element not found. Trying to click on Next...")
-
+    while attempts < max_attempts and not location_set:
         try:
-            next_button = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.XPATH, '//span[contains(text(),"Next")]'))
+            location_elem = WebDriverWait(driver, 8).until(
+                EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
             )
-            driver.execute_script("arguments[0].click();", next_button)
-            print("Clicked on Next.")
 
-            if location:
-                primary_location_xpath = '//span[text()="Location"]//following-sibling::input'
-                similar_location_xpaths = [
-                    '//input[contains(@aria-label, "Location")]',
-                    '//input[@name="location"]'
-                ]
+            location_elem.click()  # Ensure the element is in view
+            location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
+            location_elem.send_keys(Keys.DELETE)  # Delete the selected text
+            location_elem.send_keys(location)  # Enter the new location
 
-                try:
-                    location_elem = WebDriverWait(driver, 10).until(
-                        EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
-                    )
+            matching_location = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
+            )
+            matching_location.click()
+            location_set = True
 
-                    location_elem.click()  # Ensure the element is in view
-                    location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
-                    location_elem.send_keys(Keys.DELETE)  # Delete the selected text
-                    location_elem.send_keys(location)  # Enter the new location
+        except TimeoutException:
+            attempts += 1
+            if attempts < max_attempts:
+                print(f"Location element not found, retrying... (Attempt {attempts}/{max_attempts})")
+            else:
+                print("Max attempts reached. Unable to set location.")
+                location_set = False
 
-                    matching_location = WebDriverWait(driver, 5).until(
-                        EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
-                    )
-                    matching_location.click()
+        if not location_set and attempts < max_attempts:
+            try:
+                next_button = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.XPATH, '//span[contains(text(),"Next")]'))
+                )
+                driver.execute_script("arguments[0].click();", next_button)
+                print("Clicked on Next.")
 
-                except TimeoutException:
-                    print("Next button not found. Cannot proceed without location.")
-        except Exception as e:
-            print("An error occurred:", str(e))
-            print("No locations are available.")
+                if location:
+                    try:
+                        location_elem = WebDriverWait(driver, 10).until(
+                            EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
+                        )
+
+                        location_elem.click()  # Ensure the element is in view
+                        location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
+                        location_elem.send_keys(Keys.DELETE)  # Delete the selected text
+                        location_elem.send_keys(location)  # Enter the new location
+
+                        matching_location = WebDriverWait(driver, 5).until(
+                            EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
+                        )
+                        matching_location.click()
+                        location_set = True
+
+                    except TimeoutException:
+                        print("Next button not found. Cannot proceed without location.")
+                        attempts += 1
+            except Exception as e:
+                print(f"An error occurred: {str(e)}. Retrying... (Attempt {attempts}/{max_attempts})")
+                attempts += 1
+
+    if not location_set:
+        print("Unable to set location after maximum attempts.")
 
 def publish_item(driver, current_tab_index, window_handles, tabs_data):
     while current_tab_index <= len(tabs_data):
