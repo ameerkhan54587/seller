@@ -1,4 +1,4 @@
-# 6:30am 20 june
+# 7:11am 20 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -313,9 +313,51 @@ def set_location(driver, all_locations):
     if not location_set:
         print("Unable to set location after maximum attempts.")
 
+def publish_item(driver, window_handles, tabs_data):
+    current_tab_index = 1
+    
+    while current_tab_index < len(window_handles):
+        driver.switch_to.window(window_handles[current_tab_index])
+        
+        try:
+            # Try to click the 'Next' button to get to the 'Publish' button
+            next_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Next")]'))
+            )
+            driver.execute_script("arguments[0].click();", next_button)
+            print(f"Clicked 'Next' on tab {current_tab_index + 1}")
+            
+            # Wait and click the 'Publish' button
+            publish_button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Publish")]'))
+            )
+            driver.execute_script("arguments[0].click();", publish_button)
+            print(f"Clicked 'Publish' on tab {current_tab_index + 1}")
+        
+        except TimeoutException:
+            print(f"'Next' or 'Publish' button not found on tab {current_tab_index + 1}")
+            
+            # Try to find and click the 'Publish' button directly
+            try:
+                publish_button = WebDriverWait(driver, 5).until(
+                    EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Publish")]'))
+                )
+                driver.execute_script("arguments[0].click();", publish_button)
+                print(f"Directly clicked 'Publish' on tab {current_tab_index + 1}")
+            
+            except TimeoutException:
+                print(f"Neither 'Next' nor 'Publish' buttons were found on tab {current_tab_index + 1}")
+        
+        # Move to the next tab
+        current_tab_index += 1
+        if current_tab_index < len(window_handles):
+            driver.switch_to.window(window_handles[current_tab_index])
+
+    print("Completed publishing items on all tabs.")
+
+        
 # Main automation logic
 def run_facebook_automation():
-    # Assuming you have already defined and initialized user_data, image_paths, etc.
     save_user_data()
 
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
@@ -347,9 +389,8 @@ def run_facebook_automation():
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)  # Pass the list of all locations
 
-    current_tab_index = 1
     window_handles = driver.window_handles
-    publish_item(driver, current_tab_index, window_handles, tabs_data)
+    publish_item(driver, window_handles, tabs_data)
 
     time.sleep(0.002)
 
