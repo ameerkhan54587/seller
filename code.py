@@ -9,11 +9,11 @@ def configure_chrome_options():
     chrome_options.add_argument("--enable-resource-prefetching")
     chrome_options.add_argument("--disable-popup-blocking")
     chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--disable-web-security")
+    #chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--no-default-browser-check")
-    chrome_options.add_argument("--disable-speech-api")
-    chrome_options.add_argument("--disable-hang-monitor")
-    chrome_options.add_argument("--disable-client-side-phishing-detection")
+    #chrome_options.add_argument("--disable-speech-api")
+    #chrome_options.add_argument("--disable-hang-monitor")
+    #chrome_options.add_argument("--disable-client-side-phishing-detection")
     chrome_options.add_argument("--disable-sync")
     return chrome_options
 
