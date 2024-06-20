@@ -1,4 +1,4 @@
-# 1:51am 18 june
+# 5:42am 20 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -60,7 +60,7 @@ def set_cookies(driver):
                 # Setting the domain is necessary to avoid the InvalidCookieDomainException
                 driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
 
-def create_item(driver, item_title, available_image_paths):
+def create_item(driver, item_title, available_image_paths, uploaded_images):
     driver.execute_script("window.open('about:blank', '_blank');")
     window_handles = driver.window_handles
     driver.switch_to.window(window_handles[-1])
@@ -78,15 +78,17 @@ def create_item(driver, item_title, available_image_paths):
     except TimeoutException:
         print("Title and Price not Found, Skipping Process.")
 
+    available_image_paths = [path for path in available_image_paths if path not in uploaded_images]
     if available_image_paths:
         random_image_path = random.choice(available_image_paths)
+        uploaded_images.add(random_image_path)
         try:
             image_input = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.XPATH, "//input[@type='file']"))
             )
             image_input.send_keys(random_image_path)
         except TimeoutException:
-            print("images not found. Skipping the process.")
+            print("Image not found. Skipping the process.")
     else:
         print("No more images to upload.")
         return
@@ -97,6 +99,7 @@ def create_item(driver, item_title, available_image_paths):
         print("Clicked on 'More details'")
     except NoSuchElementException:
         print("Element 'More details' not found. Skipping the click action.")
+
 
 def select_category(driver):
     try:
@@ -323,6 +326,7 @@ def publish_item(driver, current_tab_index, window_handles, tabs_data):
         current_tab_index += 1
 
 def run_facebook_automation():
+    # Assuming you have already defined and initialized user_data, image_paths, etc.
     save_user_data()
 
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
@@ -339,11 +343,12 @@ def run_facebook_automation():
     login_to_facebook(driver, selected_option)
     set_cookies(driver)
 
+    # Define and initialize tabs_data
     tabs_data = list(zip(user_data["item_titles"], image_paths))[:num_iterations]
     uploaded_images = set()
 
     for i, (item_title, _) in enumerate(tabs_data):
-        create_item(driver, item_title, [path for path in image_paths if path not in uploaded_images])
+        create_item(driver, item_title, image_paths, uploaded_images)
         select_category(driver)
         select_condition(driver)
         add_description(driver)
