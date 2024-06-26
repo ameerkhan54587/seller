@@ -1,4 +1,4 @@
-# 7:11am 20 june
+# 7:20PM 26 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -148,18 +148,19 @@ def select_condition(driver):
     actions.move_to_element(condition_elem).perform()
 
     try:
-        element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@class="x6s0dn4 x78zum5 x1q0g3np x1iyjqo2 x1qughib xeuugli"][//span[text()="New"]]'))
-        )
-        print("New button find")
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//div[@class="x6s0dn4 x78zum5 x1q0g3np x1iyjqo2 x1qughib xeuugli"]//span[text()="New"]'))
-        ).click()
-        print("New button Clicked")
-    except TimeoutException:
+        js_code = """
+        const element = document.querySelector('.html-div.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x6s0dn4.x78zum5.x1q0g3np.x1iyjqo2.x1qughib.xeuugli .x78zum5.xdt5ytf.xz62fqu.x16ldp7u .xu06os2.x1ok221b .x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xk50ysn.xzsf02u.x1yc453h');
+        if (element && element.textContent.includes('New')) {
+            console.log('Found element:', element);
+            element.click();
+        }
+        """
+
+        driver.execute_script(js_code)
+        print("JavaScript executed to find and click the New button")
+    except (TimeoutException, NoSuchElementException):
         print("New button not found. Skipping other processes.")
-    except NoSuchElementException:
-        print("New button element does not exist. Skipping other processes.")
+ 
 
 def add_description(driver):
     description = description_entry.get("1.0", "end-1c")  # Retrieve description text from GUI
