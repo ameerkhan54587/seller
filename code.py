@@ -1,4 +1,4 @@
-# 10:35pm 26 june
+# 11:52pm 26 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -225,6 +225,7 @@ def select_category(driver):
 
 
 def select_condition(driver):
+    # New JavaScript code to find and click the Condition and New buttons
     js_code = """
     // Function to find and click an element by text
     function findElementByText(tag, text) {
@@ -246,24 +247,36 @@ def select_condition(driver):
     }
 
     // Function to wait for an element with specific text to become visible and then click it
-    function waitForElementAndClick(tag, text) {
-      const targetNode = document.body;
-      const observerConfig = { childList: true, subtree: true };
+    function waitForElementAndClick(tag, classNames, text, timeout = 5000) {
+      return new Promise((resolve, reject) => {
+        const targetNode = document.body;
+        const observerConfig = { childList: true, subtree: true };
 
-      const callback = function(mutationsList, observer) {
-        const element = findElementByText(tag, text);
-        if (element) {
-          console.log(`Found and clicking element with text "${text}":`, element);
-          scrollToAndClickElement(element);
+        const callback = function(mutationsList, observer) {
+          const elements = document.querySelectorAll(tag + classNames);
+          for (let element of elements) {
+            if (element.textContent.trim() === text) {
+              console.log(`Found and clicking element with class "${classNames}" and text "${text}":`, element);
+              scrollToAndClickElement(element);
+              observer.disconnect();
+              resolve();
+              return;
+            }
+          }
+        };
+
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, observerConfig);
+
+        // Initial check in case the element is already present
+        callback([], observer);
+
+        // Timeout to stop observing after a certain period
+        setTimeout(() => {
           observer.disconnect();
-        }
-      };
-
-      const observer = new MutationObserver(callback);
-      observer.observe(targetNode, observerConfig);
-
-      // Initial check in case the element is already present
-      callback();
+          reject(`Element with class "${classNames}" and text "${text}" not found within ${timeout}ms`);
+        }, timeout);
+      });
     }
 
     // Find and click the element with the text "Condition"
@@ -272,17 +285,22 @@ def select_condition(driver):
       scrollToAndClickElement(conditionElement);
       console.log('Clicked element with text "Condition"');
 
-      // Wait for the element with the text "New" to become visible and click it
-      waitForElementAndClick('span', 'New');
+      // Wait for the element with the specific class to become visible and click it
+      waitForElementAndClick('span', '.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xk50ysn.xzsf02u.x1yc453h', 'New')
+        .then(() => {
+          console.log('Clicked element with text "New"');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       console.log('Element with text "Condition" not found.');
     }
     """
-
     try:
         driver.execute_script(js_code)
         print("JavaScript executed to find and click the Condition and New buttons")
-    except (TimeoutException, NoSuchElementException):
+    except TimeoutException:
         print("Condition or New button not found. Skipping other processes.")
 
  
