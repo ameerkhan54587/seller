@@ -1,4 +1,4 @@
-# 8:22pm 26 june
+# 10:35pm 26 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -93,53 +93,136 @@ def create_item(driver, item_title, available_image_paths, uploaded_images):
         print("No more images to upload.")
         return
 
+    moredetail_js_code = """
+    function clickMoreDetailsUnique() {
+      // Target text to search for, in lowercase
+      const targetText = 'more details';
+
+      // Find the span element containing the text "More details" (case-insensitive)
+      const spanElement = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim().toLowerCase() === targetText);
+
+      // Check if the span element was found
+      if (spanElement) {
+        console.log('Span element found.');
+
+        // Scroll the span element into view and click it
+        spanElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        spanElement.click();
+
+        // Print a message in the console
+        console.log('Span element clicked.');
+      } else {
+        console.log('Span element not found.');
+      }
+    }
+
+    // Initial attempt to click the span element
+    clickMoreDetailsUnique();
+    """
+
     try:
-        more_details_button = driver.find_element(By.XPATH, '//span[text()="More details"]')
-        ActionChains(driver).move_to_element(more_details_button).click().perform()
-        print("Clicked on 'More details'")
-    except NoSuchElementException:
-        print("Element 'More details' not found. Skipping the click action.")
+        driver.execute_script(moredetail_js_code)
+        print("JavaScript executed to find and click the 'More details' button")
+    except (TimeoutException, NoSuchElementException):
+        print("Condition or New button not found. Skipping other processes.")
 
 
 def select_category(driver):
-    try:
-        category_parent_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Category")]')
-        driver.execute_script("arguments[0].click();", category_parent_elem)
-    except NoSuchElementException:
-        print("Category option not found. Skipping the process.")
+    js_code = """
+    // Function to find an element by text content
+    function findElementByTextContent(tag, text) {
+      const elements = document.querySelectorAll(tag);
+      for (let element of elements) {
+        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {
+          return element;
+        }
+      }
+      return null;
+    }
 
-    actions = ActionChains(driver)
-    actions.move_to_element(category_parent_elem)
-    actions.perform()
+    // Function to click an element and handle visibility check with timeout
+    function clickElementWhenVisible(tag, text, timeout = 5000) {
+      return new Promise((resolve, reject) => {
+        const observerConfig = { childList: true, subtree: true };
+        let observer;
+        let timeoutId;
+
+        const callback = function(mutationsList, obs) {
+          const element = findElementByTextContent(tag, text);
+          if (element && element.offsetParent !== null) { // Check if element is visible
+            console.log(`Found and clicking element with text "${text}"`);
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll to element
+            element.click();
+            if (observer) {
+              observer.disconnect(); // Disconnect observer after clicking
+            }
+            clearTimeout(timeoutId); // Clear timeout if element is found
+            resolve();
+          }
+        };
+
+        observer = new MutationObserver(callback);
+        observer.observe(document.body, observerConfig);
+
+        // Set timeout to wait for element visibility
+        timeoutId = setTimeout(() => {
+          console.log(`Timeout reached while waiting for element with text "${text}"`);
+          observer.disconnect(); // Disconnect observer on timeout
+          reject(new Error(`Timeout reached while waiting for element with text "${text}"`));
+        }, timeout);
+
+        // Initial check in case the element is already present
+        callback();
+      });
+    }
+
+    // Main execution
+    // Find and click the "Furniture" span element
+    const categorySpan = findElementByTextContent('span', 'Category');
+    if (categorySpan) {
+      console.log('Found span with text "Category":', categorySpan);
+      clickElementWhenVisible('span', 'Category')
+        .then(() => {
+          // Wait for "Furniture" to become visible and click it
+          return clickElementWhenVisible('span', 'Furniture');
+        })
+        .then(() => {
+          console.log('"Furniture" clicked successfully.');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    } else {
+      console.log('Span element with text "Category" not found.');
+    }
+    """
 
     try:
-        element = WebDriverWait(driver, 2).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@class="x8aayfw"]/span[text()="Furniture"]'))
-        )
-        driver.execute_script("arguments[0].scrollIntoView(true);", element)
-        driver.execute_script("arguments[0].click();", element)
-    except TimeoutException:
-        print("Furniture option not found. Skipping the process.")
+        # Execute JavaScript code
+        driver.execute_script(js_code)
+        print("JavaScript executed for selecting category")
+    except Exception as e:
+        # Handle JavaScript execution error
+        print(f"Error executing JavaScript: {str(e)}")
+        print("Attempting Python fallback.")
+
         try:
-            category_input_elem = driver.find_element(By.XPATH, '//span[text()="Category"]//following-sibling::input')
+            # Attempt Python fallback for selecting "Bedroom Furniture Sets"
+            category_input_elem = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[text()="Category"]//following-sibling::input'))
+            )
             category_input_elem.clear()
             category_input_elem.send_keys("Bedroom Furniture Sets")
 
-            element = WebDriverWait(driver, 3).until(
+            element = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@role="listbox"]//li[1]'))
             )
-            print("Element found:", element.text)
             element.click()
-            print("Element clicked")
+            print("Bedroom Furniture Sets option selected successfully.")
         except TimeoutException:
             print("Bedroom Furniture Sets option not found even after sending keys.")
             pass
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 def select_condition(driver):
     js_code = """
@@ -216,29 +299,74 @@ def add_description(driver):
         print("Description field not found. Skipping the process.")
 
 def set_availability(driver):
-    if availability_checkbox_state.get():
+    if availability_checkbox_state.get():  # Assuming availability_checkbox_state is defined and callable
+        js_code = """
+        // Function to find an element by text content
+        function findElementByTextContent(tag, text) {
+          const elements = document.querySelectorAll(tag);
+          for (let element of elements) {
+            if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {
+              return element;
+            }
+          }
+          return null;
+        }
+
+        // Function to click an element and handle visibility check
+        function clickElementWhenVisible(tag, text) {
+          return new Promise((resolve, reject) => {
+            const observerConfig = { childList: true, subtree: true };
+            let observer;
+
+            const callback = function(mutationsList, obs) {
+              const element = findElementByTextContent(tag, text);
+              if (element && element.offsetParent !== null) { // Check if element is visible
+                console.log(`Found and clicking element with text "${text}"`);
+                element.click();
+                if (observer) {
+                  observer.disconnect(); // Disconnect observer after clicking
+                }
+                resolve();
+              }
+            };
+
+            observer = new MutationObserver(callback);
+            observer.observe(document.body, observerConfig);
+
+            // Initial check in case the element is already present
+            callback();
+          });
+        }
+
+        // Main execution
+        // Find and click the "Availability" span element
+        const availabilitySpan = findElementByTextContent('span', 'Availability');
+        if (availabilitySpan) {
+          console.log('Found span with text "Availability":', availabilitySpan);
+          clickElementWhenVisible('span', 'Availability')
+            .then(() => {
+              // Wait for "List as In Stock" to become visible and click it
+              return clickElementWhenVisible('span', 'List as In Stock');
+            })
+            .then(() => {
+              console.log('"List as In Stock" clicked successfully.');
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        } else {
+          console.log('Span element with text "Availability" not found.');
+        }
+        """
+
         try:
-            availability_elem = driver.find_element(By.XPATH, '//span[contains(text(),"Availability")]')
-        except NoSuchElementException:
-            print("Availability element not found. Skipping availability-related tasks.")
-            availability_elem = None
-
-        if availability_elem:
-            driver.execute_script("arguments[0].click();", availability_elem)
-
-            actions = ActionChains(driver)
-            actions.move_to_element(availability_elem).perform()
-
-            try:
-                in_stock_option = WebDriverWait(driver, 5).until(
-                    EC.element_to_be_clickable((By.XPATH, '//span[contains(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"list as in stock")]'))
-                )
-                print("List as In Stocks' found")
-                driver.execute_script("arguments[0].scrollIntoView(true);", in_stock_option)
-                driver.execute_script("arguments[0].click();", in_stock_option)
-                print("List as In Stocks' Click first")
-            except TimeoutException:
-                print("Element 'List as In Stocks' not found. Skipping the process.")
+            driver.execute_script(js_code)
+            print("JavaScript executed for setting availability")
+        except Exception as e:
+            print(f"Error executing JavaScript: {str(e)}")
+            print("Skipping the process.")
+    else:
+        print("Availability checkbox state is False. Skipping availability-related tasks.")
 
 def set_visibility(driver):
     if hide_from_friends_checkbox_var.get():
@@ -432,13 +560,6 @@ def run_facebook_automation():
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)  # Pass the list of all locations
 
-    window_handles = driver.window_handles
-    publish_item(driver, window_handles, tabs_data)
-
-    time.sleep(0.002)
-
-    messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
-    driver.quit()
     window_handles = driver.window_handles
     publish_item(driver, window_handles, tabs_data)
 
