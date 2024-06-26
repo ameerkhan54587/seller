@@ -1,4 +1,4 @@
-# 7:20PM 26 june
+# 8:22pm 26 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -135,31 +135,73 @@ def select_category(driver):
             print("Bedroom Furniture Sets option not found even after sending keys.")
             pass
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+
 def select_condition(driver):
-    try:
-        condition_elem = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Condition")]'))
-        )
-        driver.execute_script("arguments[0].click();", condition_elem)
-    except TimeoutException:
-        print("Condition button not found. Skipping other processes.")
-
-    actions = ActionChains(driver)
-    actions.move_to_element(condition_elem).perform()
-
-    try:
-        js_code = """
-        const element = document.querySelector('.html-div.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x6s0dn4.x78zum5.x1q0g3np.x1iyjqo2.x1qughib.xeuugli .x78zum5.xdt5ytf.xz62fqu.x16ldp7u .xu06os2.x1ok221b .x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xk50ysn.xzsf02u.x1yc453h');
-        if (element && element.textContent.includes('New')) {
-            console.log('Found element:', element);
-            element.click();
+    js_code = """
+    // Function to find and click an element by text
+    function findElementByText(tag, text) {
+      const elements = document.querySelectorAll(tag);
+      for (let element of elements) {
+        if (element.textContent.trim() === text) {
+          console.log(`Found element with text "${text}":`, element);
+          return element;
         }
-        """
+      }
+      return null;
+    }
 
+    // Function to scroll to an element and then click it
+    function scrollToAndClickElement(element) {
+      element.scrollIntoView({ behavior: 'auto', block: 'center' });
+      element.click();
+      console.log('Clicked element:', element);
+    }
+
+    // Function to wait for an element with specific text to become visible and then click it
+    function waitForElementAndClick(tag, text) {
+      const targetNode = document.body;
+      const observerConfig = { childList: true, subtree: true };
+
+      const callback = function(mutationsList, observer) {
+        const element = findElementByText(tag, text);
+        if (element) {
+          console.log(`Found and clicking element with text "${text}":`, element);
+          scrollToAndClickElement(element);
+          observer.disconnect();
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+      observer.observe(targetNode, observerConfig);
+
+      // Initial check in case the element is already present
+      callback();
+    }
+
+    // Find and click the element with the text "Condition"
+    const conditionElement = findElementByText('span', 'Condition');
+    if (conditionElement) {
+      scrollToAndClickElement(conditionElement);
+      console.log('Clicked element with text "Condition"');
+
+      // Wait for the element with the text "New" to become visible and click it
+      waitForElementAndClick('span', 'New');
+    } else {
+      console.log('Element with text "Condition" not found.');
+    }
+    """
+
+    try:
         driver.execute_script(js_code)
-        print("JavaScript executed to find and click the New button")
+        print("JavaScript executed to find and click the Condition and New buttons")
     except (TimeoutException, NoSuchElementException):
-        print("New button not found. Skipping other processes.")
+        print("Condition or New button not found. Skipping other processes.")
+
  
 
 def add_description(driver):
@@ -390,6 +432,13 @@ def run_facebook_automation():
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)  # Pass the list of all locations
 
+    window_handles = driver.window_handles
+    publish_item(driver, window_handles, tabs_data)
+
+    time.sleep(0.002)
+
+    messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
+    driver.quit()
     window_handles = driver.window_handles
     publish_item(driver, window_handles, tabs_data)
 
