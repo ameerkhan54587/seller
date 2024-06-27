@@ -1,4 +1,4 @@
-# 11:52pm 26 june
+# 9:04am 27 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -67,14 +67,11 @@ def create_item(driver, item_title, available_image_paths, uploaded_images):
     driver.get("https://www.facebook.com/marketplace/create/item")
 
     try:
-        title_elem = WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.XPATH, '//span[text()="Title"]//following-sibling::input'))
-        )
-        price_elem = WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.XPATH, '//span[text()="Price"]//following-sibling::input'))
-        )
-        title_elem.send_keys(item_title)
-        price_elem.send_keys(price_entry.get())
+        # Fill the title input field
+        fill_input_by_label(driver, 'Title', item_title)
+
+        # Fill the price input field
+        fill_input_by_label(driver, 'Price', price_entry.get())
     except TimeoutException:
         print("Title and Price not Found, Skipping Process.")
 
@@ -106,7 +103,7 @@ def create_item(driver, item_title, available_image_paths, uploaded_images):
         console.log('Span element found.');
 
         // Scroll the span element into view and click it
-        spanElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        spanElement.scrollIntoView({ behavior: 'auto', block: 'center' });
         spanElement.click();
 
         // Print a message in the console
@@ -125,6 +122,42 @@ def create_item(driver, item_title, available_image_paths, uploaded_images):
         print("JavaScript executed to find and click the 'More details' button")
     except (TimeoutException, NoSuchElementException):
         print("Condition or New button not found. Skipping other processes.")
+
+def fill_input_by_label(driver, label_text, value):
+    # Construct JavaScript code with proper string interpolation
+    js_code = f"""
+    function fillInputByLabel(text, value) {{
+        var xpath = `//span[text()='${{text}}']`;
+        var span = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (span) {{
+            var inputField = span.closest('label').querySelector('input[type="text"]');
+            if (inputField) {{
+                inputField.scrollIntoView({{ behavior: 'auto', block: 'center' }}); // Scroll into view
+                inputField.select(); // Select any existing text
+                inputField.value = ''; // Clear existing value
+                document.execCommand('insertText', false, value); // Simulate typing
+                var event = new Event('input', {{ bubbles: true }});
+                inputField.dispatchEvent(event);
+                return inputField.value === value;
+            }} else {{
+                console.log(`Input field not found for label: ${{text}}`);
+                return false;
+            }}
+        }} else {{
+            console.log(`Span with text "${{text}}" not found`);
+            return false;
+        }}
+    }}
+
+    return fillInputByLabel("{label_text}", "{value}");
+    """
+
+    for attempt in range(3):  # Retry up to 3 times
+        success = driver.execute_script(js_code)
+        if success:
+            return True
+        
+    return False
 
 
 def select_category(driver):
@@ -151,7 +184,7 @@ def select_category(driver):
           const element = findElementByTextContent(tag, text);
           if (element && element.offsetParent !== null) { // Check if element is visible
             console.log(`Found and clicking element with text "${text}"`);
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll to element
+            element.scrollIntoView({ behavior: 'auto', block: 'center' }); // Scroll to element
             element.click();
             if (observer) {
               observer.disconnect(); // Disconnect observer after clicking
@@ -306,15 +339,30 @@ def select_condition(driver):
  
 
 def add_description(driver):
-    description = description_entry.get("1.0", "end-1c")  # Retrieve description text from GUI
+    description = description_entry.get("1.0", "end-1c").replace("'", "\\'").replace("\n", "\\n")  # Escape single quotes and new lines
+    js_code = f"""
+    var xpath = "//label[@aria-label='Description']";
+    var label = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    if (label) {{
+        var inputField = label.querySelector('input[type="text"], textarea'); // To cover textareas if any
+        if (inputField) {{
+  
+            inputField.select(); // Select any existing text
+            document.execCommand('insertText', false, '{description}'); // Simulate typing
+            var event = new Event('input', {{ bubbles: true }});
+            inputField.dispatchEvent(event);
+        }} else {{
+            console.log('Input field not found');
+        }}
+    }} else {{
+        console.log('Label with aria-label "Description" not found');
+    }}
+    """
     try:
-        description_field = WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located((By.XPATH, '//label[@aria-label="Description"]//textarea'))
-        )
-        description_field.clear()
-        description_field.send_keys(description)
-    except TimeoutException:
-        print("Description field not found. Skipping the process.")
+        driver.execute_script(js_code)
+        print("JavaScript executed to fill the description")
+    except (TimeoutException, NoSuchElementException) as e:
+        print(f"Description field not found. Skipping the process. Error: {e}")
 
 def set_availability(driver):
     if availability_checkbox_state.get():  # Assuming availability_checkbox_state is defined and callable
@@ -410,14 +458,27 @@ def get_random_location(remaining_locations):
         return ""
 
 
-
 def set_location(driver, all_locations):
-    primary_location_xpath = '//span[text()="Location"]//following-sibling::input'
-    similar_location_xpaths = [
-        '//input[contains(@aria-label, "Location")]',
-        '//input[@name="location"]'
-    ]
-    
+    js_script = """
+    var xpath = "//span[text()='Location']";
+    var span = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    if (span) {
+        var inputField = span.closest('div').querySelector('input[type="text"]');
+        if (inputField) {
+            inputField.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' }); // Smooth scroll to the input field
+      
+            inputField.select(); // Select any existing text
+            document.execCommand('insertText', false, arguments[0]); // Simulate typing
+            var event = new Event('input', { bubbles: true });
+            inputField.dispatchEvent(event);
+        } else {
+            console.log('Input field not found');
+        }
+    } else {
+        console.log('Span with text "Location" not found');
+    }
+    """
+
     max_attempts = 2
     location_set = False
 
@@ -439,14 +500,7 @@ def set_location(driver, all_locations):
         attempts = 0
         while attempts < max_attempts and not location_set:
             try:
-                location_elem = WebDriverWait(driver, 8).until(
-                    EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
-                )
-
-                location_elem.click()  # Ensure the element is in view
-                location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
-                location_elem.send_keys(Keys.DELETE)  # Delete the selected text
-                location_elem.send_keys(location)  # Enter the new location
+                driver.execute_script(js_script, location)
 
                 matching_location = WebDriverWait(driver, 5).until(
                     EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
@@ -471,14 +525,7 @@ def set_location(driver, all_locations):
 
                     if location:
                         try:
-                            location_elem = WebDriverWait(driver, 10).until(
-                                EC.visibility_of_element_located((By.XPATH, primary_location_xpath))
-                            )
-
-                            location_elem.click()  # Ensure the element is in view
-                            location_elem.send_keys(Keys.CONTROL + "a")  # Select all the text in the input field
-                            location_elem.send_keys(Keys.DELETE)  # Delete the selected text
-                            location_elem.send_keys(location)  # Enter the new location
+                            driver.execute_script(js_script, location)
 
                             matching_location = WebDriverWait(driver, 5).until(
                                 EC.element_to_be_clickable((By.XPATH, '//ul[@role="listbox"]//li[1]'))
@@ -509,33 +556,54 @@ def publish_item(driver, window_handles, tabs_data):
         driver.switch_to.window(window_handles[current_tab_index])
         
         try:
-            # Try to click the 'Next' button to get to the 'Publish' button
-            next_button = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Next")]'))
-            )
-            driver.execute_script("arguments[0].click();", next_button)
-            print(f"Clicked 'Next' on tab {current_tab_index + 1}")
+            # Execute JavaScript to click the 'Next' button or directly click 'Publish' if 'Next' not found
+            js_click_next_and_publish = """
+            var nextButton = document.evaluate("//span[contains(text(),'Next')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            var publishButton = document.evaluate("//span[contains(text(),'Publish')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
             
-            # Wait and click the 'Publish' button
-            publish_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Publish")]'))
-            )
-            driver.execute_script("arguments[0].click();", publish_button)
-            print(f"Clicked 'Publish' on tab {current_tab_index + 1}")
+            if (nextButton) {
+                nextButton.click();
+                console.log("Clicked 'Next' button");
+                
+                // Function to wait for the 'Publish' button to become visible and click it
+                function waitForPublishButton() {
+                    var publishButton = document.evaluate("//span[contains(text(),'Publish')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (publishButton) {
+                        publishButton.click();
+                        console.log("Clicked 'Publish' button");
+                    } else {
+                        setTimeout(waitForPublishButton, 100); // Check every 0.1 seconds
+                    }
+                }
+                
+                // Start waiting for the 'Publish' button
+                waitForPublishButton();
+            } else if (publishButton) {
+                publishButton.click();
+                console.log("Clicked 'Publish' button directly because 'Next' button not found");
+            } else {
+                console.log("'Next' and 'Publish' buttons not found");
+                throw 'Buttons not found';
+            }
+            """
+            
+            # Retry mechanism
+            retry_attempts = 3
+            while retry_attempts > 0:
+                try:
+                    driver.execute_script(js_click_next_and_publish)
+                    print(f"Clicked 'Next' and 'Publish' on tab {current_tab_index + 1}")
+                    break
+                except TimeoutException:
+                    print(f"'Next' or 'Publish' button not found on tab {current_tab_index + 1}. Retrying...")
+                    retry_attempts -= 1
+                    
+            
+            if retry_attempts == 0:
+                raise TimeoutException("'Next' or 'Publish' button not found after retries.")
         
-        except TimeoutException:
-            print(f"'Next' or 'Publish' button not found on tab {current_tab_index + 1}")
-            
-            # Try to find and click the 'Publish' button directly
-            try:
-                publish_button = WebDriverWait(driver, 5).until(
-                    EC.element_to_be_clickable((By.XPATH, '//span[contains(text(),"Publish")]'))
-                )
-                driver.execute_script("arguments[0].click();", publish_button)
-                print(f"Directly clicked 'Publish' on tab {current_tab_index + 1}")
-            
-            except TimeoutException:
-                print(f"Neither 'Next' nor 'Publish' buttons were found on tab {current_tab_index + 1}")
+        except TimeoutException as e:
+            print(f"Error: {e}")
         
         # Move to the next tab
         current_tab_index += 1
@@ -543,7 +611,6 @@ def publish_item(driver, window_handles, tabs_data):
             driver.switch_to.window(window_handles[current_tab_index])
 
     print("Completed publishing items on all tabs.")
-
         
 # Main automation logic
 def run_facebook_automation():
@@ -581,7 +648,7 @@ def run_facebook_automation():
     window_handles = driver.window_handles
     publish_item(driver, window_handles, tabs_data)
 
-    time.sleep(0.002)
+   
 
     messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
     driver.quit()
