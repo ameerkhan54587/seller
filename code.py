@@ -1,4 +1,4 @@
-# 9:04am 27 june
+# 10:35pm 29 june
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -258,7 +258,7 @@ def select_category(driver):
 
 
 def select_condition(driver):
-    # New JavaScript code to find and click the Condition and New buttons
+    # JavaScript code to find and click the Condition and New buttons
     js_code = """
     // Function to find and click an element by text
     function findElementByText(tag, text) {
@@ -279,37 +279,37 @@ def select_condition(driver):
       console.log('Clicked element:', element);
     }
 
-    // Function to wait for an element with specific text to become visible and then click it
-    function waitForElementAndClick(tag, classNames, text, timeout = 5000) {
-      return new Promise((resolve, reject) => {
-        const targetNode = document.body;
-        const observerConfig = { childList: true, subtree: true };
+    // Function to search for span elements containing the text "New" and click on the first one found
+    function findAndClickSpanContainingText(text) {
+      var elements = document.querySelectorAll('span');
+      var results = [];
+      elements.forEach(element => {
+        if (element.textContent.trim() === text) {
+          results.push(element);
+          // Add a border to highlight the element
+          element.style.border = "2px solid red";
+          // Click the element
+          element.click();
+        }
+      });
+      return results;
+    }
 
-        const callback = function(mutationsList, observer) {
-          const elements = document.querySelectorAll(tag + classNames);
-          for (let element of elements) {
-            if (element.textContent.trim() === text) {
-              console.log(`Found and clicking element with class "${classNames}" and text "${text}":`, element);
-              scrollToAndClickElement(element);
-              observer.disconnect();
-              resolve();
-              return;
+    // Function to observe changes in the DOM and click "New" when it appears
+    function observeForNewElement() {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            var newElements = findAndClickSpanContainingText("New");
+            if (newElements.length > 0) {
+              console.log(newElements);
+              observer.disconnect(); // Stop observing once the element is found and clicked
             }
           }
-        };
-
-        const observer = new MutationObserver(callback);
-        observer.observe(targetNode, observerConfig);
-
-        // Initial check in case the element is already present
-        callback([], observer);
-
-        // Timeout to stop observing after a certain period
-        setTimeout(() => {
-          observer.disconnect();
-          reject(`Element with class "${classNames}" and text "${text}" not found within ${timeout}ms`);
-        }, timeout);
+        });
       });
+
+      observer.observe(document.body, { childList: true, subtree: true });
     }
 
     // Find and click the element with the text "Condition"
@@ -318,14 +318,8 @@ def select_condition(driver):
       scrollToAndClickElement(conditionElement);
       console.log('Clicked element with text "Condition"');
 
-      // Wait for the element with the specific class to become visible and click it
-      waitForElementAndClick('span', '.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xk50ysn.xzsf02u.x1yc453h', 'New')
-        .then(() => {
-          console.log('Clicked element with text "New"');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // Observe the DOM for the "New" element to appear
+      observeForNewElement();
     } else {
       console.log('Element with text "Condition" not found.');
     }
