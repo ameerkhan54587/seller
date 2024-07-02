@@ -1,4 +1,4 @@
-# 10:35pm 29 june
+# 10:35pm 2 july
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -123,7 +123,7 @@ def create_item(driver, item_title, available_image_paths, uploaded_images):
     except (TimeoutException, NoSuchElementException):
         print("Condition or New button not found. Skipping other processes.")
 
-def fill_input_by_label(driver, label_text, value):
+def fill_input_by_label(driver, label_text, value, timeout=5):
     # Construct JavaScript code with proper string interpolation
     js_code = f"""
     function fillInputByLabel(text, value) {{
@@ -153,9 +153,18 @@ def fill_input_by_label(driver, label_text, value):
     """
 
     for attempt in range(3):  # Retry up to 3 times
-        success = driver.execute_script(js_code)
-        if success:
-            return True
+        try:
+            # Wait for the span with the specified label text to be visible
+            WebDriverWait(driver, timeout).until(
+                EC.visibility_of_element_located((By.XPATH, f"//span[text()='{label_text}']"))
+            )
+            
+            # Execute the JavaScript code
+            success = driver.execute_script(js_code)
+            if success:
+                return True
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
         
     return False
 
