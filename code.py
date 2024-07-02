@@ -1,4 +1,42 @@
-# 10:35pm 2 july
+def inject_custom_text(driver):
+    custom_text_js = """
+    (function() {
+        // Check if the container already exists and remove it
+        var existingContainer = document.getElementById('customTextContainer');
+        if (existingContainer) {
+            existingContainer.remove();
+        }
+
+        // Create a container for the custom text
+        var container = document.createElement('div');
+        container.id = 'customTextContainer';
+        container.style.position = 'fixed';
+        container.style.bottom = '10px';
+        container.style.right = '10px';
+        container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        container.style.color = 'white';
+        container.style.padding = '10px';
+        container.style.zIndex = '10000';
+        container.style.fontFamily = 'Arial, sans-serif';
+        container.style.fontSize = '14px';
+        container.style.borderRadius = '10px';
+        container.style.width = '220px';
+
+        // Add the custom text with different styles
+        container.innerHTML = `
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v106.08</p>
+            <p style="font-size: 16px; font-weight: bold;">Last updated: 2 July 2024</p>
+       
+            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v1.0.2</a></p>
+            <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
+   
+        `;
+
+        // Append the container to the body
+        document.body.appendChild(container);
+    })();
+    """
+    driver.execute_script(custom_text_js)
 
 def configure_chrome_options():
     chrome_options = webdriver.ChromeOptions()
@@ -25,30 +63,40 @@ def initialize_chrome_driver(chrome_options):
     return driver
 
 def login_to_facebook(driver, selected_option):
+    inject_custom_text(driver)  # Inject before login page loads
+
     if selected_option == "Normal Facebook":
         driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
         time.sleep(1)
         driver.get("https://www.facebook.com/login/")
+        inject_custom_text(driver)  # Inject after login page loads
         email_elem = driver.find_element(By.ID, "email")
         password_elem = driver.find_element(By.ID, "pass")
         login_button_elem = driver.find_element(By.NAME, "login")
         email_elem.send_keys(user_data["email"])
         password_elem.send_keys(user_data["password"])
         login_button_elem.click()
+        inject_custom_text(driver)  # Inject after login
+
     elif selected_option == "Opera Facebook":
         driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
         time.sleep(1)
         driver.get("https://www.facebook.com/login.php?skip_api_login=1&api_key=449838951736891&kid_directed_site=0&app_id=449838951736891&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.12%2Fdialog%2Foauth%2Foauth%3Fresponse_type%3Dcode%26client_id%3D449838951736891%26redirect_uri%3Dhttps%253A%252F%252Fauth.opera.com%252Faccount%252Fsocial%252Fv4%252Fcallback%26scope%3Demail%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%26ret%3Dlogin%26fbapp_pres%3D0%26logger_id%3Db3aa3710-abfa-4798-b8ad-8e7d1eccc96c%26tp%3Dunspecified&cancel_url=https%3A%2F%2Fauth.opera.com%2Faccount%2Fsocial%2Fv4%252Fcallback%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%23_%3D_&display=page&locale=en_GB&pl_dbl=0")
+        inject_custom_text(driver)  # Inject after login page loads
         email_elem = driver.find_element(By.ID, "email")
         password_elem = driver.find_element(By.ID, "pass")
         login_button_elem = driver.find_element(By.NAME, "login")
         email_elem.send_keys(user_data["email"])
         password_elem.send_keys(user_data["password"])
         login_button_elem.click()
+        inject_custom_text(driver)  # Inject after login
+
     elif selected_option == "Cookies Access Token":
         driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
+        inject_custom_text(driver)  # Inject before loading the main page
         time.sleep(1)
         driver.get("https://www.facebook.com")
+        inject_custom_text(driver) 
 
 def set_cookies(driver):
     cookies = cookie_entry.get("1.0", tk.END).strip()
@@ -61,10 +109,13 @@ def set_cookies(driver):
                 driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
 
 def create_item(driver, item_title, available_image_paths, uploaded_images):
+    inject_custom_text(driver)  # Inject before creating the item
     driver.execute_script("window.open('about:blank', '_blank');")
     window_handles = driver.window_handles
     driver.switch_to.window(window_handles[-1])
     driver.get("https://www.facebook.com/marketplace/create/item")
+
+    inject_custom_text(driver) 
 
     try:
         # Fill the title input field
@@ -633,12 +684,16 @@ def run_facebook_automation():
     login_to_facebook(driver, selected_option)
     set_cookies(driver)
 
+    # Inject custom text overlay
+    inject_custom_text(driver)
+
     # Define and initialize tabs_data
     tabs_data = list(zip(user_data["item_titles"], image_paths))[:num_iterations]
     uploaded_images = set()
 
     for i, (item_title, _) in enumerate(tabs_data):
         create_item(driver, item_title, image_paths, uploaded_images)
+        inject_custom_text(driver)  # Inject custom text in each new item tab
         select_category(driver)
         select_condition(driver)
         add_description(driver)
@@ -647,11 +702,14 @@ def run_facebook_automation():
 
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)  # Pass the list of all locations
+        inject_custom_text(driver)  # Inject custom text after setting location
 
     window_handles = driver.window_handles
-    publish_item(driver, window_handles, tabs_data)
+    for handle in window_handles:
+        driver.switch_to.window(handle)
+        inject_custom_text(driver)  # Inject custom text in each window handle
 
-   
+    publish_item(driver, window_handles, tabs_data)
 
     messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
     driver.quit()
