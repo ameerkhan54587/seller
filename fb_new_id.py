@@ -703,7 +703,7 @@ def save_draft(driver, window_handles, tabs_data):
             print(f"Error executing save draft script: {e}")
 
         # Sleep for 1 second before moving to the next tab
-        time.sleep(1)
+        time.sleep(2)
 
         # Move to the next tab
         current_tab_index += 1
