@@ -24,8 +24,8 @@ def inject_custom_text(driver):
 
         // Add the custom text with different styles
         container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v106.08</p>
-            <p style="font-size: 16px; font-weight: bold;">Last updated: 2 July 2024</p>
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v1.0</p>
+            <p style="font-size: 16px; font-weight: bold;">Last updated: 7 July 2024</p>
             <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v1.0.2</a></p>
             <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
         `;
@@ -961,7 +961,7 @@ def publish_item(driver, window_handles, tabs_data):
     print("Completed publishing items on all tabs.")
         
 # Main automation logic
-def run_facebook_automation():
+def fb_new_id():
     save_user_data()
 
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
@@ -1020,5 +1020,5 @@ def run_facebook_automation():
     window_handles = driver.window_handles
     publish_item(driver, window_handles, tabs_data)
 
-    messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
+    messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
     driver.quit()
