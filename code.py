@@ -24,16 +24,67 @@ def inject_custom_text(driver):
 
         // Add the custom text with different styles
         container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v106.08</p>
-            <p style="font-size: 16px; font-weight: bold;">Last updated: 2 July 2024</p>
-       
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v107.0</p>
+            <p style="font-size: 16px; font-weight: bold;">Last updated: 7 July 2024</p>
             <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v1.0.2</a></p>
             <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
-   
         `;
 
         // Append the container to the body
         document.body.appendChild(container);
+
+        // Add the custom styles and processing animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0; }
+            }
+
+            .processing {
+                position: fixed;
+                top: 40px;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(90deg, #333, #555);
+                color: #fff;
+                padding: 40px;
+                font-size: 20px;
+                font-family: Arial, sans-serif;
+                text-align: center;
+                border-bottom: 3px solid #444;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+
+            .processing span {
+                margin-left: 10px;
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                background-color: #fff;
+                border-radius: 50%;
+                animation: blink 1s infinite;
+            }
+
+            .processing span:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .processing span:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Create and add processing animation
+        const processing = document.createElement('div');
+        processing.className = 'processing';
+        processing.innerHTML = 'Powered by AK Universe. Parallel processing while you relax.<span></span><span></span><span></span>';
+        document.body.appendChild(processing);
     })();
     """
     driver.execute_script(custom_text_js)
@@ -53,48 +104,71 @@ def configure_chrome_options():
     #chrome_options.add_argument("--disable-hang-monitor")
     #chrome_options.add_argument("--disable-client-side-phishing-detection")
     chrome_options.add_argument("--disable-sync")
+    chrome_options.add_argument("--start-maximized")
     return chrome_options
 
 def initialize_chrome_driver(chrome_options):
     chromedriver_path = os.path.join(os.getcwd(), 'chromedriver-win32', 'chromedriver.exe')
     service = ChromeService(executable_path=chromedriver_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
-    driver.maximize_window()
+   
     return driver
 
 def login_to_facebook(driver, selected_option):
     inject_custom_text(driver)  # Inject before login page loads
 
     if selected_option == "Normal Facebook":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
-        time.sleep(1)
+        driver.get("https://akuniverse.github.io/AKUniverse/facebook-automation-v3.0.html")
+        time.sleep(6000)
         driver.get("https://www.facebook.com/login/")
         inject_custom_text(driver)  # Inject after login page loads
-        email_elem = driver.find_element(By.ID, "email")
-        password_elem = driver.find_element(By.ID, "pass")
-        login_button_elem = driver.find_element(By.NAME, "login")
-        email_elem.send_keys(user_data["email"])
-        password_elem.send_keys(user_data["password"])
-        login_button_elem.click()
+
+        # JavaScript code to fill email, password and click login button
+        js_login = """
+        // Set email and password values
+        var email = arguments[0];
+        var password = arguments[1];
+
+        // Find and set the email input field
+        var emailInput = document.querySelector('input[name="email"]');
+        if (emailInput) {
+            emailInput.value = email;
+        } else {
+            console.log("Email input not found.");
+        }
+
+        // Find and set the password input field
+        var passwordInput = document.querySelector('input[name="pass"]');
+        if (passwordInput) {
+            passwordInput.value = password;
+        } else {
+            console.log("Password input not found.");
+        }
+
+        // Find the login button and simulate a click
+        var loginButton = document.querySelector('button[name="login"]');
+        if (loginButton) {
+            loginButton.click();
+        } else {
+            console.log("Login button not found.");
+        }
+        """
+        # Execute the JavaScript code with email and password as arguments
+        driver.execute_script(js_login, user_data["email"], user_data["password"])
         inject_custom_text(driver)  # Inject after login
 
     elif selected_option == "Opera Facebook":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
-        time.sleep(1)
+        driver.get("https://akuniverse.github.io/AKUniverse/facebook-automation-v3.0.html")
+        time.sleep(6000)
         driver.get("https://www.facebook.com/login.php?skip_api_login=1&api_key=449838951736891&kid_directed_site=0&app_id=449838951736891&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.12%2Fdialog%2Foauth%2Foauth%3Fresponse_type%3Dcode%26client_id%3D449838951736891%26redirect_uri%3Dhttps%253A%252F%252Fauth.opera.com%252Faccount%252Fsocial%252Fv4%252Fcallback%26scope%3Demail%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%26ret%3Dlogin%26fbapp_pres%3D0%26logger_id%3Db3aa3710-abfa-4798-b8ad-8e7d1eccc96c%26tp%3Dunspecified&cancel_url=https%3A%2F%2Fauth.opera.com%2Faccount%2Fsocial%2Fv4%252Fcallback%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%23_%3D_&display=page&locale=en_GB&pl_dbl=0")
         inject_custom_text(driver)  # Inject after login page loads
-        email_elem = driver.find_element(By.ID, "email")
-        password_elem = driver.find_element(By.ID, "pass")
-        login_button_elem = driver.find_element(By.NAME, "login")
-        email_elem.send_keys(user_data["email"])
-        password_elem.send_keys(user_data["password"])
-        login_button_elem.click()
+        driver.execute_script(js_login, user_data["email"], user_data["password"])
         inject_custom_text(driver)  # Inject after login
 
     elif selected_option == "Cookies Access Token":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
+        driver.get("https://akuniverse.github.io/AKUniverse/facebook-automation-v3.0.html")
         inject_custom_text(driver)  # Inject before loading the main page
-        time.sleep(1)
+        time.sleep(6000)
         driver.get("https://www.facebook.com")
         inject_custom_text(driver) 
 
@@ -711,5 +785,5 @@ def run_facebook_automation():
 
     publish_item(driver, window_handles, tabs_data)
 
-    messagebox.showinfo("Designed by Ameer Khan", "Task Successfully Executed, Designed by Ameer Khan")
+    messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
     driver.quit()
