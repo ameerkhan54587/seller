@@ -741,7 +741,7 @@ def publish_item(driver, window_handles, tabs_data):
     print("Completed publishing items on all tabs.")
         
 # Main automation logic
-def run_facebook_automation():
+def old_id_automate():
     save_user_data()
 
     run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
