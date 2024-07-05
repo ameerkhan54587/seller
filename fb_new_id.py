@@ -24,9 +24,9 @@ def inject_custom_text(driver):
 
         // Add the custom text with different styles
         container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v107.0</p>
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v108.3</p>
             <p style="font-size: 16px; font-weight: bold;">Last updated: 7 July 2024</p>
-            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v3.0</a></p>
+            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v1.0.2</a></p>
             <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
         `;
 
@@ -690,7 +690,7 @@ def save_draft(driver, window_handles, tabs_data):
             js_click_save_draft = """
             const buttons = document.querySelectorAll('span');
             for (let button of buttons) {
-                if (button.textContent.includes('Save draft')) {
+                if (button.textContent.toLowerCase().includes('save draft'.toLowerCase())) {
                     console.log('Clicking on:', button);
                     button.click();
                     break;
@@ -703,7 +703,7 @@ def save_draft(driver, window_handles, tabs_data):
             print(f"Error executing save draft script: {e}")
 
         # Sleep for 1 second before moving to the next tab
-        time.sleep(2)
+        time.sleep(1)
 
         # Move to the next tab
         current_tab_index += 1
