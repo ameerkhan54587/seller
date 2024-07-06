@@ -24,9 +24,9 @@ def inject_custom_text(driver):
 
         // Add the custom text with different styles
         container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v108.3</p>
-            <p style="font-size: 16px; font-weight: bold;">Last updated: 7 July 2024</p>
-            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v1.0.2</a></p>
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v109.5</p>
+            <p style="font-size: 16px; font-weight: bold;">Last updated: 6 July 2024</p>
+            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v3.0</a></p>
             <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
         `;
 
@@ -1011,7 +1011,7 @@ def fb_new_id():
     handle_continue_buttons(driver)
 
     # Poll for the JavaScript completion flag
-    WebDriverWait(driver, 60).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
+    WebDriverWait(driver, 180).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
 
   
        
