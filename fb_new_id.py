@@ -24,8 +24,8 @@ def inject_custom_text(driver):
 
         // Add the custom text with different styles
         container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v109.5</p>
-            <p style="font-size: 16px; font-weight: bold;">Last updated: 6 July 2024</p>
+            <p style="font-size: 16px; font-weight: bold;">Script Version: v110.2</p>
+            <p style="font-size: 16px; font-weight: bold;">Last updated: 9 July 2024</p>
             <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v3.0</a></p>
             <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
         `;
@@ -298,11 +298,16 @@ def fill_input_by_label(driver, label_text, value, timeout=5):
 
 def select_category(driver):
     js_code = """
-    // Function to find an element by text content
+    // Function to find an element by text content (case-insensitive)
     function findElementByTextContent(tag, text) {
       const elements = document.querySelectorAll(tag);
+      const lowerCaseText = text.toLowerCase();
+      console.log(`Searching for elements with tag: ${tag}`);
       for (let element of elements) {
-        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {
+        const elementText = element.textContent.trim().toLowerCase();
+        console.log(`Checking element with text: "${elementText}"`);
+        if (elementText === lowerCaseText) {
+          console.log(`Element found with matching text: "${text}"`);
           return element;
         }
       }
@@ -310,7 +315,7 @@ def select_category(driver):
     }
 
     // Function to click an element and handle visibility check with timeout
-    function clickElementWhenVisible(tag, text, timeout = 5000) {
+    function clickElementWhenVisible(tag, text, timeout = 2000) { // Reduced timeout to 2 seconds
       return new Promise((resolve, reject) => {
         const observerConfig = { childList: true, subtree: true };
         let observer;
@@ -346,23 +351,51 @@ def select_category(driver):
     }
 
     // Main execution
-    // Find and click the "Furniture" span element
-    const categorySpan = findElementByTextContent('span', 'Category');
-    if (categorySpan) {
-      console.log('Found span with text "Category":', categorySpan);
-      clickElementWhenVisible('span', 'Category')
-        .then(() => {
-          // Wait for "Furniture" to become visible and click it
-          return clickElementWhenVisible('span', 'Furniture');
-        })
-        .then(() => {
-          console.log('"Furniture" clicked successfully.');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+    // Determine which script to use based on the presence of a specific input element
+    var categoryInput = document.querySelector('input[aria-label="Category"]');
+
+    if (categoryInput) {
+      // Input element found, use the second script logic
+      console.log('Input element with aria-label "Category" found.');
+      categoryInput.select();
+      document.execCommand('insertText', false, 'Bedroom Furniture Sets');
+
+      var inputEvent = new Event('input', { bubbles: true });
+      categoryInput.dispatchEvent(inputEvent);
+
+      console.log('Text "bedroom" entered successfully.');
+
+      setTimeout(() => {
+        var spanElement = Array.from(document.querySelectorAll('span')).find(span => span.textContent.trim().toLowerCase() === 'bedroom furniture sets'.toLowerCase());
+
+        if (spanElement) {
+          spanElement.click();
+          console.log('Clicked on "Bedroom Furniture Sets" successfully.');
+        } else {
+          console.log('Span element with text "Bedroom Furniture Sets" not found.');
+        }
+      }, 1); // Small delay to allow for the dropdown to populate
     } else {
-      console.log('Span element with text "Category" not found.');
+      // Input element not found, use the first script logic
+      console.log('Input element with aria-label "Category" not found. Using first script logic.');
+
+      const categorySpan = findElementByTextContent('span', 'Category');
+      if (categorySpan) {
+        console.log('Found span with text "Category":', categorySpan);
+        clickElementWhenVisible('span', 'Category')
+          .then(() => {
+            // Wait for "Furniture" to become visible and click it
+            return clickElementWhenVisible('span', 'Furniture');
+          })
+          .then(() => {
+            console.log('"Furniture" clicked successfully.');
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      } else {
+        console.log('Span element with text "Category" not found.');
+      }
     }
     """
 
@@ -373,24 +406,6 @@ def select_category(driver):
     except Exception as e:
         # Handle JavaScript execution error
         print(f"Error executing JavaScript: {str(e)}")
-        print("Attempting Python fallback.")
-
-        try:
-            # Attempt Python fallback for selecting "Bedroom Furniture Sets"
-            category_input_elem = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.XPATH, '//span[text()="Category"]//following-sibling::input'))
-            )
-            category_input_elem.clear()
-            category_input_elem.send_keys("Bedroom Furniture Sets")
-
-            element = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@role="listbox"]//li[1]'))
-            )
-            element.click()
-            print("Bedroom Furniture Sets option selected successfully.")
-        except TimeoutException:
-            print("Bedroom Furniture Sets option not found even after sending keys.")
-            pass
 
 
 def select_condition(driver):
