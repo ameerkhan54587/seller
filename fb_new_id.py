@@ -1010,7 +1010,7 @@ def fb_new_id():
         set_visibility(driver)
 
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
-        set_location(driver, locations_text)  # Pass the list of all locations
+
         inject_custom_text(driver)  # Inject custom text after setting location
 
     window_handles = driver.window_handles
@@ -1028,11 +1028,14 @@ def fb_new_id():
     # Poll for the JavaScript completion flag
     WebDriverWait(driver, 180).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
 
-  
-       
+    # Set location for all items
+    window_handles = driver.window_handles
+    for handle in window_handles[1:]:
+        driver.switch_to.window(handle)
+        set_location(driver, locations_text)
+        inject_custom_text(driver)  # Inject custom text after setting location
 
     # Proceed with publishing items
-    window_handles = driver.window_handles
     publish_item(driver, window_handles, tabs_data)
 
     messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
