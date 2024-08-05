@@ -745,63 +745,6 @@ def close_all_tabs_except_first(driver):
 
 def handle_continue_buttons(driver):
     js_handle_continue_buttons = """
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-      }
-
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
-      .task-popup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.95); /* Darker semi-transparent background */
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        z-index: 10000;
-      }
-
-      .task-popup .content {
-        background: #222;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        animation: fadeIn 1s ease-in-out;
-      }
-
-      .task-popup .content span {
-        display: block;
-        margin-top: 10px;
-        font-size: 16px;
-        opacity: 0.8;
-        animation: fadeIn 1s ease-in-out;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Create and add popup
-    const popup = document.createElement('div');
-    popup.className = 'task-popup';
-    popup.innerHTML = '<div class="content">Your task is being processed...<span>Enjoy your coffee while you wait.</span></div>';
-    document.body.appendChild(popup);
-
     let lastHeight = 0;
     let newHeight = 0;
     let isScrolling = false;
@@ -859,26 +802,28 @@ def handle_continue_buttons(driver):
 
     // Function to open buttons in new tabs
     function openButtonsInNewTabs(buttons) {
-        buttons.forEach((button, index) => {
-            setTimeout(() => {
-                const parentAnchor = button.closest('a');
-                if (parentAnchor) {
-                    const newTab = window.open(parentAnchor.href, '_blank');
-                    if (newTab) {
-                        openedTabs.push(newTab);
-                        console.log(`Tab ${openedTabs.length} opened: ${parentAnchor.href}`);
+        if (!isPageLoading()) {  // Only proceed if the page is not loading
+            buttons.forEach((button, index) => {
+                setTimeout(() => {
+                    const parentAnchor = button.closest('a');
+                    if (parentAnchor) {
+                        const newTab = window.open(parentAnchor.href, '_blank');
+                        if (newTab) {
+                            openedTabs.push(newTab);
+                            console.log(`Tab ${openedTabs.length} opened: ${parentAnchor.href}`);
+                        } else {
+                            console.log("Popup blocked. Please allow popups for this site.");
+                        }
                     } else {
-                        console.log("Popup blocked. Please allow popups for this site.");
+                        console.log("No parent anchor found for a Continue button.");
                     }
-                } else {
-                    console.log("No parent anchor found for a Continue button.");
-                }
-                if (index === buttons.length - 1) {
-                    console.log(`Total buttons processed: ${buttons.length}`);
-                    focusNextTab(0); // Start focusing on the first tab
-                }
-            }, index * 100); // Delay of 0.1 seconds between each click to avoid popup blocking
-        });
+                    if (index === buttons.length - 1) {
+                        console.log(`Total buttons processed: ${buttons.length}`);
+                        focusNextTab(0); // Start focusing on the first tab
+                    }
+                }, index * 100); // Delay of 0.1 seconds between each click to avoid popup blocking
+            });
+        }
     }
 
     // Function to focus on the next tab
@@ -1009,7 +954,7 @@ def fb_new_id():
         set_availability(driver)
         set_visibility(driver)
 
-        locations_text = locations_entry.get("1.0", "end-1c").split('\n')
+      
 
         inject_custom_text(driver)  # Inject custom text after setting location
 
@@ -1026,12 +971,13 @@ def fb_new_id():
     handle_continue_buttons(driver)
 
     # Poll for the JavaScript completion flag
-    WebDriverWait(driver, 180).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
+    WebDriverWait(driver, 800).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
 
     # Set location for all items
     window_handles = driver.window_handles
     for handle in window_handles[1:]:
         driver.switch_to.window(handle)
+        locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)
         inject_custom_text(driver)  # Inject custom text after setting location
 
