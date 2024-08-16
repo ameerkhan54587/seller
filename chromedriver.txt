@@ -2,4 +2,4 @@ CURRENT_CHROMEDRIVER_VERSION=127.0.6533.72
 URL:https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.72/win32/chromedriver-win32.zip
 
 APPLICATION_CURRENT_VERSION=3.0
-URL:https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=65bb67dd-50d9-461f-a9eb-0d1ea0325f02&at=APZUnTVod3gEbFt9CRfg9y6TiWBG%3A1717784569048
+URL:https://mega.nz/file/G5VzCaDZ#pNwUNbdf-wxJTyiAJ80RRMolAfV-4rqat7Vs0MfWs5k
