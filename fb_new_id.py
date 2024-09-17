@@ -748,25 +748,73 @@ def handle_continue_buttons(driver):
     let lastHeight = 0;
     let newHeight = 0;
     let isScrolling = false;
-    let checkingComplete = false;
     let scrollInterval = 100; // Interval between scrolls in milliseconds
     let maxIdleTime = 5000; // Maximum idle time before stopping scrolling
     let idleTime = 0; // Idle time counter
     let openedTabs = []; // Array to store references to opened tabs
     window.continueButtonsTaskCompleted = false; // Global flag
 
+    let countdown = 120; // 120 seconds countdown
+    let countdownInterval = null; // Variable to store the countdown interval
+    let startTime = Date.now(); // Track when the script starts
+
+    // Create a div to display the countdown
+    const countdownDisplay = document.createElement('div');
+    countdownDisplay.style.position = 'fixed';
+    countdownDisplay.style.bottom = '20px';
+    countdownDisplay.style.left = '20px';  // Moved to the left side
+    countdownDisplay.style.padding = '10px';
+    countdownDisplay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    countdownDisplay.style.color = 'white';
+    countdownDisplay.style.fontSize = '20px';
+    countdownDisplay.style.borderRadius = '5px';
+    countdownDisplay.innerText = `Time remaining: ${countdown} seconds`;
+    document.body.appendChild(countdownDisplay);
+
+    // Function to start the countdown timer
+    function startCountdown() {
+        countdownInterval = setInterval(() => {
+            countdown -= 1;
+            countdownDisplay.innerText = `Time remaining: ${countdown} seconds`;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval); // Stop the countdown when it reaches zero
+                console.log('Countdown reached zero.');
+            }
+        }, 1000); // Update every second
+    }
+
+    // Function to proceed to the "Continue" button task
+    function proceedToContinueTask() {
+        const elapsedTime = (Date.now() - startTime) / 1000; // Calculate elapsed time in seconds
+
+        // Ensure that at least 35 seconds have passed before proceeding
+        if (elapsedTime >= 35 && !window.continueButtonsTaskCompleted) {
+            const buttons = highlightContinueButtons(); // Highlight buttons
+            openButtonsInNewTabs(buttons); // Proceed to click each button
+            window.continueButtonsTaskCompleted = true; // Mark task as completed
+        } else if (elapsedTime < 35) {
+            // If 20 seconds haven't passed yet, wait until the time is reached
+            setTimeout(() => {
+                console.log('Proceeding after 20 seconds minimum wait...');
+                proceedToContinueTask();
+            }, (20 - elapsedTime) * 1000); // Wait the remaining time to reach 20 seconds
+        }
+    }
+
     // Function to find and highlight "Continue" buttons
     function highlightContinueButtons() {
         const continueButtons = document.querySelectorAll('span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft');
         const continueButtonsFiltered = Array.from(continueButtons).filter(button => button.textContent.trim() === 'Continue');
-        continueButtonsFiltered.forEach(button => button.style.backgroundColor = 'yellow');
+        continueButtonsFiltered.forEach(button => button.style.backgroundColor = 'yellow'); // Highlight buttons for visibility
         console.log(`Number of "Continue" buttons: ${continueButtonsFiltered.length}`);
         return continueButtonsFiltered;
     }
 
     // Function to check if the page is still loading
     function isPageLoading() {
-        return document.querySelector('[aria-label="Loading..."][role="status"][data-visualcompletion="loading-state"]') !== null;
+        const loadingElement = document.querySelector('[aria-label="Loading..."][role="status"][data-visualcompletion="loading-state"]');
+        return loadingElement !== null && loadingElement.style.display !== 'none';
     }
 
     // Function to scroll the page
@@ -788,11 +836,10 @@ def handle_continue_buttons(driver):
             autoScroll(); // Continue scrolling
         } else {
             idleTime += scrollInterval;
-            if (!isPageLoading() || idleTime >= maxIdleTime) {
+            if (idleTime >= maxIdleTime || !isPageLoading()) {
                 isScrolling = false;
-                checkingComplete = true;
-                const buttons = highlightContinueButtons(); // Highlight buttons one last time and get them
-                openButtonsInNewTabs(buttons);
+                console.log('Loading indicator hidden, proceeding to task...');
+                proceedToContinueTask(); // Proceed to the task
             } else {
                 isScrolling = false;
                 autoScroll(); // Continue scrolling if page is still loading
@@ -802,28 +849,35 @@ def handle_continue_buttons(driver):
 
     // Function to open buttons in new tabs
     function openButtonsInNewTabs(buttons) {
-        if (!isPageLoading()) {  // Only proceed if the page is not loading
-            buttons.forEach((button, index) => {
-                setTimeout(() => {
-                    const parentAnchor = button.closest('a');
-                    if (parentAnchor) {
-                        const newTab = window.open(parentAnchor.href, '_blank');
-                        if (newTab) {
-                            openedTabs.push(newTab);
-                            console.log(`Tab ${openedTabs.length} opened: ${parentAnchor.href}`);
-                        } else {
-                            console.log("Popup blocked. Please allow popups for this site.");
-                        }
-                    } else {
-                        console.log("No parent anchor found for a Continue button.");
-                    }
-                    if (index === buttons.length - 1) {
-                        console.log(`Total buttons processed: ${buttons.length}`);
-                        focusNextTab(0); // Start focusing on the first tab
-                    }
-                }, index * 100); // Delay of 0.1 seconds between each click to avoid popup blocking
-            });
+        if (buttons.length === 0) {
+            console.log("No 'Continue' buttons found.");
+            return;
         }
+
+        buttons.forEach((button, index) => {
+            setTimeout(() => {
+                const parentAnchor = button.closest('a');
+                if (parentAnchor) {
+                    // If the button is wrapped in an anchor, open it in a new tab
+                    const newTab = window.open(parentAnchor.href, '_blank');
+                    if (newTab) {
+                        openedTabs.push(newTab);
+                        console.log(`Tab ${openedTabs.length} opened: ${parentAnchor.href}`);
+                    } else {
+                        console.log("Popup blocked. Please allow popups for this site.");
+                    }
+                } else {
+                    // Otherwise, just click the button
+                    button.click();
+                    console.log("Button clicked directly.");
+                }
+
+                if (index === buttons.length - 1) {
+                    console.log(`Total buttons processed: ${buttons.length}`);
+                    focusNextTab(0); // Start focusing on the first tab
+                }
+            }, index * 1000); // Increased delay to 1 second (1000ms)
+        });
     }
 
     // Function to focus on the next tab
@@ -832,29 +886,30 @@ def handle_continue_buttons(driver):
             openedTabs[tabIndex].focus();
             setTimeout(() => {
                 focusNextTab(tabIndex + 1); // Move to the next tab after 1 second
-            }, 1000); // 1-second delay before moving to the next tab
+            }, 500); // 1-second delay before moving to the next tab
         } else {
             console.log('Finished focusing on all opened tabs.');
             window.continueButtonsTaskCompleted = true; // Set completion flag
         }
     }
 
-    // Start auto scrolling
+    // Start auto scrolling and countdown
     autoScroll();
+    startCountdown();
 
     // Create a MutationObserver to watch for changes in the DOM
     const observer = new MutationObserver((mutationsList, observer) => {
-        if (!checkingComplete) {
-            highlightContinueButtons();
-        }
+        highlightContinueButtons(); // Keep checking for "Continue" buttons
     });
 
     // Start observing the document for changes
     observer.observe(document.body, { childList: true, subtree: true });
     """
 
+    # Execute the JS within the context of the web driver
     driver.execute_script(js_handle_continue_buttons)
-    print("Executed script to handle 'Continue' buttons.")
+
+
 
 
 
