@@ -755,6 +755,20 @@ def handle_continue_buttons(driver):
     let openedTabs = []; // Array to store references to opened tabs
     window.continueButtonsTaskCompleted = false; // Global flag
 
+    // Add "Please wait, finding listings..." message in the center of the page
+    const loadingMessage = document.createElement('div');
+    loadingMessage.innerText = 'Please wait, finding listings...';
+    loadingMessage.style.position = 'fixed';
+    loadingMessage.style.top = '50%';
+    loadingMessage.style.left = '50%';
+    loadingMessage.style.transform = 'translate(-50%, -50%)';
+    loadingMessage.style.padding = '20px';
+    loadingMessage.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    loadingMessage.style.color = 'white';
+    loadingMessage.style.zIndex = '10000';
+    loadingMessage.style.fontSize = '20px';
+    document.body.appendChild(loadingMessage);
+
     // Function to find and highlight "Continue" buttons
     function highlightContinueButtons() {
         const continueButtons = document.querySelectorAll('span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft');
@@ -800,6 +814,27 @@ def handle_continue_buttons(driver):
         }
     }
 
+    // Function to simulate a click on a button using different methods
+    function retryClick(button) {
+        try {
+            button.click(); // Try the default click
+            console.log('Clicked using default method.');
+        } catch (e) {
+            try {
+                // Simulate a mouse event for clicking
+                const event = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                button.dispatchEvent(event);
+                console.log('Clicked using MouseEvent.');
+            } catch (e) {
+                console.log('Failed to click the button using both methods.');
+            }
+        }
+    }
+
     // Function to open buttons in new tabs
     function openButtonsInNewTabs(buttons) {
         if (!isPageLoading()) {  // Only proceed if the page is not loading
@@ -815,7 +850,8 @@ def handle_continue_buttons(driver):
                             console.log("Popup blocked. Please allow popups for this site.");
                         }
                     } else {
-                        console.log("No parent anchor found for a Continue button.");
+                        console.log("No parent anchor found for a Continue button. Retrying click...");
+                        retryClick(button); // Retry clicking if no anchor is found
                     }
                     if (index === buttons.length - 1) {
                         console.log(`Total buttons processed: ${buttons.length}`);
@@ -836,6 +872,7 @@ def handle_continue_buttons(driver):
         } else {
             console.log('Finished focusing on all opened tabs.');
             window.continueButtonsTaskCompleted = true; // Set completion flag
+            document.body.removeChild(loadingMessage); // Remove the loading message
         }
     }
 
@@ -855,6 +892,8 @@ def handle_continue_buttons(driver):
 
     driver.execute_script(js_handle_continue_buttons)
     print("Executed script to handle 'Continue' buttons.")
+
+
 
 
 def publish_item(driver, window_handles, tabs_data):
