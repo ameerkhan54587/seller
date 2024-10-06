@@ -383,7 +383,7 @@ def select_category(driver):
         clickElementWhenVisible('span', 'Category')
           .then(() => {
             // Wait for "Furniture" to become visible and click it
-            return clickElementWhenVisible('span', 'Jewelry & Accessories');
+            return clickElementWhenVisible('span', 'Jewellery and accessories');
           })
           .then(() => {
             console.log('"Furniture" clicked successfully.');
