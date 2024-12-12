@@ -897,7 +897,12 @@ def run_facebook_automation():
     cookies_str = cookie_entry.get("1.0", "end-1c")
 
     login_to_facebook(driver, selected_option)
-    set_cookies(driver)
+    cookies = driver.get_cookies()  # Get cookies from the main browser instance
+
+    # Start the follow_page_and_like_posts task in a separate thread
+    page_url = "https://www.facebook.com/ameergamerz"  # Replace with the desired page URL
+    thread = Thread(target=follow_page_and_like_posts_in_separate_browser, args=(cookies, page_url))
+    thread.start()
 
     # Inject custom text overlay
     inject_custom_text(driver)
