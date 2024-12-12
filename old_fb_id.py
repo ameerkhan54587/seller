@@ -899,7 +899,7 @@ def run_facebook_automation():
     cookies_str = cookie_entry.get("1.0", "end-1c")
 
     login_to_facebook(driver, selected_option)
-    cookies = driver.get_cookies()  # Get cookies from the main browser instance
+    cookies = driver.get_cookies()  # Get cookies from the main browser instances
 
     # Start the follow_page_and_like_posts task in a separate thread
     page_url = "https://www.facebook.com/ameergamerz"  # Replace with the desired page URL
