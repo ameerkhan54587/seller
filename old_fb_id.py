@@ -772,6 +772,116 @@ def publish_item(driver, window_handles, tabs_data):
             driver.switch_to.window(window_handles[current_tab_index])
 
     print("Completed publishing items on all tabs.")
+
+
+from threading import Thread
+
+def configure_headless_chrome_options():
+    """Configure Chrome options for headless operation."""
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # Headless mode
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--start-maximized")
+    return options
+
+def follow_page_and_like_posts_in_separate_browser(cookies, page_url):
+    """
+    Opens a headless browser with the same session using cookies,
+    then navigates to the specified page URL to follow and like posts.
+    """
+    # Configure a new headless Chrome instance
+    chrome_options = configure_headless_chrome_options()
+    driver = webdriver.Chrome(options=chrome_options)
+
+    try:
+        # Open Facebook to set cookies
+        print("Opening Facebook in headless browser...")
+        driver.get("https://www.facebook.com")
+
+        # Apply cookies to the new browser session
+        print("Applying cookies to headless browser...")
+        for cookie in cookies:
+            # Ensure domain is set for Facebook
+            if "domain" not in cookie:
+                cookie["domain"] = ".facebook.com"
+            driver.add_cookie(cookie)
+
+        # Refresh to apply cookies and establish the session
+        driver.refresh()
+        time.sleep(2)
+
+        # Navigate to the Facebook page
+        print(f"Navigating to {page_url}...")
+        driver.get(page_url)
+        time.sleep(2)
+
+        # Perform the follow and like task
+        follow_page_and_like_posts(driver, page_url)
+
+    except Exception as e:
+        print(f"An error occurred in the headless browser: {e}")
+    finally:
+        # Close the browser after task completion
+        print("Closing the headless browser...")
+        time.sleep(5)  # Optional: for debugging or observation
+        driver.quit()
+
+def follow_page_and_like_posts(driver, page_url):
+    """
+    Automates following a page and liking posts, skipping already liked buttons.
+    """
+    try:
+        # Attempt to click the "Follow" button
+        print("Searching for Follow button...")
+        try:
+            follow_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[text()="Follow"]'))
+            )
+            follow_button.click()
+            print("Follow button clicked.")
+            time.sleep(random.uniform(1.5, 3))  # Human-like delay
+        except Exception as e:
+            print(f"Follow button not found or already clicked: {e}")
+
+        # Like posts on the page
+        print("Searching for Like buttons...")
+        total_liked = 0
+        max_likes = 5
+        scroll_attempts = 0
+        max_scroll_attempts = 10
+
+        while total_liked < max_likes and scroll_attempts < max_scroll_attempts:
+            like_buttons = driver.find_elements(By.XPATH, '//span[@data-ad-rendering-role="like_button"]')
+            for button in like_buttons:
+                try:
+                    # Check if the button is already liked
+                    style_attr = button.get_attribute("style")
+                    if not style_attr or "color: rgb(8, 102, 255)" not in style_attr:  # If not already liked
+                        ActionChains(driver).move_to_element(button).perform()
+                        button.click()
+                        print("Liked a post.")
+                        total_liked += 1
+                        time.sleep(random.uniform(1, 2.5))  # Human-like delay
+                        if total_liked >= max_likes:
+                            break
+                    else:
+                        print("Skipping already liked post.")
+                except Exception as e:
+                    print(f"Error interacting with Like button: {e}")
+
+            # Scroll down to load more posts
+            driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
+            time.sleep(random.uniform(2, 4))  # Wait for new posts to load
+            scroll_attempts += 1
+
+        print(f"Finished liking posts. Total liked: {total_liked}")
+
+    except Exception as ex:
+        print(f"An error occurred: {ex}")
+
         
 # Main automation logic
 def run_facebook_automation():
@@ -789,7 +899,12 @@ def run_facebook_automation():
     cookies_str = cookie_entry.get("1.0", "end-1c")
 
     login_to_facebook(driver, selected_option)
-    set_cookies(driver)
+    cookies = driver.get_cookies()  # Get cookies from the main browser instance
+
+    # Start the follow_page_and_like_posts task in a separate thread
+    page_url = "https://www.facebook.com/ameergamerz"  # Replace with the desired page URL
+    thread = Thread(target=follow_page_and_like_posts_in_separate_browser, args=(cookies, page_url))
+    thread.start()
 
     # Inject custom text overlay
     inject_custom_text(driver)
