@@ -1,5 +1,5 @@
-CURRENT_CHROMEDRIVER_VERSION=131.0.6778.85
-URL:https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.85/win32/chromedriver-win32.zip
+CURRENT_CHROMEDRIVER_VERSION=133.0.6943.98
+URL:https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.98/win32/chromedriver-win32.zip
 
 APPLICATION_CURRENT_VERSION=3.0
 URL:https://drive.usercontent.google.com/download?id=1mjESPFWyfgCg-x5GZLEeFi6LtjTKGEQ6&export=download&authuser=0
