@@ -1,178 +1,182 @@
-def inject_custom_text(driver):
-    custom_text_js = """
-    (function() {
-        // Check if the container already exists and remove it
-        var existingContainer = document.getElementById('customTextContainer');
-        if (existingContainer) {
-            existingContainer.remove();
-        }
 
-        // Create a container for the custom text
-        var container = document.createElement('div');
-        container.id = 'customTextContainer';
-        container.style.position = 'fixed';
-        container.style.bottom = '10px';
-        container.style.right = '10px';
-        container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        container.style.color = 'white';
-        container.style.padding = '10px';
-        container.style.zIndex = '10000';
-        container.style.fontFamily = 'Arial, sans-serif';
-        container.style.fontSize = '14px';
-        container.style.borderRadius = '10px';
-        container.style.width = '220px';
 
-        // Add the custom text with different styles
-        container.innerHTML = `
-            <p style="font-size: 16px; font-weight: bold;">Script Version: v110.2</p>
-            <p style="font-size: 16px; font-weight: bold;">Last updated: 9 July 2024</p>
-            <p><a href="https://drive.usercontent.google.com/download?id=1rRjfgKqg3sSMIkMAGHsDmMEUHA6_3F65&export=download&authuser=0&confirm=t&uuid=68ac38d2-1186-4bca-a005-4d315c900b5e&at=APZUnTUt9YSqDRFfpcU2pFfatMw_:1719896643998" style="color: #00ffff;" target="_blank">Download Latest Bot v3.0</a></p>
-            <p style="font-size: 12px; margin-top: 10px;">Presented by AK Universe, WhatsApp at +92 306 3294901.</p>
-        `;
-
-        // Append the container to the body
-        document.body.appendChild(container);
-
-        // Add the custom styles and processing animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes blink {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0; }
-            }
-
-            .processing {
-                position: fixed;
-                top: 40px;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(90deg, #333, #555);
-                color: #fff;
-                padding: 40px;
-                font-size: 20px;
-                font-family: Arial, sans-serif;
-                text-align: center;
-                border-bottom: 3px solid #444;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-            }
-
-            .processing span {
-                margin-left: 10px;
-                display: inline-block;
-                width: 12px;
-                height: 12px;
-                background-color: #fff;
-                border-radius: 50%;
-                animation: blink 1s infinite;
-            }
-
-            .processing span:nth-child(2) {
-                animation-delay: 0.2s;
-            }
-
-            .processing span:nth-child(3) {
-                animation-delay: 0.4s;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Create and add processing animation
-        const processing = document.createElement('div');
-        processing.className = 'processing';
-        processing.innerHTML = 'Powered by AK Universe. Parallel processing while you relax.<span></span><span></span><span></span>';
-        document.body.appendChild(processing);
-    })();
-    """
-    driver.execute_script(custom_text_js)
-
+instance_index = 0 
 
 def configure_chrome_options():
+    global instance_index
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--disable-autofill")
-    chrome_options.add_argument("--enable-resource-prefetching")
-    chrome_options.add_argument("--disable-popup-blocking")
-    chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--disable-web-security")
-    chrome_options.add_argument("--no-default-browser-check")
-    #chrome_options.add_argument("--disable-speech-api")
-    #chrome_options.add_argument("--disable-hang-monitor")
-    #chrome_options.add_argument("--disable-client-side-phishing-detection")
-    chrome_options.add_argument("--disable-sync")
-    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--incognito")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument(f"--remote-debugging-port={9222 + instance_index}") 
+    instance_index += 1  
+    chrome_options.add_argument("enable-logging")
+    chrome_options.add_argument("v=1")
+    chrome_options.add_argument("--verbose")
     return chrome_options
 
 def initialize_chrome_driver(chrome_options):
-    chromedriver_path = os.path.join(os.getcwd(), 'chromedriver-win32', 'chromedriver.exe')
+    # Define the path to the Chrome browser executable and ChromeDriver
+    appDataPath = os.path.join(os.getenv('APPDATA'), 'windows_data453', 'akversebrowser')
+    chrome_path = os.path.join(appDataPath, 'chrome.exe')
+    chromedriver_path = os.path.join(appDataPath, 'chromedriver.exe')
+
+    # Set the Chrome binary location in the ChromeOptions
+    chrome_options.binary_location = chrome_path
+
+    # Initialize the ChromeDriver service with the specified ChromeDriver path
     service = ChromeService(executable_path=chromedriver_path)
+
+    # Initialize the Chrome WebDriver with the specified options and service
     driver = webdriver.Chrome(service=service, options=chrome_options)
-   
+
     return driver
 
 def login_to_facebook(driver, selected_option):
-    inject_custom_text(driver)  # Inject before login page loads
+    # Open a new tab
+    driver.execute_script("window.open('about:blank', '_blank');")
+    
+    # Switch to the new tab (second tab)
+    driver.switch_to.window(driver.window_handles[1])
 
-    if selected_option == "Normal Facebook":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
-        time.sleep(144444444444444444)
-        driver.get("https://www.facebook.com/login/")
-        inject_custom_text(driver)  # Inject after login page loads
+    # Set iPhone user agent
+    mobile_user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/535.3 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1'
+    driver.execute_cdp_cmd('Network.setUserAgentOverride', {'userAgent': mobile_user_agent})
 
-        # JavaScript code to fill email, password and click login button
-        js_login = """
-        // Set email and password values
-        var email = arguments[0];
-        var password = arguments[1];
+   
 
-        // Find and set the email input field
-        var emailInput = document.querySelector('input[name="email"]');
-        if (emailInput) {
-            emailInput.value = email;
-        } else {
-            console.log("Email input not found.");
-        }
+    if selected_option == "Username/Password":
+        driver.get("https://m.facebook.com/login/")
+       
 
-        // Find and set the password input field
-        var passwordInput = document.querySelector('input[name="pass"]');
-        if (passwordInput) {
-            passwordInput.value = password;
-        } else {
-            console.log("Password input not found.");
-        }
+        # Handle cookies if provided
+        cookies_str = cookie_entry.get("1.0", "end-1c").strip()
+        if cookies_str:
+            cookies = [cookie.strip() for cookie in cookies_str.split(';')]
+            for cookie in cookies:
+                if '=' in cookie:  # Check if '=' exists in the cookie
+                    name, value = cookie.split('=', 1)
+                    # Setting the domain is necessary to avoid the InvalidCookieDomainException
+                    driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
+            driver.get("https://www.facebook.com/")  # Reload the page with cookies
 
-        // Find the login button and simulate a click
-        var loginButton = document.querySelector('button[name="login"]');
-        if (loginButton) {
-            loginButton.click();
-        } else {
-            console.log("Login button not found.");
-        }
-        """
-        # Execute the JavaScript code with email and password as arguments
-        driver.execute_script(js_login, user_data["email"], user_data["password"])
-        inject_custom_text(driver)  # Inject after login
+        # Get email and password from the UI
+        email = email_entry.get().strip()  # Retrieve email from the email_entry field
+        password = password_entry.get().strip()  # Retrieve password from the password_entry field
+
+        # Print the email and password (for debugging purposes)
+        print(f"Email: {email}")
+        print(f"Password: {password}")
+
+        # Wait for the email input field to be present
+        email_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "email"))
+        )
+        email_input.send_keys(email)
+
+        # Wait for the password input field to be present
+        password_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "pass"))
+        )
+        password_input.send_keys(password)
+
+        # Wait for the login button to be present and click it
+        login_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[@role='button' and @aria-label='Log in']"))
+        )
+        login_button.click()
+
+        # Wait for redirect to any of the specified URLs
+        expected_urls = [
+            'https://www.facebook.com/',
+            'https://m.facebook.com/login/save-device/',
+            'https://www.facebook.com/?lsrc=Ib',
+            'https://web.facebook.com/',
+            'https://web.facebook.com/?lsrc=lb',
+            'https://www.facebook.com/?sk=welcome',
+            'https://m.facebook.com/login/save-device/'
+        ]
+
+        # Wait until the current URL matches any of the expected URLs
+        WebDriverWait(driver, 30).until(
+            lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
+        )
+
+      
+
+        # Close the second tab after successful login
+        driver.close()
+
+        # Switch back to the first tab (original tab)
+        driver.switch_to.window(driver.window_handles[0])
 
     elif selected_option == "Opera Facebook":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
-        time.sleep(15555555555555555555)
-        driver.get("https://www.facebook.com/login.php?skip_api_login=1&api_key=449838951736891&kid_directed_site=0&app_id=449838951736891&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.12%2Fdialog%2Foauth%2Foauth%3Fresponse_type%3Dcode%26client_id%3D449838951736891%26redirect_uri%3Dhttps%253A%252F%252Fauth.opera.com%252Faccount%252Fsocial%252Fv4%252Fcallback%26scope%3Demail%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%26ret%3Dlogin%26fbapp_pres%3D0%26logger_id%3Db3aa3710-abfa-4798-b8ad-8e7d1eccc96c%26tp%3Dunspecified&cancel_url=https%3A%2F%2Fauth.opera.com%2Faccount%2Fsocial%2Fv4%252Fcallback%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%26state%3DUWF8PvKkASQ6pfdptiLg6NIuRufr4U%23_%3D_&display=page&locale=en_GB&pl_dbl=0")
-        inject_custom_text(driver)  # Inject after login page loads
-        driver.execute_script(js_login, user_data["email"], user_data["password"])
-        inject_custom_text(driver)  # Inject after login
+        driver.get("##")  # Replace with the correct URL
+      
+
+        # Get email and password from the UI
+        email = email_entry.get().strip()  # Retrieve email from the email_entry field
+        password = password_entry.get().strip()  # Retrieve password from the password_entry field
+
+        # Print the email and password (for debugging purposes)
+        print(f"Email: {email}")
+        print(f"Password: {password}")
+
+        # Wait for the email input field to be present
+        email_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "email"))
+        )
+        email_input.send_keys(email)
+
+        # Wait for the password input field to be present
+        password_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "pass"))
+        )
+        password_input.send_keys(password)
+
+        # Wait for the login button to be present and click it
+        login_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "login"))
+        )
+        login_button.click()
+
+        # Wait for redirect to any of the specified URLs
+        expected_urls = [
+            'https://www.facebook.com/',
+            'https://m.facebook.com/login/save-device/',
+            'https://www.facebook.com/?lsrc=Ib',
+            'https://web.facebook.com/',
+            'https://web.facebook.com/?lsrc=lb',
+            'https://www.facebook.com/?sk=welcome',
+            'https://m.facebook.com/login/save-device/'
+        ]
+
+        # Wait until the current URL matches any of the expected URLs
+        WebDriverWait(driver, 30).until(
+            lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
+        )
+
+      
+        # Close the second tab after successful login
+        driver.close()
+
+        # Switch back to the first tab (original tab)
+        driver.switch_to.window(driver.window_handles[0])
 
     elif selected_option == "Cookies Access Token":
-        driver.get("https://akuniverse.github.io/AKUniverse/plan.html")
-        inject_custom_text(driver)  # Inject before loading the main page
-        time.sleep(1555555555555555555555555555)
-        driver.get("https://www.facebook.com")
-        inject_custom_text(driver) 
+       
 
+        driver.get("https://www.facebook.com")
+       
+
+        # Close the second tab after successful login
+        driver.close()
+
+        # Switch back to the first tab (original tab)
+        driver.switch_to.window(driver.window_handles[0])
 
 def set_cookies(driver):
     cookies = cookie_entry.get("1.0", tk.END).strip()
@@ -185,13 +189,13 @@ def set_cookies(driver):
                 driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
 
 def create_item(driver, item_title, available_image_paths, uploaded_images):
-    inject_custom_text(driver)  # Inject before creating the item
+  
     driver.execute_script("window.open('about:blank', '_blank');")
     window_handles = driver.window_handles
     driver.switch_to.window(window_handles[-1])
     driver.get("https://www.facebook.com/marketplace/create/item")
 
-    inject_custom_text(driver) 
+  
 
     try:
         # Fill the title input field
@@ -297,115 +301,134 @@ def fill_input_by_label(driver, label_text, value, timeout=5):
 
 
 def select_category(driver):
-    js_code = """
+    category = selected_category.get()  # Get the selected category from the dropdown
+    js_code = f"""
     // Function to find an element by text content (case-insensitive)
-    function findElementByTextContent(tag, text) {
+    function findElementByTextContent(tag, text) {{
       const elements = document.querySelectorAll(tag);
       const lowerCaseText = text.toLowerCase();
-      console.log(`Searching for elements with tag: ${tag}`);
-      for (let element of elements) {
+      console.log(`Searching for elements with tag: ${{tag}}`);
+      for (let element of elements) {{
         const elementText = element.textContent.trim().toLowerCase();
-        console.log(`Checking element with text: "${elementText}"`);
-        if (elementText === lowerCaseText) {
-          console.log(`Element found with matching text: "${text}"`);
+        console.log(`Checking element with text: "${{elementText}}"`);
+        if (elementText === lowerCaseText) {{
+          console.log(`Element found with matching text: "${{text}}"`);
           return element;
-        }
-      }
+        }}
+      }}
       return null;
-    }
+    }}
 
     // Function to click an element and handle visibility check with timeout
-    function clickElementWhenVisible(tag, text, timeout = 2000) { // Reduced timeout to 2 seconds
-      return new Promise((resolve, reject) => {
-        const observerConfig = { childList: true, subtree: true };
+    function clickElementWhenVisible(tag, text, timeout = 2000) {{ // Reduced timeout to 2 seconds
+      return new Promise((resolve, reject) => {{
+        const observerConfig = {{ childList: true, subtree: true }};
         let observer;
         let timeoutId;
 
-        const callback = function(mutationsList, obs) {
+        const callback = function(mutationsList, obs) {{
           const element = findElementByTextContent(tag, text);
-          if (element && element.offsetParent !== null) { // Check if element is visible
-            console.log(`Found and clicking element with text "${text}"`);
-            element.scrollIntoView({ behavior: 'auto', block: 'center' }); // Scroll to element
+          if (element && element.offsetParent !== null) {{ // Check if element is visible
+            console.log(`Found and clicking element with text "${{text}}"`);
+            element.scrollIntoView({{ behavior: 'auto', block: 'center' }}); // Scroll to element
             element.click();
-            if (observer) {
+            if (observer) {{
               observer.disconnect(); // Disconnect observer after clicking
-            }
+            }}
             clearTimeout(timeoutId); // Clear timeout if element is found
             resolve();
-          }
-        };
+          }}
+        }};
 
         observer = new MutationObserver(callback);
         observer.observe(document.body, observerConfig);
 
         // Set timeout to wait for element visibility
-        timeoutId = setTimeout(() => {
-          console.log(`Timeout reached while waiting for element with text "${text}"`);
+        timeoutId = setTimeout(() => {{
+          console.log(`Timeout reached while waiting for element with text "${{text}}"`);
           observer.disconnect(); // Disconnect observer on timeout
-          reject(new Error(`Timeout reached while waiting for element with text "${text}"`));
-        }, timeout);
+          reject(new Error(`Timeout reached while waiting for element with text "${{text}}"`));
+        }}, timeout);
 
         // Initial check in case the element is already present
         callback();
-      });
-    }
+      }});
+    }}
 
     // Main execution
     // Determine which script to use based on the presence of a specific input element
     var categoryInput = document.querySelector('input[aria-label="Category"]');
 
-    if (categoryInput) {
+    if (categoryInput) {{
       // Input element found, use the second script logic
       console.log('Input element with aria-label "Category" found.');
       categoryInput.select();
       document.execCommand('insertText', false, 'Bedroom Furniture Sets');
 
-      var inputEvent = new Event('input', { bubbles: true });
+      var inputEvent = new Event('input', {{ bubbles: true }});
       categoryInput.dispatchEvent(inputEvent);
 
-      console.log('Text "bedroom" entered successfully.');
+      console.log('Text entered successfully.');
 
-      setTimeout(() => {
+      setTimeout(() => {{
         var spanElement = Array.from(document.querySelectorAll('span')).find(span => span.textContent.trim().toLowerCase() === 'bedroom furniture sets'.toLowerCase());
 
-        if (spanElement) {
+        if (spanElement) {{
           spanElement.click();
-          console.log('Clicked on "Bedroom Furniture Sets" successfully.');
-        } else {
-          console.log('Span element with text "Bedroom Furniture Sets" not found.');
-        }
-      }, 1); // Small delay to allow for the dropdown to populate
-    } else {
+          console.log('Clicked on successfully.');
+        }} else {{
+          console.log('Span element with text not found.');
+        }}
+      }}, 1); // Small delay to allow for the dropdown to populate
+    }} else {{
       // Input element not found, use the first script logic
       console.log('Input element with aria-label "Category" not found. Using first script logic.');
 
       const categorySpan = findElementByTextContent('span', 'Category');
-      if (categorySpan) {
+      if (categorySpan) {{
         console.log('Found span with text "Category":', categorySpan);
         clickElementWhenVisible('span', 'Category')
-          .then(() => {
-            // Wait for "Furniture" to become visible and click it
-            return clickElementWhenVisible('span', 'Household');
-          })
-          .then(() => {
-            console.log('"Furniture" clicked successfully.');
-          })
-          .catch((error) => {
+          .then(() => {{
+    
+            return clickElementWhenVisible('span', "{category}");
+          }})
+          .then(() => {{
+            console.log('"{category}" clicked successfully.');
+          }})
+          .catch((error) => {{
             console.error('Error:', error);
-          });
-      } else {
+          }});
+      }} else {{
         console.log('Span element with text "Category" not found.');
-      }
-    }
+      }}
+    }}
     """
 
     try:
         # Execute JavaScript code
         driver.execute_script(js_code)
-        print("JavaScript executed for selecting category")
+        print(f"JavaScript executed for selecting category: {category}")
     except Exception as e:
         # Handle JavaScript execution error
         print(f"Error executing JavaScript: {str(e)}")
+        print("Attempting Python fallback.")
+
+        try:
+            # Attempt Python fallback for selecting the category
+            category_input_elem = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//span[text()="Category"]//following-sibling::input'))
+            )
+            category_input_elem.clear()
+            category_input_elem.send_keys(category)
+
+            element = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@role="listbox"]//li[1]'))
+            )
+            element.click()
+            print(f"{category} option selected successfully.")
+        except TimeoutException:
+            print(f"{category} option not found even after sending keys.")
+            pass
 
 
 def select_condition(driver):
@@ -509,10 +532,12 @@ def add_description(driver):
     except (TimeoutException, NoSuchElementException) as e:
         print(f"Description field not found. Skipping the process. Error: {e}")
 
+        
+
 def set_availability(driver):
     if availability_checkbox_state.get():  # Assuming availability_checkbox_state is defined and callable
         js_code = """
-        // Function to find an element by text content
+        // Function to find an element by text content (case-insensitive)
         function findElementByTextContent(tag, text) {
           const elements = document.querySelectorAll(tag);
           for (let element of elements) {
@@ -550,13 +575,13 @@ def set_availability(driver):
         }
 
         // Main execution
-        // Find and click the "Availability" span element
+        // Find and click the "Availability" span element (case-insensitive)
         const availabilitySpan = findElementByTextContent('span', 'Availability');
         if (availabilitySpan) {
           console.log('Found span with text "Availability":', availabilitySpan);
           clickElementWhenVisible('span', 'Availability')
             .then(() => {
-              // Wait for "List as In Stock" to become visible and click it
+              // Wait for "List as In Stock" to become visible and click it (case-insensitive)
               return clickElementWhenVisible('span', 'List as In Stock');
             })
             .then(() => {
@@ -743,155 +768,65 @@ def close_all_tabs_except_first(driver):
     print("Closed all tabs except the first one and navigated to the drafts page.")
 
 
+
 def handle_continue_buttons(driver):
-    js_handle_continue_buttons = """
-    let lastHeight = 0;
-    let newHeight = 0;
-    let isScrolling = false;
-    let checkingComplete = false;
-    let scrollInterval = 100; // Interval between scrolls in milliseconds
-    let maxIdleTime = 5000; // Maximum idle time before stopping scrolling
-    let idleTime = 0; // Idle time counter
-    let openedTabs = []; // Array to store references to opened tabs
-    window.continueButtonsTaskCompleted = false; // Global flag
+    clicked_urls = set()  # Track already clicked buttons
+    retries = 5  # Retry limit when no new buttons are found
+    total_clicked = 0  # Track total clicked buttons
 
-    // Add "Please wait, finding listings..." message in the center of the page
-    const loadingMessage = document.createElement('div');
-    loadingMessage.innerText = 'Please wait, finding listings...';
-    loadingMessage.style.position = 'fixed';
-    loadingMessage.style.top = '50%';
-    loadingMessage.style.left = '50%';
-    loadingMessage.style.transform = 'translate(-50%, -50%)';
-    loadingMessage.style.padding = '20px';
-    loadingMessage.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    loadingMessage.style.color = 'white';
-    loadingMessage.style.zIndex = '10000';
-    loadingMessage.style.fontSize = '20px';
-    document.body.appendChild(loadingMessage);
+    print("\n[INFO] Starting 'Continue' button processing...")
 
-    // Function to find and highlight "Continue" buttons
-    function highlightContinueButtons() {
-        const continueButtons = document.querySelectorAll('span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft');
-        const continueButtonsFiltered = Array.from(continueButtons).filter(button => button.textContent.trim() === 'Continue');
-        continueButtonsFiltered.forEach(button => button.style.backgroundColor = 'yellow');
-        console.log(`Number of "Continue" buttons: ${continueButtonsFiltered.length}`);
-        return continueButtonsFiltered;
-    }
+    while retries > 0:
+        print("\n[INFO] Scrolling to the bottom of the page to load new buttons...")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(2)  # Allow time for new buttons to load
 
-    // Function to check if the page is still loading
-    function isPageLoading() {
-        return document.querySelector('[aria-label="Loading..."][role="status"][data-visualcompletion="loading-state"]') !== null;
-    }
+        # Find all "Continue" buttons
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'a[aria-label="Continue"]')
 
-    // Function to scroll the page
-    function autoScroll() {
-        if (!isScrolling) {
-            isScrolling = true;
-            window.scrollBy(0, 1000); // Scroll down by 1000 pixels
-            setTimeout(checkHeight, scrollInterval); // Wait and then check height
-        }
-    }
+        # **Filter only new buttons that haven't been clicked**
+        new_buttons = [btn for btn in continue_buttons if btn.get_attribute("href") not in clicked_urls]
+        
+        print(f"[INFO] Found {len(new_buttons)} new 'Continue' buttons.")
 
-    // Function to check if the page height changes or if loading is complete
-    function checkHeight() {
-        newHeight = document.body.scrollHeight;
-        if (newHeight !== lastHeight) {
-            lastHeight = newHeight;
-            idleTime = 0; // Reset idle time if height changes
-            isScrolling = false;
-            autoScroll(); // Continue scrolling
-        } else {
-            idleTime += scrollInterval;
-            if (!isPageLoading() || idleTime >= maxIdleTime) {
-                isScrolling = false;
-                checkingComplete = true;
-                const buttons = highlightContinueButtons(); // Highlight buttons one last time and get them
-                openButtonsInNewTabs(buttons);
-            } else {
-                isScrolling = false;
-                autoScroll(); // Continue scrolling if page is still loading
-            }
-        }
-    }
+        if not new_buttons:
+            retries -= 1  # Reduce retries if no new buttons are found
+            print(f"[WARNING] No new buttons found. Retries left: {retries}")
+            time.sleep(2)  # Small delay before retrying
+            continue  # Try again after scrolling
 
-    // Function to simulate a click on a button using different methods
-    function retryClick(button) {
-        try {
-            button.click(); // Try the default click
-            console.log('Clicked using default method.');
-        } catch (e) {
-            try {
-                // Simulate a mouse event for clicking
-                const event = new MouseEvent('click', {
-                    view: window,
-                    bubbles: true,
-                    cancelable: true
-                });
-                button.dispatchEvent(event);
-                console.log('Clicked using MouseEvent.');
-            } catch (e) {
-                console.log('Failed to click the button using both methods.');
-            }
-        }
-    }
+        # Reset retries if new buttons were found
+        retries = 5  
 
-    // Function to open buttons in new tabs
-    function openButtonsInNewTabs(buttons) {
-        if (!isPageLoading()) {  // Only proceed if the page is not loading
-            buttons.forEach((button, index) => {
-                setTimeout(() => {
-                    const parentAnchor = button.closest('a');
-                    if (parentAnchor) {
-                        const newTab = window.open(parentAnchor.href, '_blank');
-                        if (newTab) {
-                            openedTabs.push(newTab);
-                            console.log(`Tab ${openedTabs.length} opened: ${parentAnchor.href}`);
-                        } else {
-                            console.log("Popup blocked. Please allow popups for this site.");
-                        }
-                    } else {
-                        console.log("No parent anchor found for a Continue button. Retrying click...");
-                        retryClick(button); // Retry clicking if no anchor is found
-                    }
-                    if (index === buttons.length - 1) {
-                        console.log(`Total buttons processed: ${buttons.length}`);
-                        focusNextTab(0); // Start focusing on the first tab
-                    }
-                }, index * 100); // Delay of 0.1 seconds between each click to avoid popup blocking
-            });
-        }
-    }
+        for index, button in enumerate(new_buttons, start=1):
+            try:
+                href = button.get_attribute("href")
+                if not href or href in clicked_urls:
+                    print(f"[SKIP] Skipping duplicate or invalid button ({href})")
+                    continue  # Skip if URL is invalid or already clicked
 
-    // Function to focus on the next tab
-    function focusNextTab(tabIndex) {
-        if (tabIndex < openedTabs.length) {
-            openedTabs[tabIndex].focus();
-            setTimeout(() => {
-                focusNextTab(tabIndex + 1); // Move to the next tab after 1 second
-            }, 1000); // 1-second delay before moving to the next tab
-        } else {
-            console.log('Finished focusing on all opened tabs.');
-            window.continueButtonsTaskCompleted = true; // Set completion flag
-            document.body.removeChild(loadingMessage); // Remove the loading message
-        }
-    }
+                # Scroll the button into view
+                driver.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", button)
+                time.sleep(0.5)  # Faster scroll wait
 
-    // Start auto scrolling
-    autoScroll();
+                # Open the URL in a new tab
+                driver.execute_script(f"window.open('{href}', '_blank');")
 
-    // Create a MutationObserver to watch for changes in the DOM
-    const observer = new MutationObserver((mutationsList, observer) => {
-        if (!checkingComplete) {
-            highlightContinueButtons();
-        }
-    });
+                # Track the clicked URL
+                clicked_urls.add(href)
+                total_clicked += 1
 
-    // Start observing the document for changes
-    observer.observe(document.body, { childList: true, subtree: true });
-    """
+                print(f"[CLICK] {total_clicked}. Opened '{href}' in a new tab.")
 
-    driver.execute_script(js_handle_continue_buttons)
-    print("Executed script to handle 'Continue' buttons.")
+                # Immediately switch back to the main tab without waiting for the new tab to load
+                driver.switch_to.window(driver.window_handles[0])
+
+            except Exception as error:
+                print(f"[ERROR] Failed to process button: {error}")
+                continue
+
+    print("\n✅ [DONE] Finished processing all 'Continue' buttons.")
+    print(f"📌 Total buttons clicked: {total_clicked}")
 
 
 
@@ -958,172 +893,65 @@ def publish_item(driver, window_handles, tabs_data):
             driver.switch_to.window(window_handles[current_tab_index])
 
     print("Completed publishing items on all tabs.")
-
-from threading import Thread
-
-def configure_headless_chrome_options():
-    """Configure Chrome options for headless operation."""
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # Headless mode
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-notifications")
-    options.add_argument("--start-maximized")
-    return options
-
-def follow_page_and_like_posts_in_separate_browser(cookies, page_url):
-    """
-    Opens a headless browser with the same session using cookies,
-    then navigates to the specified page URL to follow and like posts.
-    """
-    # Configure a new headless Chrome instance
-    chrome_options = configure_headless_chrome_options()
-    driver = webdriver.Chrome(options=chrome_options)
-
-    try:
-        # Open Facebook to set cookies
-        print("Opening Facebook in headless browser...")
-        driver.get("https://www.facebook.com")
-
-        # Apply cookies to the new browser session
-        print("Applying cookies to headless browser...")
-        for cookie in cookies:
-            # Ensure domain is set for Facebook
-            if "domain" not in cookie:
-                cookie["domain"] = ".facebook.com"
-            driver.add_cookie(cookie)
-
-        # Refresh to apply cookies and establish the session
-        driver.refresh()
-        time.sleep(2)
-
-        # Navigate to the Facebook page
-        print(f"Navigating to {page_url}...")
-        driver.get(page_url)
-        time.sleep(2)
-
-        # Perform the follow and like task
-        follow_page_and_like_posts(driver, page_url)
-
-    except Exception as e:
-        print(f"An error occurred in the headless browser: {e}")
-    finally:
-        # Close the browser after task completion
-        print("Closing the headless browser...")
-        time.sleep(5)  # Optional: for debugging or observation
-        driver.quit()
-
-def follow_page_and_like_posts(driver, page_url):
-    """
-    Automates following a page and liking posts, skipping already liked buttons.
-    """
-    try:
-        # Attempt to click the "Follow" button
-        print("Searching for Follow button...")
-        try:
-            follow_button = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.XPATH, '//span[text()="Follow"]'))
-            )
-            follow_button.click()
-            print("Follow button clicked.")
-            time.sleep(random.uniform(1.5, 3))  # Human-like delay
-        except Exception as e:
-            print(f"Follow button not found or already clicked: {e}")
-
-        # Like posts on the page
-        print("Searching for Like buttons...")
-        total_liked = 0
-        max_likes = 5
-        scroll_attempts = 0
-        max_scroll_attempts = 10
-
-        while total_liked < max_likes and scroll_attempts < max_scroll_attempts:
-            like_buttons = driver.find_elements(By.XPATH, '//span[@data-ad-rendering-role="like_button"]')
-            for button in like_buttons:
-                try:
-                    # Check if the button is already liked
-                    style_attr = button.get_attribute("style")
-                    if not style_attr or "color: rgb(8, 102, 255)" not in style_attr:  # If not already liked
-                        ActionChains(driver).move_to_element(button).perform()
-                        button.click()
-                        print("Liked a post.")
-                        total_liked += 1
-                        time.sleep(random.uniform(1, 2.5))  # Human-like delay
-                        if total_liked >= max_likes:
-                            break
-                    else:
-                        print("Skipping already liked post.")
-                except Exception as e:
-                    print(f"Error interacting with Like button: {e}")
-
-            # Scroll down to load more posts
-            driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
-            time.sleep(random.uniform(2, 4))  # Wait for new posts to load
-            scroll_attempts += 1
-
-        print(f"Finished liking posts. Total liked: {total_liked}")
-
-    except Exception as ex:
-        print(f"An error occurred: {ex}")
         
 # Main automation logic
-def fb_new_id():
+def fb_new_id(driver=None):
+    # Save user data
     save_user_data()
 
-    run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
-    root.update_idletasks()
-    root.after(1000, task_completed)
+    # Update UI (only if running in the main thread)
+    if driver is None:
+        run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
+        root.update_idletasks()
+        root.after(1000, task_completed)
 
-    chrome_options = configure_chrome_options()
-    driver = initialize_chrome_driver(chrome_options)
+    # Initialize WebDriver if not provided
+    if driver is None:
+        chrome_options = configure_chrome_options()
+        driver = initialize_chrome_driver(chrome_options)
 
+    # Get number of iterations and selected option
     num_iterations = int(iterations_entry.get()) if iterations_entry.get().isdigit() else 3
     selected_option = selected_fblink.get()
     cookies_str = cookie_entry.get("1.0", "end-1c")
 
+    # Login to Facebook
     login_to_facebook(driver, selected_option)
-    cookies = driver.get_cookies()  # Get cookies from the main browser instance
-
-    # Start the follow_page_and_like_posts task in a separate thread
-    page_url = "https://www.facebook.com/ameergamerz"  # Replace with the desired page URL
-    thread = Thread(target=follow_page_and_like_posts_in_separate_browser, args=(cookies, page_url))
-    thread.start()
+    set_cookies(driver)
 
     # Inject custom text overlay
-    inject_custom_text(driver)
+  
 
     # Define and initialize tabs_data
     tabs_data = list(zip(user_data["item_titles"], image_paths))[:num_iterations]
     uploaded_images = set()
 
+    # Create items and perform Marketplace tasks
     for i, (item_title, _) in enumerate(tabs_data):
         create_item(driver, item_title, image_paths, uploaded_images)
-        inject_custom_text(driver)  # Inject custom text in each new item tab
+     
         select_category(driver)
         select_condition(driver)
         add_description(driver)
         set_availability(driver)
         set_visibility(driver)
+    
 
-      
-
-        inject_custom_text(driver)  # Inject custom text after setting location
-
+    # Save drafts and close unnecessary tabs
     window_handles = driver.window_handles
     save_draft(driver, window_handles, tabs_data)
     close_all_tabs_except_first(driver)
 
+    # Inject custom text in each window handle
     window_handles = driver.window_handles
     for handle in window_handles:
         driver.switch_to.window(handle)
-        inject_custom_text(driver)  # Inject custom text in each window handle
+    
 
     # Handle continue buttons and check for completion
     handle_continue_buttons(driver)
 
-    # Poll for the JavaScript completion flag
-    WebDriverWait(driver, 800).until(lambda driver: driver.execute_script("return window.continueButtonsTaskCompleted;"))
+   
 
     # Set location for all items
     window_handles = driver.window_handles
@@ -1131,10 +959,15 @@ def fb_new_id():
         driver.switch_to.window(handle)
         locations_text = locations_entry.get("1.0", "end-1c").split('\n')
         set_location(driver, locations_text)
-        inject_custom_text(driver)  # Inject custom text after setting location
+      
 
     # Proceed with publishing items
     publish_item(driver, window_handles, tabs_data)
 
-    messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
-    driver.quit()
+    # Show completion message (only if running in the main thread)
+    if driver is None:
+        messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
+
+    # Quit the driver if it was created in this function
+    if driver is not None and driver is not driver_from_thread:
+        driver.quit()
