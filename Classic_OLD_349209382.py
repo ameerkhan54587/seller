@@ -1,20 +1,21 @@
 
-instance_index = 0 
-
 def configure_chrome_options():
-    global instance_index
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--disable-autofill")
+    chrome_options.add_argument("--enable-resource-prefetching")
+    chrome_options.add_argument("--disable-popup-blocking")
+    chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--incognito")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument(f"--remote-debugging-port={9222 + instance_index}") 
-    instance_index += 1  
-    chrome_options.add_argument("enable-logging")
-    chrome_options.add_argument("v=1")
-    chrome_options.add_argument("--verbose")
+    chrome_options.add_argument("--disable-web-security")
+    chrome_options.add_argument("--no-default-browser-check")
+    #chrome_options.add_argument("--disable-speech-api")
+    #chrome_options.add_argument("--disable-hang-monitor")
+    #chrome_options.add_argument("--disable-client-side-phishing-detection")
+    chrome_options.add_argument("--disable-sync")
+    chrome_options.add_argument("--start-maximized")
     return chrome_options
 
 def initialize_chrome_driver(chrome_options):
@@ -408,77 +409,95 @@ def select_category(driver):
 
 
 def select_condition(driver):
-    # JavaScript code to find and click the Condition and New buttons
-    js_code = """
-    // Function to find and click an element by text
-    function findElementByText(tag, text) {
-      const elements = document.querySelectorAll(tag);
-      for (let element of elements) {
-        if (element.textContent.trim() === text) {
-          console.log(`Found element with text "${text}":`, element);
-          return element;
-        }
-      }
-      return null;
+    # Get the selected condition from the dropdown
+    condition = selected_condition.get()
+
+    # Define variations of the condition text
+    condition_variations = {
+        "Used - Like New": [
+            'Used - Like New',
+            'Used – Like New',
+            'Used - like new',
+            'Used – like new'
+        ],
+        "Used - Good": [
+            'Used - Good',
+            'Used – Good',
+            'Used - good',
+            'Used – good'
+        ],
+        "Used - Fair": [
+            'Used - Fair',
+            'Used – Fair',
+            'Used - fair',
+            'Used – fair'
+        ]
     }
+
+    # Get the variations for the selected condition
+    variations = condition_variations.get(condition, [condition])
+
+    # JavaScript code to find and click the Condition and selected condition buttons
+    js_code = f"""
+    // Function to find and click an element by text
+    function findElementByText(tag, text) {{
+      const elements = document.querySelectorAll(tag);
+      for (let element of elements) {{
+        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {{
+          console.log(`Found element with text "${{text}}":`, element);
+          return element;
+        }}
+      }}
+      return null;
+    }}
 
     // Function to scroll to an element and then click it
-    function scrollToAndClickElement(element) {
-      element.scrollIntoView({ behavior: 'auto', block: 'center' });
+    function scrollToAndClickElement(element) {{
+      element.scrollIntoView({{ behavior: 'auto', block: 'center' }});
       element.click();
       console.log('Clicked element:', element);
-    }
+    }}
 
-    // Function to search for span elements containing the text "New" and click on the first one found
-    function findAndClickSpanContainingText(text) {
-      var elements = document.querySelectorAll('span');
-      var results = [];
-      elements.forEach(element => {
-        if (element.textContent.trim() === text) {
-          results.push(element);
-          // Add a border to highlight the element
-          element.style.border = "2px solid red";
-          // Click the element
-          element.click();
-        }
-      });
-      return results;
-    }
-
-    // Function to observe changes in the DOM and click "New" when it appears
-    function observeForNewElement() {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-            var newElements = findAndClickSpanContainingText("New");
-            if (newElements.length > 0) {
-              console.log(newElements);
+    // Function to observe changes in the DOM and click the selected condition when it appears
+    function observeForConditionElement() {{
+      const observer = new MutationObserver((mutations) => {{
+        mutations.forEach((mutation) => {{
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {{
+            // Check for all variations of the condition text
+            {''.join(f'''
+            var conditionElement = findElementByText('span', "{variation}");
+            if (conditionElement) {{
+              console.log(conditionElement);
               observer.disconnect(); // Stop observing once the element is found and clicked
-            }
-          }
-        });
-      });
+              scrollToAndClickElement(conditionElement);
+              return;
+            }}
+            ''' for variation in variations)}
+          }}
+        }});
+      }});
 
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
+      observer.observe(document.body, {{ childList: true, subtree: true }});
+    }}
 
     // Find and click the element with the text "Condition"
-    const conditionElement = findElementByText('span', 'Condition');
-    if (conditionElement) {
-      scrollToAndClickElement(conditionElement);
+    const conditionSpan = findElementByText('span', 'Condition');
+    if (conditionSpan) {{
+      scrollToAndClickElement(conditionSpan);
       console.log('Clicked element with text "Condition"');
 
-      // Observe the DOM for the "New" element to appear
-      observeForNewElement();
-    } else {
+      // Observe the DOM for the selected condition to appear
+      observeForConditionElement();
+    }} else {{
       console.log('Element with text "Condition" not found.');
-    }
+    }}
     """
     try:
         driver.execute_script(js_code)
-        print("JavaScript executed to find and click the Condition and New buttons")
+        print(f"JavaScript executed to find and click the Condition and {condition} buttons")
     except TimeoutException:
-        print("Condition or New button not found. Skipping other processes.")
+        print(f"Condition or {condition} button not found. Skipping other processes.")
+
 
  
 
