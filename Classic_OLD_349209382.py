@@ -414,6 +414,9 @@ def select_condition(driver):
 
     # Define variations of the condition text
     condition_variations = {
+        "New": [
+            'New'
+        ],
         "Used - Like New": [
             'Used - Like New',
             'Used – Like New',
@@ -451,6 +454,18 @@ def select_condition(driver):
       return null;
     }}
 
+    // Function to find and click an element by class and text
+    function findElementByClassAndText(className, text) {{
+      const elements = document.querySelectorAll(className);
+      for (let element of elements) {{
+        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {{
+          console.log(`Found element with class "${{className}}" and text "${{text}}":`, element);
+          return element;
+        }}
+      }}
+      return null;
+    }}
+
     // Function to scroll to an element and then click it
     function scrollToAndClickElement(element) {{
       element.scrollIntoView({{ behavior: 'auto', block: 'center' }});
@@ -473,6 +488,17 @@ def select_condition(driver):
               return;
             }}
             ''' for variation in variations)}
+
+            // Special handling for "New" condition
+            if ("{condition}" === "New") {{
+              var newConditionElement = findElementByClassAndText('span.x193iq5w', 'New');
+              if (newConditionElement) {{
+                console.log(newConditionElement);
+                observer.disconnect(); // Stop observing once the element is found and clicked
+                scrollToAndClickElement(newConditionElement);
+                return;
+              }}
+            }}
           }}
         }});
       }});
@@ -497,7 +523,6 @@ def select_condition(driver):
         print(f"JavaScript executed to find and click the Condition and {condition} buttons")
     except TimeoutException:
         print(f"Condition or {condition} button not found. Skipping other processes.")
-
 
  
 
