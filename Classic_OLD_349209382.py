@@ -340,21 +340,21 @@ def select_category(driver):
       // Input element found, use the second script logic
       console.log('Input element with aria-label "Category" found.');
       categoryInput.select();
-      document.execCommand('insertText', false, "{category}");
+      document.execCommand('insertText', false, 'Bedroom Furniture Sets');
 
       var inputEvent = new Event('input', {{ bubbles: true }});
       categoryInput.dispatchEvent(inputEvent);
 
-      console.log('Text "{category}" entered successfully.');
+      console.log('Text entered successfully.');
 
       setTimeout(() => {{
-        var spanElement = Array.from(document.querySelectorAll('span')).find(span => span.textContent.trim().toLowerCase() === '{category}'.toLowerCase());
+        var spanElement = Array.from(document.querySelectorAll('span')).find(span => span.textContent.trim().toLowerCase() === 'bedroom furniture sets'.toLowerCase());
 
         if (spanElement) {{
           spanElement.click();
-          console.log('Clicked on "{category}" successfully.');
+          console.log('Clicked on successfully.');
         }} else {{
-          console.log('Span element with text "{category}" not found.');
+          console.log('Span element with text not found.');
         }}
       }}, 1); // Small delay to allow for the dropdown to populate
     }} else {{
@@ -366,7 +366,7 @@ def select_category(driver):
         console.log('Found span with text "Category":', categorySpan);
         clickElementWhenVisible('span', 'Category')
           .then(() => {{
-            // Wait for "{category}" to become visible and click it
+    
             return clickElementWhenVisible('span', "{category}");
           }})
           .then(() => {{
@@ -446,20 +446,8 @@ def select_condition(driver):
     function findElementByText(tag, text) {{
       const elements = document.querySelectorAll(tag);
       for (let element of elements) {{
-        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {{
+        if (element.textContent.trim() === text) {{
           console.log(`Found element with text "${{text}}":`, element);
-          return element;
-        }}
-      }}
-      return null;
-    }}
-
-    // Function to find and click an element by class and text
-    function findElementByClassAndText(className, text) {{
-      const elements = document.querySelectorAll(className);
-      for (let element of elements) {{
-        if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {{
-          console.log(`Found element with class "${{className}}" and text "${{text}}":`, element);
           return element;
         }}
       }}
@@ -473,6 +461,22 @@ def select_condition(driver):
       console.log('Clicked element:', element);
     }}
 
+    // Function to search for span elements containing the specified text and click on the first one found
+    function findAndClickSpanContainingText(text) {{
+      var elements = document.querySelectorAll('span');
+      var results = [];
+      elements.forEach(element => {{
+        if (element.textContent.trim() === text) {{
+          results.push(element);
+          // Add a border to highlight the element
+          element.style.border = "2px solid red";
+          // Click the element
+          element.click();
+        }}
+      }});
+      return results;
+    }}
+
     // Function to observe changes in the DOM and click the selected condition when it appears
     function observeForConditionElement() {{
       const observer = new MutationObserver((mutations) => {{
@@ -480,25 +484,13 @@ def select_condition(driver):
           if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {{
             // Check for all variations of the condition text
             {''.join(f'''
-            var conditionElement = findElementByText('span', "{variation}");
-            if (conditionElement) {{
-              console.log(conditionElement);
+            var conditionElements = findAndClickSpanContainingText("{variation}");
+            if (conditionElements.length > 0) {{
+              console.log(conditionElements);
               observer.disconnect(); // Stop observing once the element is found and clicked
-              scrollToAndClickElement(conditionElement);
               return;
             }}
             ''' for variation in variations)}
-
-            // Special handling for "New" condition
-            if ("{condition}" === "New") {{
-              var newConditionElement = findElementByClassAndText('span.x193iq5w', 'New');
-              if (newConditionElement) {{
-                console.log(newConditionElement);
-                observer.disconnect(); // Stop observing once the element is found and clicked
-                scrollToAndClickElement(newConditionElement);
-                return;
-              }}
-            }}
           }}
         }});
       }});
@@ -507,9 +499,9 @@ def select_condition(driver):
     }}
 
     // Find and click the element with the text "Condition"
-    const conditionSpan = findElementByText('span', 'Condition');
-    if (conditionSpan) {{
-      scrollToAndClickElement(conditionSpan);
+    const conditionElement = findElementByText('span', 'Condition');
+    if (conditionElement) {{
+      scrollToAndClickElement(conditionElement);
       console.log('Clicked element with text "Condition"');
 
       // Observe the DOM for the selected condition to appear
