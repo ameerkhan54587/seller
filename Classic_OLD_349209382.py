@@ -503,29 +503,65 @@ def select_condition(driver):
 
 def add_description(driver):
     description = description_entry.get("1.0", "end-1c").replace("'", "\\'").replace("\n", "\\n")  # Escape single quotes and new lines
+    
+    # JavaScript code to handle multiple selectors for the description field
     js_code = f"""
-    var xpath = "//label[@aria-label='Description']";
-    var label = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    if (label) {{
-        var inputField = label.querySelector('input[type="text"], textarea'); // To cover textareas if any
-        if (inputField) {{
-  
-            inputField.select(); // Select any existing text
-            document.execCommand('insertText', false, '{description}'); // Simulate typing
-            var event = new Event('input', {{ bubbles: true }});
-            inputField.dispatchEvent(event);
-        }} else {{
-            console.log('Input field not found');
+    // Function to find the description field using multiple selectors
+    function findDescriptionField() {{
+        // Try to find the textarea directly
+        var textarea = document.querySelector('textarea[id^=":r"]');
+        if (textarea) {{
+            return textarea;
         }}
+
+        // Try to find the textarea inside a label with aria-label="Description"
+        var label = document.querySelector('label[aria-label="Description"]');
+        if (label) {{
+            var textareaInLabel = label.querySelector('textarea');
+            if (textareaInLabel) {{
+                return textareaInLabel;
+            }}
+        }}
+
+        // Try to find the textarea inside a div with specific classes
+        var div = document.querySelector('div.x1a2a7pz.x6ikm8r.x1pi30zi.x1swvt13.xtt52l0.xh8yej3');
+        if (div) {{
+            var textareaInDiv = div.querySelector('textarea');
+            if (textareaInDiv) {{
+                return textareaInDiv;
+            }}
+        }}
+
+        // If no textarea is found, return null
+        return null;
+    }}
+
+    // Find the description field
+    var descriptionField = findDescriptionField();
+    if (descriptionField) {{
+        // Clear any existing text
+        descriptionField.value = '';
+        
+        // Simulate typing the description
+        descriptionField.focus();
+        document.execCommand('insertText', false, '{description}');
+        
+        // Trigger input event to ensure the value is updated
+        var event = new Event('input', {{ bubbles: true }});
+        descriptionField.dispatchEvent(event);
+        
+        console.log('Description filled successfully.');
     }} else {{
-        console.log('Label with aria-label "Description" not found');
+        console.log('Description field not found.');
     }}
     """
+
     try:
+        # Execute the JavaScript code
         driver.execute_script(js_code)
         print("JavaScript executed to fill the description")
-    except (TimeoutException, NoSuchElementException) as e:
-        print(f"Description field not found. Skipping the process. Error: {e}")
+    except Exception as e:
+        print(f"Error filling description: {e}")
 
 def set_availability(driver):
     if availability_checkbox_state.get():  # Assuming availability_checkbox_state is defined and callable
