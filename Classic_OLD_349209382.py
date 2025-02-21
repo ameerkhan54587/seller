@@ -1,21 +1,20 @@
 
+instance_index = 0 
+
 def configure_chrome_options():
+    global instance_index
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--disable-autofill")
-    chrome_options.add_argument("--enable-resource-prefetching")
-    chrome_options.add_argument("--disable-popup-blocking")
-    chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--incognito")
-    chrome_options.add_argument("--disable-web-security")
-    chrome_options.add_argument("--no-default-browser-check")
-    #chrome_options.add_argument("--disable-speech-api")
-    #chrome_options.add_argument("--disable-hang-monitor")
-    #chrome_options.add_argument("--disable-client-side-phishing-detection")
-    chrome_options.add_argument("--disable-sync")
-    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument(f"--remote-debugging-port={9222 + instance_index}") 
+    instance_index += 1  
+    chrome_options.add_argument("enable-logging")
+    chrome_options.add_argument("v=1")
+    chrome_options.add_argument("--verbose")
     return chrome_options
 
 def initialize_chrome_driver(chrome_options):
