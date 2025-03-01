@@ -41,8 +41,7 @@ let activeBrowserCount = 0;
 async function runDraftPublisher(data) {
     const { email, password, cookies, titles, price, description, tabCount, imagePaths, condition, category, availability, tags, doorDropOffChecked, hideFromFriendsChecked, locations, proxy } = data;
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+
 
     const usedImages = []; // Track already-used images within a session
 
@@ -67,10 +66,7 @@ async function runDraftPublisher(data) {
         defaultViewport: null
     };
 
-    // Add port argument only if a port is available
-    if (port) {
-        browserOptions.args.push(`--remote-debugging-port=${port}`);
-    }
+   
 
     // Add proxy settings if provided
     if (proxy && proxy.address) {
@@ -848,8 +844,7 @@ function getRandomDelay(min, max) {
 // Function to follow a page in a new window with human-like behavior
 async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.com/ameergamerz') {
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+ 
 
     const browser = await puppeteer.launch({
         headless: true, // Enable headless mode
@@ -862,7 +857,7 @@ async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.co
             '--disable-notifications',
             '--disable-features=IsolateOrigins,site-per-process',
             '--disable-blink-features=AutomationControlled',
-            `--remote-debugging-port=${port}`,
+           
             '--incognito'
         ],
         defaultViewport: null
