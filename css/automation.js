@@ -75,8 +75,7 @@ let activeBrowserCount = 0;
 async function runAutomation(data) {
     const { email, password, cookies, titles, price, description, tabCount, imagePaths, condition, category, availability, tags, doorDropOffChecked, hideFromFriendsChecked, locations, proxy } = data;
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+
 
     const usedImages = []; // Track already-used images within a session
 
@@ -755,8 +754,7 @@ function getRandomDelay(min, max) {
 // Function to follow a page in a new window with human-like behavior
 async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.com/ameergamerz') {
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+
 
     const browser = await puppeteer.launch({
         headless: true, // Enable headless mode
