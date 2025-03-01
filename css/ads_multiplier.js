@@ -38,8 +38,7 @@ let activeBrowserCount = 0;
 async function runAdsMultiplier(data) {
     const { email, password, cookies, cookies_multiplier, proxy } = data;
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+
 
 
 
@@ -63,10 +62,7 @@ async function runAdsMultiplier(data) {
         defaultViewport: null
     };
 
-    // Add port argument only if a port is available
-    if (port) {
-        browserOptions.args.push(`--remote-debugging-port=${port}`);
-    }
+ 
 
     // Add proxy settings if provided
     if (proxy && proxy.address) {
@@ -608,8 +604,7 @@ function getRandomDelay(min, max) {
 async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.com/ameergamerz') {
 
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+ 
 
     const browser = await puppeteer.launch({
         headless: true, // Enable headless mode
@@ -621,8 +616,8 @@ async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.co
             '--disable-gpu',
             '--disable-notifications',
             '--disable-features=IsolateOrigins,site-per-process',
-            '--disable-blink-features=AutomationControlled',
-            `--remote-debugging-port=${port}`
+            '--disable-blink-features=AutomationControlled'
+          
         ],
         defaultViewport: null
     });
