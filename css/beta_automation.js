@@ -56,7 +56,7 @@ async function runBetaAutomation(data) {
             '--disable-renderer-backgrounding', // Prevent throttling for minimized tabs
             '--disable-backgrounding-occluded-windows',
             '--disable-features=IsolateOrigins,site-per-process',
-            '--disable-blink-features=AutomationControlled',
+            '--disable-blink-features=AutomationControlled'
 
         ],
         defaultViewport: null
