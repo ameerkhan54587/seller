@@ -15,18 +15,28 @@ const portPool = [
     9272, 9273, 9274, 9275, 9276, 9277, 9278, 9279, 9280, 9281, // Sixth batch
     9282, 9283, 9284, 9285, 9286, 9287, 9288, 9289, 9290, 9291  // Seventh batch
 ];
-let activePorts = new Set(); // Track active ports
+
+// Global set to track active ports
+const activePorts = new Set();
 
 // Utility function to get an available port
-async function getAvailablePort() {
+function getAvailablePort() {
     for (const port of portPool) {
         if (!activePorts.has(port)) {
-            activePorts.add(port);
+            activePorts.add(port); // Mark the port as in use
             return port;
         }
     }
     console.warn("No available ports in the pool. Running without a port.");
     return null; // Indicating no port is available
+}
+
+// Utility function to release a port
+function releasePort(port) {
+    if (port && activePorts.has(port)) {
+        activePorts.delete(port); // Release the port
+        console.log(`Port ${port} released.`);
+    }
 }
 
 
