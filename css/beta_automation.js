@@ -668,7 +668,7 @@ async function clickSaveDraftButton(tab, tabIndex) {
                         null
                     ).singleNodeValue;
                     if (saveDraftButton) {
-                        saveDraftButton.scrollIntoView({ behavior: 'auto', block: 'center' });
+                        saveDraftButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         saveDraftButton.click();
                         return true;
                     }
@@ -1223,7 +1223,7 @@ async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.co
             ).singleNodeValue;
 
             if (button) {
-                button.scrollIntoView({ behavior: 'auto', block: 'center' });
+                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return true;
             }
             return false;
@@ -1277,7 +1277,7 @@ async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.co
 
                     // Skip if already liked
                     if (button && !button.querySelector('span[style*="color: rgb(8, 102, 255)"]')) {
-                        button.scrollIntoView({ behavior: 'auto', block: 'center' });
+                        button.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         button.click();
                         clickedCount++;
                         if (currentTotal + clickedCount >= maxLikes) break; // Stop if we reach the limit
@@ -1386,7 +1386,7 @@ async function retryClick(page, xpathSelector, maxRetries = 5, delay = 1000) {
                     null
                 ).singleNodeValue;
                 if (element) {
-                    element.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     element.click();
                     return true;
                 }
@@ -1663,7 +1663,7 @@ async function selectCategory(tab, category) {
                 });
 
                 if (bestMatch && bestScore > 0) {
-                    bestMatch.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    bestMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     bestMatch.click();
                     console.log(`Clicked best match "${bestMatch.textContent}" with score ${bestScore}`);
                     return true;
@@ -1724,7 +1724,7 @@ async function selectCategory(tab, category) {
                 });
 
                 if (bestMatch && bestScore > 0) {
-                    bestMatch.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    bestMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     bestMatch.click();
                     console.log(`Recovery succeeded with best match "${bestMatch.textContent}" (score: ${bestScore})`);
                     return true;
@@ -1864,7 +1864,7 @@ async function clickSpanWithVariants(tab, spanTexts) {
                 ).singleNodeValue;
 
                 if (element) {
-                    element.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     element.click();
                     return true;
                 }
@@ -1894,7 +1894,7 @@ async function Scrollerforlocation(tab) {
 
             for (const element of elements) {
                 if (element.textContent.trim().toLowerCase() === text.toLowerCase()) {
-                    element.scrollIntoView({ behavior: "auto", block: "center" });
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
                     return element.outerHTML; // Return the HTML of the element found
                 }
             }
