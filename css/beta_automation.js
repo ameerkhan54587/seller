@@ -431,93 +431,94 @@ async function handleContinueButtons(tab, browser, locations, tabCount) {
 }
 
 async function publishItem(browser, openedTabs) {
-    let currentTabIndex = 0; // Start from tab 0 (new tab 0 after closing the original tab 0)
+    try {
+        // Create an array of promises for each tab's publishing process
+        const publishPromises = openedTabs.map(async (currentTab, index) => {
+            console.log(`Navigating to Tab ${index + 1}...`);
 
-    while (currentTabIndex < openedTabs.length) {
-        const currentTab = openedTabs[currentTabIndex];
-        console.log(`Navigating to Tab ${currentTabIndex + 1}...`);
+            try {
+                // Bring the tab to the front
+                await currentTab.bringToFront();
+                console.log(`Tab ${index + 1} is now in focus.`);
 
-        try {
-            // Bring the tab to the front
-            await currentTab.bringToFront();
-            console.log(`Tab ${currentTabIndex + 1} is now in focus.`);
+                // Retry mechanism
+                let retryAttempts = 3;
+                while (retryAttempts > 0) {
+                    try {
+                        // Execute JavaScript to click the 'Next' button or directly click 'Publish'
+                        await currentTab.evaluate(() => {
+                            const nextButton = document.evaluate(
+                                "//span[contains(text(),'Next')]",
+                                document,
+                                null,
+                                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                null
+                            ).singleNodeValue;
 
-            // Retry mechanism
-            let retryAttempts = 3;
-            while (retryAttempts > 0) {
-                try {
-                    // Execute JavaScript to click the 'Next' button or directly click 'Publish'
-                    await currentTab.evaluate(() => {
-                        const nextButton = document.evaluate(
-                            "//span[contains(text(),'Next')]",
-                            document,
-                            null,
-                            XPathResult.FIRST_ORDERED_NODE_TYPE,
-                            null
-                        ).singleNodeValue;
+                            const publishButton = document.evaluate(
+                                "//span[contains(text(),'Publish')] | //button[contains(text(),'Publish')]",
+                                document,
+                                null,
+                                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                null
+                            ).singleNodeValue;
 
-                        const publishButton = document.evaluate(
-                            "//span[contains(text(),'Publish')] | //button[contains(text(),'Publish')]",
-                            document,
-                            null,
-                            XPathResult.FIRST_ORDERED_NODE_TYPE,
-                            null
-                        ).singleNodeValue;
+                            if (nextButton) {
+                                nextButton.click();
+                                console.log("Clicked 'Next' button");
 
-                        if (nextButton) {
-                            nextButton.click();
-                            console.log("Clicked 'Next' button");
+                                // Function to wait for the 'Publish' button to become visible and click it
+                                function waitForPublishButton() {
+                                    const publishButton = document.evaluate(
+                                        "//span[contains(text(),'Publish')] | //button[contains(text(),'Publish')]",
+                                        document,
+                                        null,
+                                        XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                        null
+                                    ).singleNodeValue;
 
-                            // Function to wait for the 'Publish' button to become visible and click it
-                            function waitForPublishButton() {
-                                const publishButton = document.evaluate(
-                                    "//span[contains(text(),'Publish')] | //button[contains(text(),'Publish')]",
-                                    document,
-                                    null,
-                                    XPathResult.FIRST_ORDERED_NODE_TYPE,
-                                    null
-                                ).singleNodeValue;
-
-                                if (publishButton) {
-                                    publishButton.click();
-                                    console.log("Clicked 'Publish' button");
-                                } else {
-                                    setTimeout(waitForPublishButton, 100); // Check every 0.1 seconds
+                                    if (publishButton) {
+                                        publishButton.click();
+                                        console.log("Clicked 'Publish' button");
+                                    } else {
+                                        setTimeout(waitForPublishButton, 100); // Check every 0.1 seconds
+                                    }
                                 }
+
+                                // Start waiting for the 'Publish' button
+                                waitForPublishButton();
+                            } else if (publishButton) {
+                                publishButton.click();
+                                console.log("Clicked 'Publish' button directly because 'Next' button not found");
+                            } else {
+                                console.log("'Next' and 'Publish' buttons not found");
+                                throw new Error("Buttons not found");
                             }
+                        });
 
-                            // Start waiting for the 'Publish' button
-                            waitForPublishButton();
-                        } else if (publishButton) {
-                            publishButton.click();
-                            console.log("Clicked 'Publish' button directly because 'Next' button not found");
-                        } else {
-                            console.log("'Next' and 'Publish' buttons not found");
-                            throw new Error("Buttons not found");
+                        console.log(`Clicked 'Next' and 'Publish' on Tab ${index + 1}`);
+                        break; // Exit retry loop if successful
+                    } catch (error) {
+                        console.error(`Error on Tab ${index + 1}: ${error.message}. Retrying...`);
+                        retryAttempts--;
+                        if (retryAttempts === 0) {
+                            throw new Error("'Next' or 'Publish' button not found after retries.");
                         }
-                    });
-
-                    console.log(`Clicked 'Next' and 'Publish' on Tab ${currentTabIndex + 1}`);
-                    break; // Exit retry loop if successful
-                } catch (error) {
-                    console.error(`Error on Tab ${currentTabIndex + 1}: ${error.message}. Retrying...`);
-                    retryAttempts--;
-                    if (retryAttempts === 0) {
-                        throw new Error("'Next' or 'Publish' button not found after retries.");
                     }
                 }
+            } catch (error) {
+                console.error(`Error processing Tab ${index + 1}: ${error.message}`);
             }
-        } catch (error) {
-            console.error(`Error processing Tab ${currentTabIndex + 1}: ${error.message}`);
-        }
+        });
 
-        // Move to the next tab
-        currentTabIndex++;
+        // Wait for all tabs to complete their publishing process
+        await Promise.all(publishPromises);
+
+        console.log("Completed publishing items on all tabs.");
+    } catch (error) {
+        console.error("Error during parallel publishing:", error);
     }
-
-    console.log("Completed publishing items on all tabs.");
 }
-
 
 
 let currentTitleIndex = 0;
