@@ -143,7 +143,7 @@ async function runBetaAutomation(data) {
 
         await loginToFacebook(firstTab, email, password, cookies); // Pass cookies here
 
-        await Market_Geography_changer(browser, locations);
+    
 
 
         // Open and process each ad in a new tab sequentially
