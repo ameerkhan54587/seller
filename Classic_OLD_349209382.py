@@ -517,36 +517,18 @@ def select_condition(driver):
         print(f"Condition or {condition} button not found. Skipping other processes.")
 
  
-
+ 
 def add_description(driver):
     description = description_entry.get("1.0", "end-1c").replace("'", "\\'").replace("\n", "\\n")  # Escape single quotes and new lines
     
-    # JavaScript code to handle multiple selectors for the description field
+    # JavaScript code to handle the XPath selector for the description field
     js_code = f"""
-    // Function to find the description field using multiple selectors
+    // Function to find the description field using XPath
     function findDescriptionField() {{
-        // Try to find the textarea directly
-        var textarea = document.querySelector('textarea[id^=":r"]');
-        if (textarea) {{
-            return textarea;
-        }}
-
-        // Try to find the textarea inside a label with aria-label="Description"
-        var label = document.querySelector('label[aria-label="Description"]');
-        if (label) {{
-            var textareaInLabel = label.querySelector('textarea');
-            if (textareaInLabel) {{
-                return textareaInLabel;
-            }}
-        }}
-
-        // Try to find the textarea inside a div with specific classes
-        var div = document.querySelector('div.x1a2a7pz.x6ikm8r.x1pi30zi.x1swvt13.xtt52l0.xh8yej3');
-        if (div) {{
-            var textareaInDiv = div.querySelector('textarea');
-            if (textareaInDiv) {{
-                return textareaInDiv;
-            }}
+        // Use XPath to find the textarea with the specified class
+        var xpathResult = document.evaluate('//textarea[contains(@class, "x1i10hfl")]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        if (xpathResult.singleNodeValue) {{
+            return xpathResult.singleNodeValue;
         }}
 
         // If no textarea is found, return null
@@ -579,6 +561,7 @@ def add_description(driver):
         print("JavaScript executed to fill the description")
     except Exception as e:
         print(f"Error filling description: {e}")
+
 
 def set_availability(driver):
     if availability_checkbox_state.get():  # Assuming availability_checkbox_state is defined and callable
