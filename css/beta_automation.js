@@ -1,3 +1,5 @@
+//v1.0.0
+
 const puppeteer = require('puppeteer');
 const path = require('path');
 const { ipcMain } = require('electron');
@@ -34,7 +36,7 @@ function sleep(ms) {
 
 let activeBrowserCount = 0;
 
-// Main function to run the automation steps
+
 async function runBetaAutomation(data) {
     const { email, password, cookies, titles, price, description, tabCount, imagePaths, condition, category, availability, tags, doorDropOffChecked, hideFromFriendsChecked, locations, proxy } = data;
 
@@ -143,7 +145,7 @@ async function runBetaAutomation(data) {
 
         await loginToFacebook(firstTab, email, password, cookies); // Pass cookies here
 
-    
+
 
 
         // Open and process each ad in a new tab sequentially
@@ -315,120 +317,189 @@ async function setImage(tab, imagePaths, usedImages, timeout = 60000, retryDelay
 }
 
 
+
 async function handleContinueButtons(tab, browser, locations, tabCount) {
-    const maxRetries = 7; // Maximum retries for scrolling and refreshing
-    let attempt = 0; // Current retry attempt
-    let clickCount = 0; // Number of drafts processed
-    const clickedUrls = new Set(); // Track processed URLs to avoid duplicates
-    const openedTabs = []; // Store opened tabs for further processing
+    const maxRetries = 7;
+    let attempt = 0;
+    let clickCount = 0;
+    const clickedUrls = new Set();
+    const openedTabs = [];
 
     console.log("Navigating to the drafts page...");
 
     try {
-        // Navigate to the drafts page
-        await tab.goto('https://www.facebook.com/marketplace/you/selling?state=DRAFT', {
-            waitUntil: 'networkidle2',
-            timeout: 60000
-        });
-        await tab.waitForSelector('a[aria-label="Continue"]', { timeout: 20000 });
-        console.log("Drafts page loaded.");
+
+        await tab.waitForSelector('a[aria-label="Continue"]', { timeout: 80000 })
+            .catch(() => {
+                throw new Error("No drafts found on the page. Please check if you have draft listings.");
+            });
+        console.log("Drafts page loaded successfully.");
     } catch (error) {
-        console.error("Error loading drafts page:", error.message);
-        return;
+        console.error(`Failed to load drafts page: ${error.message}`);
+        return { success: false, error: error.message };
     }
 
-    console.log(`Extracting and opening drafts in ${tabCount} tabs...`);
+    console.log(`Extracting and opening up to ${tabCount} drafts...`);
 
     while (attempt < maxRetries && clickCount < tabCount) {
-        await tab.bringToFront();
+        try {
+            await tab.bringToFront();
 
-        // Scroll down to load more drafts
-        const previousHeight = await tab.evaluate(() => document.body.scrollHeight);
-        await tab.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-        await tab.waitForTimeout(2000); // Wait for new content to load
+            // Scroll down to load more drafts
+            const previousHeight = await tab.evaluate(() => document.body.scrollHeight);
+            await tab.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+            await tab.waitForTimeout(2000);
 
-        const currentHeight = await tab.evaluate(() => document.body.scrollHeight);
+            const currentHeight = await tab.evaluate(() => document.body.scrollHeight);
 
-        // If no new content is loaded, refresh the page and retry
-        if (currentHeight === previousHeight) {
+            // Check if we've reached the bottom
+            if (currentHeight === previousHeight) {
+                attempt++;
+                console.log(`Reached bottom of page. Attempt ${attempt}/${maxRetries}`);
+
+                if (attempt < maxRetries) {
+                    console.log("Refreshing page to try loading more drafts...");
+                    await tab.reload({ waitUntil: 'networkidle2' });
+                    await tab.waitForTimeout(3000);
+                    continue;
+                } else {
+                    console.log(`Max retries reached. Found ${clickCount} drafts out of ${tabCount} requested.`);
+                    break;
+                }
+            }
+
+            // Find all "Continue" buttons
+            const continueButtons = await tab.$$('a[aria-label="Continue"]');
+
+            if (continueButtons.length === 0) {
+                attempt++;
+                console.log(`No continue buttons found. Attempt ${attempt}/${maxRetries}`);
+
+                if (attempt < maxRetries) {
+                    await tab.reload({ waitUntil: 'networkidle2' });
+                    await tab.waitForTimeout(3000);
+                    continue;
+                } else {
+                    console.log("Max retries reached with no continue buttons found.");
+                    break;
+                }
+            }
+
+            console.log(`Found ${continueButtons.length} continue buttons.`);
+
+            // Process each button
+            for (const button of continueButtons) {
+                if (clickCount >= tabCount) break;
+
+                try {
+                    const href = await tab.evaluate(btn => btn.href, button)
+                        .catch(() => null);
+
+                    if (!href) {
+                        console.log("Skipping button with invalid href");
+                        continue;
+                    }
+
+                    if (clickedUrls.has(href)) {
+                        console.log(`Skipping already processed URL: ${href}`);
+                        continue;
+                    }
+
+                    clickedUrls.add(href);
+                    console.log(`Processing draft ${clickCount + 1}/${tabCount}: ${href}`);
+
+                    // Open the draft in a new tab
+                    const newTab = await browser.newPage()
+                        .catch(err => {
+                            throw new Error(`Failed to open new tab: ${err.message}`);
+                        });
+
+                    openedTabs.push(newTab);
+
+                    // Navigate to the draft URL with error handling
+                    await newTab.goto(href, {
+                        waitUntil: 'domcontentloaded',
+                        timeout: 1000
+                    }).catch(err => {
+                        console.error(`Failed to load draft in tab: ${err.message}`);
+                        // Keep the tab in our array but mark the error
+                    });
+
+                    clickCount++;
+                } catch (error) {
+                    console.error(`Error processing draft button: ${error.message}`);
+                }
+            }
+        } catch (error) {
+            console.error(`Unexpected error in main loop: ${error.message}`);
             attempt++;
-            console.log(`Reached bottom of page. Retry attempt ${attempt}/${maxRetries}.`);
 
-            if (attempt < maxRetries) {
-                console.log("Refreshing the page...");
-                await tab.reload({ waitUntil: 'networkidle2' });
-                await tab.waitForTimeout(3000); // Wait for the page to reload
-                continue; // Skip the rest of the loop and retry
-            } else {
-                console.log("Max retries reached. Exiting...");
+            if (attempt >= maxRetries) {
+                console.log("Max retries reached after errors. Exiting draft collection.");
                 break;
             }
         }
-
-        // Find all "Continue" buttons
-        const continueButtons = await tab.$$('a[aria-label="Continue"]');
-        console.log(`Found ${continueButtons.length} continue buttons.`);
-
-        for (const button of continueButtons) {
-            if (clickCount >= tabCount) break; // Stop if we've processed enough drafts
-
-            try {
-                const href = await tab.evaluate(btn => btn.href, button);
-                if (!href || clickedUrls.has(href)) continue; // Skip if URL is invalid or already processed
-
-                clickedUrls.add(href);
-                console.log(`Extracted draft URL ${clickCount + 1}/${tabCount}: ${href}`);
-
-                // Open the draft in a new tab
-                const currentTab = await browser.newPage();
-                openedTabs.push(currentTab);
-                console.log(`New tab opened: ${openedTabs.length}`);
-
-                // Navigate to the draft URL
-                await currentTab.goto(href, { waitUntil: 'domcontentloaded', timeout: 70 })
-                    .catch(err => console.error(`Tab load error:`, err.message));
-
-                clickCount++;
-            } catch (error) {
-                console.error(`Error processing draft:`, error.message);
-            }
-        }
     }
 
-    // If we've found the required number of listings, proceed to location and next tasks
-    if (clickCount === tabCount) {
-        console.log(`All ${tabCount} drafts opened. Starting location setting...`);
+    console.log(`Collected ${clickCount} drafts out of ${tabCount} requested.`);
 
-        // **Now process locations & click next**
-        for (let index = 0; index < openedTabs.length; index++) {  // Start from tab 0
+    // Process the opened tabs if we have any
+    if (openedTabs.length > 0) {
+        console.log(`Processing ${openedTabs.length} opened tabs...`);
+
+        // Process locations & click next
+        for (let index = 0; index < openedTabs.length; index++) {
             const currentTab = openedTabs[index];
             try {
-                console.log(`Navigating to Tab ${index + 1} (Place ${index + 1})`);
-
-                // Bring the tab to the front before interacting with it
+                console.log(`Processing tab ${index + 1}: Setting location and clicking next`);
                 await currentTab.bringToFront();
-                console.log(`Tab ${index + 1} is now in focus.`);
 
-                if (locations?.length > 0) {
-                    await Scrollerforlocation(currentTab);
-                    await setLocation(currentTab, locations);
-                    await clickNext(currentTab);
+                if (Array.isArray(locations) && locations.length > 0) {
+                    await Scrollerforlocation(currentTab)
+                        .catch(err => {
+                            throw new Error(`Failed to scroll for location: ${err.message}`);
+                        });
+
+                    await setLocation(currentTab, locations)
+                        .catch(err => {
+                            throw new Error(`Failed to set location: ${err.message}`);
+                        });
+
+                    await clickNext(currentTab)
+                        .catch(err => {
+                            throw new Error(`Failed to click Next button: ${err.message}`);
+                        });
+
+                    console.log(`Tab ${index + 1}: Location set and 'Next' clicked successfully.`);
+                } else {
+                    console.warn("No locations provided, skipping location setting.");
                 }
-                console.log(`Place ${index + 1}: Location set and 'Next' clicked.`);
             } catch (error) {
-                console.error(`Error at Place ${index + 1}:`, error.message);
+                console.error(`Error processing tab ${index + 1}: ${error.message}`);
             }
         }
 
-        console.log(`Finished processing drafts in ${openedTabs.length} tabs.`);
+        // Process publish tasks
+        try {
+            await publishItem(browser, openedTabs);
+            console.log("Publish process completed.");
+        } catch (error) {
+            console.error(`Error during publish process: ${error.message}`);
+        }
 
-        // **Now process publish tasks**
-        await publishItem(browser, openedTabs);
-        await tab.waitForTimeout(10000); // Wait for 15 seconds before exiting
+        // Wait before finishing
+        await tab.waitForTimeout(15000);
     } else {
-        console.log(`Only found ${clickCount} drafts out of ${tabCount}. Exiting...`);
+        console.log("No drafts were successfully opened. Nothing to process further.");
     }
+
+    return {
+        success: clickCount > 0,
+        tabsProcessed: clickCount,
+        requestedTabs: tabCount
+    };
 }
+
 
 async function publishItem(browser, openedTabs) {
     try {
@@ -1010,7 +1081,7 @@ async function handleLoginRedirection(tab) {
             // Check if the current URL matches any of the valid URLs or patterns
             if ([...validUrls].some(validUrl => currentUrl.startsWith(validUrl))) {
                 console.log(`Valid URL detected: ${currentUrl}`);
-                return await handleSuccessfulLogin(tab); // Proceed with automation
+                return await handleSuccessfulLogin(tab); 
             }
 
             // If the last attempt, forward to manual login
@@ -1155,7 +1226,7 @@ async function followPageInNewWindow(cookies, pageUrl = 'https://www.facebook.co
             '--disable-notifications',
             '--disable-features=IsolateOrigins,site-per-process',
             '--disable-blink-features=AutomationControlled'
-           
+
         ],
         defaultViewport: null
     });
@@ -1491,7 +1562,7 @@ async function selectCategory(tab, category) {
         'garden': ['Garden', 'GARDEN', 'garden'],
         'appliances': ['Appliances', 'APPLIANCES', 'appliances'],
         'video_games': ['Video Games', 'VIDEO GAMES', 'video games'],
-        'books_films_music': ['Movies & TV Shows'], 
+        'books_films_music': ['Movies & TV Shows'],
         'bags_luggage': [
             'Bags & Luggage', 'BAGS & LUGGAGE', 'bags & luggage',
             'Bags and Luggage', 'BAGS AND LUGGAGE', 'bags and luggage'
