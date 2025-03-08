@@ -1,5 +1,25 @@
-#  Limit Accounts - V1
+#  Limit Accounts - V2
+import socket
 
+def is_port_available(port):
+    """
+    Check if a port is available (not in use).
+    
+    :param port: The port number to check.
+    :return: True if the port is available, False otherwise.
+    """
+    try:
+        # Create a socket object
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Try to bind the socket to the port
+        sock.bind(("localhost", port))
+        # Close the socket
+        sock.close()
+        return True
+    except OSError:
+        # Port is already in use
+        return False
+    
 def configure_chrome_options(port=9222):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
@@ -9,7 +29,16 @@ def configure_chrome_options(port=9222):
     chrome_options.add_argument("--incognito")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--start-maximized")
+
+    # Check if the port is available, if not, find a new one
+    while not is_port_available(port):
+        print(f"Port {port} is already in use. Trying the next port...")
+        port += 1  # Increment the port number
+    
+    # Add the remote debugging port argument
     chrome_options.add_argument(f"--remote-debugging-port={port}")
+    print(f"Using port: {port}")
+
     return chrome_options
 
 def initialize_chrome_driver(chrome_options):
