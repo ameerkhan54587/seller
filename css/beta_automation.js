@@ -1,4 +1,4 @@
-//v1.0.0
+//v1.0.2
 
 const puppeteer = require('puppeteer');
 const path = require('path');
