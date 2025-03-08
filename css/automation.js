@@ -2,6 +2,35 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const { ipcMain } = require('electron');
 const fs = require('fs');
+const net = require('net');
+
+// Utility function to check if a port is available
+function isPortAvailable(port) {
+    return new Promise((resolve) => {
+        const server = net.createServer()
+            .once('error', () => resolve(false)) // Port is in use
+            .once('listening', () => {
+                server.close(); // Port is available
+                resolve(true);
+            })
+            .listen(port); // Try to listen on the port
+    });
+}
+
+// Utility function to generate a random port within a range
+function getRandomPort(min = 9222, max = 10000) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Utility function to find an available port starting from a random port
+async function findAvailablePort() {
+    let port = getRandomPort(); // Start with a random port
+    while (!await isPortAvailable(port)) {
+        console.log(`Port ${port} is in use, trying port ${port + 1}...`);
+        port++;
+    }
+    return port;
+}
 
 
 
@@ -45,6 +74,10 @@ async function runAutomation(data) {
 
     const usedImages = []; // Track already-used images within a session
 
+    const port = await findAvailablePort();
+
+    console.log(`Using port: ${port}`); 
+
     // Configure Puppeteer launch options
     const browserOptions = {
         headless: global.headlessMode || false,
@@ -60,6 +93,7 @@ async function runAutomation(data) {
             '--disable-backgrounding-occluded-windows',
             '--disable-features=IsolateOrigins,site-per-process',
             '--disable-blink-features=AutomationControlled',
+            `--remote-debugging-port=${port}`
 
         ],
         defaultViewport: null
@@ -73,10 +107,19 @@ async function runAutomation(data) {
     }
 
 
-    const browser = await puppeteer.launch(browserOptions);
+    // Launch the browser with the selected port
+    let browser;
+    try {
+        browser = await puppeteer.launch(browserOptions);
+    } catch (error) {
+        console.error(`Failed to launch browser on port ${port}:`, error.message);
+        throw error; // Re-throw the error to handle it in the calling code
+    }
+
 
     // Inside your 'disconnected' event for Puppeteer browser
     activeBrowserCount++;
+    console.log(`Browser launched with debugging port: ${port}. Active browsers: ${activeBrowserCount}`);
   
 
     // Event to detect manual browser closure
