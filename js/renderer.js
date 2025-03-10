@@ -1,4 +1,501 @@
-console.log('Renderer script loaded!');
+function openVideoPopup() {
+    const popup = document.getElementById('videoPopup');
+    const iframe = document.getElementById('youtubeFrame');
+    // Replace VIDEO_ID with your actual YouTube video ID
+    iframe.src = 'https://www.youtube.com/embed/tkC-CkXk154?autoplay=1';
+    popup.style.display = 'block';
+}
+
+function closeVideoPopup() {
+    const popup = document.getElementById('videoPopup');
+    const iframe = document.getElementById('youtubeFrame');
+    iframe.src = ''; // Clear the source to stop the video
+    popup.style.display = 'none';
+}
+
+function copyLicenseKey() {
+    const key = document.getElementById('userKey').textContent;
+    navigator.clipboard.writeText(key);
+}
+
+function toggleConsole() {
+    const consoleDiv = document.getElementById("customConsole");
+    const toggleButton = document.getElementById("toggleConsole");
+    const modal = document.getElementById("passwordModal");
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordSubmit = document.getElementById("passwordSubmit");
+    const passwordCancel = document.getElementById("passwordCancel");
+    const errorPopup = document.getElementById("errorPopup");
+    const errorMessage = document.getElementById("errorMessage");
+
+    // Show the modal
+    modal.style.display = "block";
+
+    // Handle the Submit button
+    passwordSubmit.onclick = function () {
+        if (passwordInput.value === "White@901") {
+            modal.style.display = "none"; // Hide the password modal
+            passwordInput.value = ""; // Clear the input field
+
+            // Toggle the visibility of the console
+            if (consoleDiv.style.display === "none") {
+                consoleDiv.style.display = "block";
+                toggleButton.textContent = "Hide Logs";
+            }
+        } else {
+            // Display the CSS-styled error popup
+            showErrorPopup("Incorrect password!");
+            passwordInput.value = ""; // Clear the input field
+        }
+    };
+
+    // Handle the Cancel button
+    passwordCancel.onclick = function () {
+        modal.style.display = "none";
+        passwordInput.value = ""; // Clear the input field
+    };
+
+    // Close the modal when clicking outside of it
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            passwordInput.value = ""; // Clear the input field
+        }
+    };
+
+    // Handle Hide Logs
+    if (consoleDiv.style.display === "block") {
+        consoleDiv.style.display = "none";
+        toggleButton.textContent = "Show Logs";
+    }
+}
+
+// Function to show the CSS-styled error popup
+function showErrorPopup(message) {
+    const errorPopup = document.getElementById("errorPopup");
+    const errorMessage = document.getElementById("errorMessage");
+
+    errorMessage.textContent = message; // Set the error message
+    errorPopup.style.display = "block"; // Show the popup
+}
+
+// Function to close the error popup
+function closeErrorPopup() {
+    const errorPopup = document.getElementById("errorPopup");
+    errorPopup.style.display = "none"; // Hide the popup
+}
+
+
+
+// Override the default console.log function to capture logs
+(function () {
+    const originalConsoleLog = console.log;
+    const logOutput = document.getElementById("logOutput");
+
+    console.log = function (...args) {
+        originalConsoleLog.apply(console, args);
+
+        // Append the log message to the custom console
+        const message = args.map(arg => (typeof arg === "object" ? JSON.stringify(arg, null, 2) : arg)).join(" ");
+        const logEntry = document.createElement("div");
+        logEntry.textContent = message;
+        logOutput.appendChild(logEntry);
+
+        // Scroll to the bottom of the log output
+        logOutput.scrollTop = logOutput.scrollHeight;
+    };
+})();
+
+
+document.getElementById('saveDataButton').addEventListener('click', function () {
+    const successMessage = document.getElementById('successMessage');
+    successMessage.classList.add('show');
+
+    // Hide the success message after 3 seconds
+    setTimeout(function () {
+        successMessage.classList.remove('show');
+    }, 3000);
+});
+
+function checkHeadlessAutomation() {
+    const headlessCheck = document.getElementById('headlessCheck');
+    if (headlessCheck.checked) {
+        console.log("Headless automation enabled. Updating configuration...");
+        // Add logic to enable headless automation in the backend or send a signal
+        ipcRenderer.invoke('update-headless-mode', { headless: true });
+    } else {
+        console.log("Headless automation disabled.");
+        // Add logic to disable headless automation
+        ipcRenderer.invoke('update-headless-mode', { headless: false });
+    }
+}
+
+function validateMax(input) {
+    if (input.value > 4) {
+        input.value = 4; // Reset to the maximum value if exceeded
+    }
+}
+
+const contextMenu = document.getElementById('customContextMenu');
+let activeInput = null;
+
+// Show the context menu on right-click
+document.querySelectorAll('input, textarea').forEach(input => {
+    input.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        activeInput = this;
+
+        // Get scroll position
+        const scrollX = window.scrollX || window.pageXOffset;
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        // Use pageX/Y instead of clientX/Y to account for scroll position
+        const mouseX = e.pageX;
+        const mouseY = e.pageY;
+
+        // Position menu and ensure it stays within viewport bounds
+        const menuWidth = contextMenu.offsetWidth;
+        const menuHeight = contextMenu.offsetHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Calculate position, keeping menu within viewport
+        let posX = mouseX;
+        let posY = mouseY;
+
+        // Adjust if menu would extend beyond right edge
+        if (posX + menuWidth > windowWidth + scrollX) {
+            posX = mouseX - menuWidth;
+        }
+
+        // Adjust if menu would extend beyond bottom edge
+        if (posY + menuHeight > windowHeight + scrollY) {
+            posY = mouseY - menuHeight;
+        }
+
+        contextMenu.style.left = `${posX}px`;
+        contextMenu.style.top = `${posY}px`;
+        contextMenu.style.display = 'block';
+    });
+});
+
+// Hide the context menu on click outside
+document.addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+});
+
+// Perform the selected action
+function performAction(action) {
+    if (!activeInput) return;
+
+    switch (action) {
+        case 'copy':
+            activeInput.select();
+            document.execCommand('copy');
+            break;
+
+        case 'cut':
+            // Copy selected text to clipboard and delete it from the field
+            activeInput.select();
+            document.execCommand('cut');
+            break;
+
+        case 'paste':
+            navigator.clipboard.readText().then(text => {
+                const start = activeInput.selectionStart;
+                const end = activeInput.selectionEnd;
+
+                // Replace selected text or insert at cursor
+                activeInput.value =
+                    activeInput.value.substring(0, start) +
+                    text +
+                    activeInput.value.substring(end);
+
+                // Move the cursor after the pasted text
+                activeInput.selectionStart = activeInput.selectionEnd = start + text.length;
+            }).catch(err => {
+                alert('Failed to paste: ' + err);
+            });
+            break;
+
+        case 'delete':
+            // Delete the selected text
+            const start = activeInput.selectionStart;
+            const end = activeInput.selectionEnd;
+            activeInput.value =
+                activeInput.value.substring(0, start) +
+                activeInput.value.substring(end);
+
+            // Reset cursor position after deletion
+            activeInput.selectionStart = activeInput.selectionEnd = start;
+            break;
+
+        case 'undo':
+            document.execCommand('undo');
+            break;
+
+        case 'redo':
+            document.execCommand('redo');
+            break;
+
+        default:
+            break;
+    }
+
+    // Hide the context menu after performing an action
+    contextMenu.style.display = 'none';
+}
+
+// Show Add Accounts Popup
+function showAddAccountsPopup() {
+    document.getElementById('addAccountsPopup').style.display = 'block';
+}
+
+// Close Popup
+function closePopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
+}
+
+// Save Bulk Accounts
+// Save Bulk Accounts
+async function saveBulkAccounts() {
+    const textArea = document.getElementById('bulkAccountsTextarea');
+    const rawAccounts = textArea.value.trim().split('\n');
+
+    const accounts = [];
+    for (let i = 0; i < rawAccounts.length; i++) {
+        const line = rawAccounts[i].trim();
+
+        // Handle username and password on the same line with ; or :
+        if (line.includes(';')) {
+            const [username, password] = line.split(';');
+            accounts.push({ username: username.trim(), password: password.trim(), status: 'Not Started' });
+        } else if (line.includes(':')) {
+            const [username, password] = line.split(':');
+            accounts.push({ username: username.trim(), password: password.trim(), status: 'Not Started' });
+        } else {
+            // Handle case where the line is just a username and the next line is the password
+            const username = line;
+            const password = rawAccounts[i + 1] ? rawAccounts[i + 1].trim() : 'N/A';
+            if (password.includes(';') || password.includes(':')) {
+                // Skip this block if the next line is another combined entry
+                continue;
+            }
+            accounts.push({ username, password, status: 'Not Started' });
+            i++; // Skip the next line as it's already processed as the password
+        }
+    }
+
+    const updatedAccounts = await ipcRenderer.invoke('add-accounts', accounts); // Send to backend
+
+    // Provide feedback to the user
+    const duplicateCount = rawAccounts.length - updatedAccounts.length;
+    if (duplicateCount > 0) {
+        alert(`${duplicateCount} duplicate account(s) were replaced.`);
+    }
+
+    renderAccountsTable(updatedAccounts); // Update table
+    closePopup('addAccountsPopup'); // Close popup
+    textArea.value = ''; // Clear textarea
+}
+
+
+
+
+// Render Accounts Table
+function renderAccountsTable(accounts) {
+    const tableBody = document.querySelector('#accountsTable tbody');
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    accounts.forEach((account, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            
+            <td>${account.username}</td>
+            <td>${account.password}</td>
+            <td>${account.status}</td>
+            <td>
+                <button onclick="removeAccount(${index})">Remove</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+
+function showWarningAlert(message, onConfirm) {
+    const alertBox = document.getElementById('alertBox'); // Modal container
+    const alertMessage = document.getElementById('alertMessage'); // Message text
+    const alertOkButton = document.getElementById('alertOk'); // "Yes" button
+    const alertCancelButton = document.getElementById('alertCancel'); // "Cancel" button
+
+    // Set the message in the modal
+    alertMessage.textContent = message;
+
+    // Display the modal
+    alertBox.style.display = 'block';
+
+    // Handle "Yes" button click
+    alertOkButton.onclick = () => {
+        alertBox.style.display = 'none'; // Hide the modal
+        if (onConfirm) onConfirm(); // Execute the confirm action
+    };
+
+    // Handle "Cancel" button click
+    alertCancelButton.onclick = () => {
+        alertBox.style.display = 'none'; // Hide the modal
+    };
+}
+
+
+
+// Load Accounts on Startup
+async function loadAccounts() {
+    const accounts = await ipcRenderer.invoke('load-accounts'); // Fetch accounts from backend
+    renderAccountsTable(accounts); // Display in table
+}
+
+// Remove All Accounts
+async function removeAllAccounts() {
+    showWarningAlert('Are you sure you want to remove all accounts?', async () => {
+        const updatedAccounts = await ipcRenderer.invoke('remove-all-accounts'); // Clear all accounts
+        renderAccountsTable(updatedAccounts); // Update table
+    });
+}
+
+// Remove a Single Account
+async function removeAccount(index) {
+    showWarningAlert('Are you sure you want to remove this account?', async () => {
+        const updatedAccounts = await ipcRenderer.invoke('remove-account', index); // Remove single account
+        renderAccountsTable(updatedAccounts); // Update table
+    });
+}
+
+// Load accounts on window load
+window.onload = loadAccounts;
+
+
+// Get the Start Automation button
+const startAutomationBtn = document.getElementById('startAutomationBtn2');
+const loginForm = document.getElementById('loginForm'); // Assuming form has an ID
+
+// Event listener for form submission
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Change button state to "Processing..." and disable it
+    startAutomationBtn.textContent = "Processing...";
+    startAutomationBtn.disabled = true;
+
+    try {
+        // Gather form data
+        const formData = new FormData(loginForm);
+        const data = Object.fromEntries(formData.entries());
+
+        // Send data to backend automation function (using IPC in Electron)
+        ipcRenderer.send('run-automation', data);
+
+        // Listen for automation completion from the backend
+        ipcRenderer.once('automation-completed', () => {
+            // Log success or perform additional actions upon completion
+            console.log("Automation task completed.");
+
+            // Restore button state
+            startAutomationBtn.textContent = "Start Automation";
+            startAutomationBtn.disabled = false;
+        });
+    } catch (error) {
+        console.error("Error during automation:", error);
+
+        // Re-enable the button on error
+        startAutomationBtn.textContent = "Start Automation";
+        startAutomationBtn.disabled = false;
+    }
+});
+
+function showWarningAlert(message) {
+    const alertBox = document.getElementById('alertBox'); // Ensure this exists
+    const alertMessage = document.getElementById('alertMessage');
+
+    alertMessage.textContent = message;
+    alertBox.style.display = 'block';
+}
+
+function closeAlert() {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.style.display = 'none';
+}
+
+
+
+document.querySelectorAll('.remove-img-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const thumbnailDiv = event.target.closest('.thumbnail'); // Find the thumbnail div
+        const filePath = thumbnailDiv.querySelector('img').src; // Get the image path
+
+        // Use the custom warning popup
+        showWarningAlert('Are you sure you want to remove this image?', () => {
+            // On confirm, remove the image
+            thumbnailDiv.remove();
+
+            // Update the global uploadedImages array
+            window.uploadedImages = window.uploadedImages.filter(image => image !== filePath);
+
+            // Update counts
+            updateCounts();
+        });
+    });
+});
+
+
+function showWarningAlert(message, onConfirm) {
+    const alertBox = document.getElementById('alertBox'); // Modal container
+    const alertMessage = document.getElementById('alertMessage'); // Message text
+    const alertOkButton = document.getElementById('alertOk'); // "Yes" button
+    const alertCancelButton = document.getElementById('alertCancel'); // "Cancel" button
+
+    // Set the message in the modal
+    alertMessage.textContent = message;
+
+    // Display the modal
+    alertBox.style.display = 'block';
+
+    // Handle "Yes" button click
+    alertOkButton.onclick = () => {
+        alertBox.style.display = 'none'; // Hide the modal
+        if (onConfirm) onConfirm(); // Execute the confirm action
+    };
+
+    // Handle "Cancel" button click
+    alertCancelButton.onclick = () => {
+        alertBox.style.display = 'none'; // Hide the modal
+    };
+}
+
+
+
+
+function attachRemoveImageHandler() {
+    const removeButtons = document.querySelectorAll('.remove-img-btn');
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const thumbnailDiv = event.target.closest('.thumbnail');
+            const filePath = thumbnailDiv.querySelector('img').src;
+
+            showWarningAlert('Are you sure you want to remove this image?', () => {
+                thumbnailDiv.remove();
+
+                // Update the global uploadedImages array
+                window.uploadedImages = window.uploadedImages.filter(image => image !== filePath);
+
+                // Update counts
+                updateCounts();
+            });
+        });
+    });
+}
+
 const { ipcRenderer } = require('electron');
 // Ensure the `window.uploadedImages` arr
 // Ensure the `window.uploadedImages` arr
@@ -584,87 +1081,6 @@ function appendToCustomConsole(message, type = 'log') {
     logOutput.scrollTop = logOutput.scrollHeight; // Scroll to the bottom
 }
 
-function toggleProxySettings() {
-    const proxySettings = document.getElementById('proxySettings');
-    proxySettings.style.display = document.getElementById('enableProxy').checked ? 'block' : 'none';
-}
-
-
-function validateForm() {
-    const enableProxy = document.getElementById('enableProxy').checked;
-    if (enableProxy) {
-        const proxyAddress = document.getElementById('proxyAddress').value;
-        if (!proxyAddress) {
-            alert('Please enter a proxy address.');
-            return false;
-        }
-    }
-    return true;
-}
-
-function toggleContainer(containerId, button) {
-    // Hide all containers
-    const containers = document.querySelectorAll('.data-container');
-    containers.forEach(container => {
-        container.classList.remove('active');
-    });
-
-    // Show the selected container
-    const selectedContainer = document.getElementById(containerId);
-    if (selectedContainer) {
-        selectedContainer.classList.add('active');
-    }
-
-    // Remove 'active' class from all buttons
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    // Add 'active' class to the clicked button
-    button.classList.add('active');
-}
-
-document.querySelectorAll('input, textarea').forEach(input => {
-    input.disabled = false; // Ensure inputs are not disabled
-});
-
-function toggleSection(sectionToShowId) {
-    // Hide all sections
-    const sections = ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI'];
-    sections.forEach(sectionId => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.style.display = 'none';
-        }
-    });
-
-    // Show the selected section
-    const sectionToShow = document.getElementById(sectionToShowId);
-    if (sectionToShow) {
-        sectionToShow.style.display = 'block';
-    }
-}
-
-function toggleLoginType() {
-    const selectedType = document.querySelector('input[name="loginType"]:checked').value;
-    if (selectedType === 'cookies') {
-        toggleSection('cookiesField', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
-    } else if (selectedType === 'username') {
-        toggleSection('usernamePasswordFields', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
-    } else if (selectedType === 'bulkAccount') {
-        toggleSection('bulkAccountUI', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
-    }
-}
-
-
-function toggleBulkAccountUI() {
-    const bulkAccountRadio = document.getElementById('bulkAccountRadio');
-    if (bulkAccountRadio.checked) {
-        toggleSection('bulkAccountUI');
-    }
-}
-
 // Monitor the script selection dropdown and enforce tab limit
 document.getElementById('scriptSelection').addEventListener('change', (e) => {
     const scriptSelection = e.target.value;
@@ -718,359 +1134,84 @@ function openDownloadLink() {
 }
 
 
-// Get the Start Automation button
-const startAutomationBtn = document.getElementById('startAutomationBtn2');
-const loginForm = document.getElementById('loginForm'); // Assuming form has an ID
+function toggleSection(sectionToShowId) {
+    // Hide all sections
+    const sections = ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI'];
+    sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'none';
+        }
+    });
 
-// Event listener for form submission
-loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-
-    // Change button state to "Processing..." and disable it
-    startAutomationBtn.textContent = "Processing...";
-    startAutomationBtn.disabled = true;
-
-    try {
-        // Gather form data
-        const formData = new FormData(loginForm);
-        const data = Object.fromEntries(formData.entries());
-
-        // Send data to backend automation function (using IPC in Electron)
-        ipcRenderer.send('run-automation', data);
-
-        // Listen for automation completion from the backend
-        ipcRenderer.once('automation-completed', () => {
-            // Log success or perform additional actions upon completion
-            console.log("Automation task completed.");
-
-            // Restore button state
-            startAutomationBtn.textContent = "Start Automation";
-            startAutomationBtn.disabled = false;
-        });
-    } catch (error) {
-        console.error("Error during automation:", error);
-
-        // Re-enable the button on error
-        startAutomationBtn.textContent = "Start Automation";
-        startAutomationBtn.disabled = false;
+    // Show the selected section
+    const sectionToShow = document.getElementById(sectionToShowId);
+    if (sectionToShow) {
+        sectionToShow.style.display = 'block';
     }
-});
-
-function showWarningAlert(message) {
-    const alertBox = document.getElementById('alertBox'); // Ensure this exists
-    const alertMessage = document.getElementById('alertMessage');
-
-    alertMessage.textContent = message;
-    alertBox.style.display = 'block';
 }
 
-function closeAlert() {
-    const alertBox = document.getElementById('alertBox');
-    alertBox.style.display = 'none';
+function toggleLoginType() {
+    const selectedType = document.querySelector('input[name="loginType"]:checked').value;
+    if (selectedType === 'cookies') {
+        toggleSection('cookiesField', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
+    } else if (selectedType === 'username') {
+        toggleSection('usernamePasswordFields', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
+    } else if (selectedType === 'bulkAccount') {
+        toggleSection('bulkAccountUI', ['usernamePasswordFields', 'cookiesField', 'bulkAccountUI']);
+    }
 }
 
 
+function toggleBulkAccountUI() {
+    const bulkAccountRadio = document.getElementById('bulkAccountRadio');
+    if (bulkAccountRadio.checked) {
+        toggleSection('bulkAccountUI');
+    }
+}
 
-document.querySelectorAll('.remove-img-btn').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const thumbnailDiv = event.target.closest('.thumbnail'); // Find the thumbnail div
-        const filePath = thumbnailDiv.querySelector('img').src; // Get the image path
-
-        // Use the custom warning popup
-        showWarningAlert('Are you sure you want to remove this image?', () => {
-            // On confirm, remove the image
-            thumbnailDiv.remove();
-
-            // Update the global uploadedImages array
-            window.uploadedImages = window.uploadedImages.filter(image => image !== filePath);
-
-            // Update counts
-            updateCounts();
-        });
+function toggleContainer(containerId, button) {
+    // Hide all containers
+    const containers = document.querySelectorAll('.data-container');
+    containers.forEach(container => {
+        container.classList.remove('active');
     });
-});
 
+    // Show the selected container
+    const selectedContainer = document.getElementById(containerId);
+    if (selectedContainer) {
+        selectedContainer.classList.add('active');
+    }
 
-function showWarningAlert(message, onConfirm) {
-    const alertBox = document.getElementById('alertBox'); // Modal container
-    const alertMessage = document.getElementById('alertMessage'); // Message text
-    const alertOkButton = document.getElementById('alertOk'); // "Yes" button
-    const alertCancelButton = document.getElementById('alertCancel'); // "Cancel" button
-
-    // Set the message in the modal
-    alertMessage.textContent = message;
-
-    // Display the modal
-    alertBox.style.display = 'block';
-
-    // Handle "Yes" button click
-    alertOkButton.onclick = () => {
-        alertBox.style.display = 'none'; // Hide the modal
-        if (onConfirm) onConfirm(); // Execute the confirm action
-    };
-
-    // Handle "Cancel" button click
-    alertCancelButton.onclick = () => {
-        alertBox.style.display = 'none'; // Hide the modal
-    };
-}
-
-
-
-
-function attachRemoveImageHandler() {
-    const removeButtons = document.querySelectorAll('.remove-img-btn');
-
-    removeButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const thumbnailDiv = event.target.closest('.thumbnail');
-            const filePath = thumbnailDiv.querySelector('img').src;
-
-            showWarningAlert('Are you sure you want to remove this image?', () => {
-                thumbnailDiv.remove();
-
-                // Update the global uploadedImages array
-                window.uploadedImages = window.uploadedImages.filter(image => image !== filePath);
-
-                // Update counts
-                updateCounts();
-            });
-        });
+    // Remove 'active' class from all buttons
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
     });
+
+    // Add 'active' class to the clicked button
+    button.classList.add('active');
 }
 
-const contextMenu = document.getElementById('customContextMenu');
-let activeInput = null;
-
-// Show the context menu on right-click
 document.querySelectorAll('input, textarea').forEach(input => {
-    input.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-        activeInput = this;
-
-        // Get scroll position
-        const scrollX = window.scrollX || window.pageXOffset;
-        const scrollY = window.scrollY || window.pageYOffset;
-
-        // Use pageX/Y instead of clientX/Y to account for scroll position
-        const mouseX = e.pageX;
-        const mouseY = e.pageY;
-
-        // Position menu and ensure it stays within viewport bounds
-        const menuWidth = contextMenu.offsetWidth;
-        const menuHeight = contextMenu.offsetHeight;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-
-        // Calculate position, keeping menu within viewport
-        let posX = mouseX;
-        let posY = mouseY;
-
-        // Adjust if menu would extend beyond right edge
-        if (posX + menuWidth > windowWidth + scrollX) {
-            posX = mouseX - menuWidth;
-        }
-
-        // Adjust if menu would extend beyond bottom edge
-        if (posY + menuHeight > windowHeight + scrollY) {
-            posY = mouseY - menuHeight;
-        }
-
-        contextMenu.style.left = `${posX}px`;
-        contextMenu.style.top = `${posY}px`;
-        contextMenu.style.display = 'block';
-    });
+    input.disabled = false; // Ensure inputs are not disabled
 });
 
-// Hide the context menu on click outside
-document.addEventListener('click', () => {
-    contextMenu.style.display = 'none';
-});
 
-// Perform the selected action
-function performAction(action) {
-    if (!activeInput) return;
-
-    switch (action) {
-        case 'copy':
-            activeInput.select();
-            document.execCommand('copy');
-            break;
-
-        case 'cut':
-            // Copy selected text to clipboard and delete it from the field
-            activeInput.select();
-            document.execCommand('cut');
-            break;
-
-        case 'paste':
-            navigator.clipboard.readText().then(text => {
-                const start = activeInput.selectionStart;
-                const end = activeInput.selectionEnd;
-
-                // Replace selected text or insert at cursor
-                activeInput.value =
-                    activeInput.value.substring(0, start) +
-                    text +
-                    activeInput.value.substring(end);
-
-                // Move the cursor after the pasted text
-                activeInput.selectionStart = activeInput.selectionEnd = start + text.length;
-            }).catch(err => {
-                alert('Failed to paste: ' + err);
-            });
-            break;
-
-        case 'delete':
-            // Delete the selected text
-            const start = activeInput.selectionStart;
-            const end = activeInput.selectionEnd;
-            activeInput.value =
-                activeInput.value.substring(0, start) +
-                activeInput.value.substring(end);
-
-            // Reset cursor position after deletion
-            activeInput.selectionStart = activeInput.selectionEnd = start;
-            break;
-
-        case 'undo':
-            document.execCommand('undo');
-            break;
-
-        case 'redo':
-            document.execCommand('redo');
-            break;
-
-        default:
-            break;
-    }
-
-    // Hide the context menu after performing an action
-    contextMenu.style.display = 'none';
+function toggleProxySettings() {
+    const proxySettings = document.getElementById('proxySettings');
+    proxySettings.style.display = document.getElementById('enableProxy').checked ? 'block' : 'none';
 }
 
-function checkHeadlessAutomation() {
-    const headlessCheck = document.getElementById('headlessCheck');
-    if (headlessCheck.checked) {
-        console.log("Headless automation enabled. Updating configuration...");
-        // Add logic to enable headless automation in the backend or send a signal
-        ipcRenderer.invoke('update-headless-mode', { headless: true });
-    } else {
-        console.log("Headless automation disabled.");
-        // Add logic to disable headless automation
-        ipcRenderer.invoke('update-headless-mode', { headless: false });
-    }
-}
 
-document.getElementById('saveDataButton').addEventListener('click', function () {
-    const successMessage = document.getElementById('successMessage');
-    successMessage.classList.add('show');
-
-    // Hide the success message after 3 seconds
-    setTimeout(function () {
-        successMessage.classList.remove('show');
-    }, 3000);
-});
-
-function toggleConsole() {
-    const consoleDiv = document.getElementById("customConsole");
-    const toggleButton = document.getElementById("toggleConsole");
-    const modal = document.getElementById("passwordModal");
-    const passwordInput = document.getElementById("passwordInput");
-    const passwordSubmit = document.getElementById("passwordSubmit");
-    const passwordCancel = document.getElementById("passwordCancel");
-    const errorPopup = document.getElementById("errorPopup");
-    const errorMessage = document.getElementById("errorMessage");
-
-    // Show the modal
-    modal.style.display = "block";
-
-    // Handle the Submit button
-    passwordSubmit.onclick = function () {
-        if (passwordInput.value === "White@901") {
-            modal.style.display = "none"; // Hide the password modal
-            passwordInput.value = ""; // Clear the input field
-
-            // Toggle the visibility of the console
-            if (consoleDiv.style.display === "none") {
-                consoleDiv.style.display = "block";
-                toggleButton.textContent = "Hide Logs";
-            }
-        } else {
-            // Display the CSS-styled error popup
-            showErrorPopup("Incorrect password!");
-            passwordInput.value = ""; // Clear the input field
+function validateForm() {
+    const enableProxy = document.getElementById('enableProxy').checked;
+    if (enableProxy) {
+        const proxyAddress = document.getElementById('proxyAddress').value;
+        if (!proxyAddress) {
+            alert('Please enter a proxy address.');
+            return false;
         }
-    };
-
-    // Handle the Cancel button
-    passwordCancel.onclick = function () {
-        modal.style.display = "none";
-        passwordInput.value = ""; // Clear the input field
-    };
-
-    // Close the modal when clicking outside of it
-    window.onclick = function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-            passwordInput.value = ""; // Clear the input field
-        }
-    };
-
-    // Handle Hide Logs
-    if (consoleDiv.style.display === "block") {
-        consoleDiv.style.display = "none";
-        toggleButton.textContent = "Show Logs";
     }
-}
-
-// Function to show the CSS-styled error popup
-function showErrorPopup(message) {
-    const errorPopup = document.getElementById("errorPopup");
-    const errorMessage = document.getElementById("errorMessage");
-
-    errorMessage.textContent = message; // Set the error message
-    errorPopup.style.display = "block"; // Show the popup
-}
-
-// Function to close the error popup
-function closeErrorPopup() {
-    const errorPopup = document.getElementById("errorPopup");
-    errorPopup.style.display = "none"; // Hide the popup
-}
-
-
-
-// Override the default console.log function to capture logs
-(function () {
-    const originalConsoleLog = console.log;
-    const logOutput = document.getElementById("logOutput");
-
-    console.log = function (...args) {
-        originalConsoleLog.apply(console, args);
-
-        // Append the log message to the custom console
-        const message = args.map(arg => (typeof arg === "object" ? JSON.stringify(arg, null, 2) : arg)).join(" ");
-        const logEntry = document.createElement("div");
-        logEntry.textContent = message;
-        logOutput.appendChild(logEntry);
-
-        // Scroll to the bottom of the log output
-        logOutput.scrollTop = logOutput.scrollHeight;
-    };
-})();
-
-function openVideoPopup() {
-    const popup = document.getElementById('videoPopup');
-    const iframe = document.getElementById('youtubeFrame');
-    // Replace VIDEO_ID with your actual YouTube video ID
-    iframe.src = 'https://www.youtube.com/embed/tkC-CkXk154?autoplay=1';
-    popup.style.display = 'block';
-}
-
-function closeVideoPopup() {
-    const popup = document.getElementById('videoPopup');
-    const iframe = document.getElementById('youtubeFrame');
-    iframe.src = ''; // Clear the source to stop the video
-    popup.style.display = 'none';
+    return true;
 }
