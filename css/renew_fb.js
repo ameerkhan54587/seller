@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const { ipcMain } = require('electron');
 const fs = require('fs');
+const net = require('net');
 
 
 // Utility function to check if a port is available
@@ -34,29 +35,6 @@ async function findAvailablePort() {
 
 
 
-const portPool = [
-    9222, 9223, 9224, 9225, 9226, 9227, 9228, 9229, 9230, 9231, // First batch
-    9232, 9233, 9234, 9235, 9236, 9237, 9238, 9239, 9240, 9241, // Second batch
-    9242, 9243, 9244, 9245, 9246, 9247, 9248, 9249, 9250, 9251, // Third batch
-    9252, 9253, 9254, 9255, 9256, 9257, 9258, 9259, 9260, 9261, // Fourth batch
-    9262, 9263, 9264, 9265, 9266, 9267, 9268, 9269, 9270, 9271, // Fifth batch
-    9272, 9273, 9274, 9275, 9276, 9277, 9278, 9279, 9280, 9281, // Sixth batch
-    9282, 9283, 9284, 9285, 9286, 9287, 9288, 9289, 9290, 9291  // Seventh batch
-];
-let activePorts = new Set(); // Track active ports
-
-// Utility function to get an available port
-async function getAvailablePort() {
-    for (const port of portPool) {
-        if (!activePorts.has(port)) {
-            activePorts.add(port);
-            return port;
-        }
-    }
-    console.warn("No available ports in the pool. Running without a port.");
-    return null; // Indicating no port is available
-}
-
 
 // Sleep function to replace waitForTimeout
 function sleep(ms) {
@@ -68,9 +46,6 @@ let activeBrowserCount = 0;
 // Main function to run the automation steps
 async function runRenewFB(data) {
     const { email, password, cookies, proxy } = data;
-
-
-
 
 
 
@@ -99,10 +74,7 @@ async function runRenewFB(data) {
         defaultViewport: null
     };
 
-    // Add port argument only if a port is available
-    if (port) {
-        browserOptions.args.push(`--remote-debugging-port=${port}`);
-    }
+
 
     // Add proxy settings if provided
     if (proxy && proxy.address) {
