@@ -1459,6 +1459,12 @@ async function setPrice(tab, price) {
 }
 
 async function setTags(tab, tags) {
+    // If tags are not provided or the array is empty, skip the process
+    if (!tags || tags.length === 0) {
+        console.log("No tags provided. Skipping tag setting.");
+        return; // Exit the function early
+    }
+
     try {
         // CSS selector for the textarea with multiple classes
         const tagInputSelector = 'textarea.x1i10hfl.xggy1nq.x1s07b3s.xjbqb8w.x76ihet.xwmqs3e.x112ta8.xxxdfa6.x9f619.xzsf02u.x78zum5.x1jchvi3.x1fcty0u.x1a2a7pz.x6ikm8r.x10wlt62.xwib8y2.xtt52l0.xh8yej3.x1ls7aod.xcrlgei.x1byulpo.x1agbcgv.x15bjb6t';
@@ -1466,21 +1472,31 @@ async function setTags(tab, tags) {
         // Wait for the textarea element with timeout
         await tab.waitForSelector(tagInputSelector, { timeout: 5000 });
 
-        // Select the textarea element
-        const tagInput = await tab.$(tagInputSelector);
+        // Directly set the value of the textarea using evaluate
+        await tab.evaluate((selector, tagList) => {
+            const tagInput = document.querySelector(selector);
 
-        if (tagInput) {
-            // Focus on the textarea
-            await tagInput.focus();
+            if (tagInput) {
+                // Focus on the textarea
+                tagInput.focus();
 
-            for (const tag of tags) {
-                await tagInput.type(tag, { delay: 50 }); // Type each tag with delay
-                await tab.keyboard.press('Enter'); // Simulate pressing Enter to confirm each tag
+                // Join tags with commas (or any delimiter required by the platform)
+                const tagsString = tagList.join(',');
+
+                // Directly set the value of the textarea
+                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                    window.HTMLTextAreaElement.prototype,
+                    "value"
+                ).set;
+
+                nativeInputValueSetter.call(tagInput, tagsString); // Set value
+                tagInput.dispatchEvent(new Event('input', { bubbles: true })); // Trigger React or other listeners
+            } else {
+                console.error("Tag input field not found.");
             }
-            console.log("Tags added successfully.");
-        } else {
-            console.error("Tag input field not found.");
-        }
+        }, tagInputSelector, tags);
+
+        console.log("Tags added successfully.");
     } catch (error) {
         console.error("Error while adding tags:", error);
     }
