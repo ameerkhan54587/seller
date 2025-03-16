@@ -262,7 +262,11 @@ async function runBetaAutomation(data) {
 
 
 async function setDescription(tab, description) {
-    const descriptionText = description || "Item description";
+    // If description is not provided or is an empty string, skip the process
+    if (!description) {
+        console.log("No description provided. Skipping description setting.");
+        return; // Exit the function early
+    }
 
     try {
         await tab.evaluate((descText) => {
@@ -289,7 +293,7 @@ async function setDescription(tab, description) {
             } else {
                 console.error("Description field not found.");
             }
-        }, descriptionText);
+        }, description);
 
         console.log("Description set successfully.");
     } catch (error) {
