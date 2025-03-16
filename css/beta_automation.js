@@ -1472,31 +1472,36 @@ async function setTags(tab, tags) {
         // Wait for the textarea element with timeout
         await tab.waitForSelector(tagInputSelector, { timeout: 5000 });
 
-        // Directly set the value of the textarea using evaluate
-        await tab.evaluate((selector, tagList) => {
-            const tagInput = document.querySelector(selector);
+        // Select the textarea element
+        const tagInput = await tab.$(tagInputSelector);
 
-            if (tagInput) {
-                // Focus on the textarea
-                tagInput.focus();
+        if (tagInput) {
+            // Focus on the textarea
+            await tagInput.focus();
 
-                // Join tags with commas (or any delimiter required by the platform)
-                const tagsString = tagList.join(',');
+            for (const tag of tags) {
+                // Directly set the value of the textarea to the current tag
+                await tab.evaluate((input, currentTag) => {
+                    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                        window.HTMLTextAreaElement.prototype,
+                        "value"
+                    ).set;
 
-                // Directly set the value of the textarea
-                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-                    window.HTMLTextAreaElement.prototype,
-                    "value"
-                ).set;
+                    nativeInputValueSetter.call(input, currentTag); // Set value
+                    input.dispatchEvent(new Event('input', { bubbles: true })); // Trigger React or other listeners
+                }, tagInput, tag);
 
-                nativeInputValueSetter.call(tagInput, tagsString); // Set value
-                tagInput.dispatchEvent(new Event('input', { bubbles: true })); // Trigger React or other listeners
-            } else {
-                console.error("Tag input field not found.");
+                // Simulate pressing Enter to confirm the tag
+                await tab.keyboard.press('Enter');
+
+                // Optional: Add a small delay between tags (if needed)
+                await tab.waitForTimeout(100); // Adjust delay as needed
             }
-        }, tagInputSelector, tags);
 
-        console.log("Tags added successfully.");
+            console.log("Tags added successfully.");
+        } else {
+            console.error("Tag input field not found.");
+        }
     } catch (error) {
         console.error("Error while adding tags:", error);
     }
