@@ -965,6 +965,12 @@ async function setPrice(tab, price) {
 }
 
 async function setTags(tab, tags) {
+    // If tags are not provided or the array is empty, skip the process
+    if (!tags || tags.length === 0) {
+        console.log("No tags provided. Skipping tag setting.");
+        return; // Exit the function early
+    }
+
     try {
         // CSS selector for the textarea with multiple classes
         const tagInputSelector = 'textarea.x1i10hfl.xggy1nq.x1s07b3s.xjbqb8w.x76ihet.xwmqs3e.x112ta8.xxxdfa6.x9f619.xzsf02u.x78zum5.x1jchvi3.x1fcty0u.x1a2a7pz.x6ikm8r.x10wlt62.xwib8y2.xtt52l0.xh8yej3.x1ls7aod.xcrlgei.x1byulpo.x1agbcgv.x15bjb6t';
@@ -980,9 +986,24 @@ async function setTags(tab, tags) {
             await tagInput.focus();
 
             for (const tag of tags) {
-                await tagInput.type(tag, { delay: 50 }); // Type each tag with delay
-                await tab.keyboard.press('Enter'); // Simulate pressing Enter to confirm each tag
+                // Directly set the value of the textarea to the current tag
+                await tab.evaluate((input, currentTag) => {
+                    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                        window.HTMLTextAreaElement.prototype,
+                        "value"
+                    ).set;
+
+                    nativeInputValueSetter.call(input, currentTag); // Set value
+                    input.dispatchEvent(new Event('input', { bubbles: true })); // Trigger React or other listeners
+                }, tagInput, tag);
+
+                // Simulate pressing Enter to confirm the tag
+                await tab.keyboard.press('Enter');
+
+                // Optional: Add a small delay between tags (if needed)
+                await tab.waitForTimeout(100); // Adjust delay as needed
             }
+
             console.log("Tags added successfully.");
         } else {
             console.error("Tag input field not found.");
@@ -991,7 +1012,6 @@ async function setTags(tab, tags) {
         console.error("Error while adding tags:", error);
     }
 }
-
 
 
 
