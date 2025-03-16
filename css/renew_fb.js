@@ -69,16 +69,15 @@ let activeBrowserCount = 0;
 async function runRenewFB(data) {
     const { email, password, cookies, proxy } = data;
 
-    const port = await getAvailablePort(); // Get an available port
-    console.log(`Launching browser on port ${port}...`);
+
 
 
 
 
     const port = await findAvailablePort();
 
-    console.log(`Using port: ${port}`); 
-    
+    console.log(`Using port: ${port}`);
+
     // Configure Puppeteer launch options
     const browserOptions = {
         headless: global.headlessMode || false,
