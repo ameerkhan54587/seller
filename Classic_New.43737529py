@@ -1,4 +1,4 @@
-#  Limit Accounts - V2
+#  Limit Accounts - V3
 import socket
 
 def is_port_available(port):
@@ -58,6 +58,85 @@ def initialize_chrome_driver(chrome_options):
 
     return driver
 
+def detect_login_success(driver, timeout=30):
+    """
+    Detect if login was successful by checking for login indicators.
+    Returns True if login detected, False otherwise.
+    """
+    print("Checking for login success...")
+    start_time = time.time()
+    check_interval = 0.5  # Check every 0.5 seconds for faster detection
+    
+    # Check periodically for login success
+    while (time.time() - start_time) < timeout:
+        try:
+            current_url = driver.current_url
+            
+            # Check for save-device page (this is a successful login page)
+            if 'login/save-device' in current_url:
+                print("Save device page detected - login successful!")
+                # Try to click "Save" or "Not now" to proceed
+                try:
+                    # Look for "Save" button
+                    save_button = driver.find_elements(By.XPATH, "//button[contains(text(), 'Save')]")
+                    if save_button:
+                        save_button[0].click()
+                        print("Clicked 'Save' button")
+                        time.sleep(2)
+                    else:
+                        # Try "Not now" button
+                        not_now_button = driver.find_elements(By.XPATH, "//button[contains(text(), 'Not now')]")
+                        if not_now_button:
+                            not_now_button[0].click()
+                            print("Clicked 'Not now' button")
+                            time.sleep(2)
+                except Exception as e:
+                    print(f"Could not click save device buttons: {e}")
+                return True
+            
+            # Check for expected URLs (successful login pages)
+            if any(url in current_url for url in [
+                'https://www.facebook.com/',
+                'https://m.facebook.com/',
+                'https://web.facebook.com/',
+                'facebook.com/home',
+                'facebook.com/?sk=welcome',
+                'facebook.com/?ref=home',
+                'facebook.com/marketplace'
+            ]):
+                # Additional check: look for logged-in elements
+                try:
+                    logged_in_elements = (
+                        len(driver.find_elements(By.XPATH, "//div[@aria-label='Account']")) > 0 or
+                        len(driver.find_elements(By.XPATH, "//div[@aria-label='Menu']")) > 0 or
+                        len(driver.find_elements(By.XPATH, "//a[contains(@href, '/me')]")) > 0 or
+                        len(driver.find_elements(By.XPATH, "//div[contains(@aria-label, 'Your profile')]")) > 0 or
+                        len(driver.find_elements(By.XPATH, "//div[@role='banner']")) > 0 or
+                        len(driver.find_elements(By.XPATH, "//span[contains(text(), 'Marketplace')]")) > 0
+                    )
+                    if logged_in_elements:
+                        print("Login success detected!")
+                        return True
+                except:
+                    pass
+                
+                # If URL matches but elements not found, still consider it successful
+                # (especially for mobile pages)
+                if 'm.facebook.com' in current_url or 'www.facebook.com' in current_url:
+                    if 'login' not in current_url.lower() or 'save-device' in current_url:
+                        print("Login success detected (based on URL)!")
+                        return True
+            
+            # Wait a bit before checking again
+            time.sleep(check_interval)
+        except Exception as e:
+            # If there's an error, continue checking
+            time.sleep(check_interval)
+            continue
+    
+    print(f"Login detection timeout ({timeout}s) reached. Proceeding with automation...")
+    return False
+
 def login_to_facebook(driver, selected_option):
     # Open a new tab
     driver.execute_script("window.open('about:blank', '_blank');")
@@ -112,7 +191,7 @@ def login_to_facebook(driver, selected_option):
         )
         login_button.click()
 
-        # Wait for redirect to any of the specified URLs
+        # Wait for redirect to any of the specified URLs with timeout
         expected_urls = [
             'https://www.facebook.com/',
             'https://m.facebook.com/login/save-device/',
@@ -123,14 +202,23 @@ def login_to_facebook(driver, selected_option):
             'https://m.facebook.com/login/save-device/'
         ]
 
-        # Wait until the current URL matches any of the expected URLs
-        WebDriverWait(driver, 30).until(
-            lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
-        )
+        # Try to wait for redirect, but proceed after timeout if not detected
+        try:
+            WebDriverWait(driver, 30).until(
+                lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
+            )
+            print("Login redirect detected successfully!")
+        except TimeoutException:
+            print("Login redirect timeout. Checking for login success...")
+        
+        # Detect login success with timeout mechanism
+        login_detected = detect_login_success(driver, timeout=30)
+        if login_detected:
+            print("Login confirmed. Proceeding...")
+        else:
+            print("Login not confirmed, but proceeding with automation anyway...")
 
-      
-
-        # Close the second tab after successful login
+        # Close the second tab after login attempt
         driver.close()
 
         # Switch back to the first tab (original tab)
@@ -177,39 +265,105 @@ def login_to_facebook(driver, selected_option):
             'https://m.facebook.com/login/save-device/'
         ]
 
-        # Wait until the current URL matches any of the expected URLs
-        WebDriverWait(driver, 30).until(
-            lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
-        )
+        # Try to wait for redirect, but proceed after timeout if not detected
+        try:
+            WebDriverWait(driver, 30).until(
+                lambda driver: any(expected_url in driver.current_url for expected_url in expected_urls)
+            )
+            print("Login redirect detected successfully!")
+        except TimeoutException:
+            print("Login redirect timeout. Checking for login success...")
+        
+        # Detect login success with timeout mechanism
+        login_detected = detect_login_success(driver, timeout=30)
+        if login_detected:
+            print("Login confirmed. Proceeding...")
+        else:
+            print("Login not confirmed, but proceeding with automation anyway...")
 
-      
-        # Close the second tab after successful login
+        # Close the second tab after login attempt
         driver.close()
 
         # Switch back to the first tab (original tab)
         driver.switch_to.window(driver.window_handles[0])
 
     elif selected_option == "Cookies Access Token":
-       
-
+        # Navigate to Facebook first
         driver.get("https://www.facebook.com")
-       
+        
+        # Wait for page to load
+        time.sleep(2)
+        
+        # Set cookies if provided
+        cookies_str = cookie_entry.get("1.0", "end-1c").strip()
+        if cookies_str:
+            try:
+                cookies = [cookie.strip() for cookie in cookies_str.split(';')]
+                for cookie in cookies:
+                    if '=' in cookie:  # Check if '=' exists in the cookie
+                        name, value = cookie.split('=', 1)
+                        # Setting the domain is necessary to avoid the InvalidCookieDomainException
+                        driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
+                # Reload the page with cookies
+                driver.get("https://www.facebook.com")
+                time.sleep(2)
+            except Exception as e:
+                print(f"Error setting cookies: {e}")
+                # Try alternative domain format
+                try:
+                    for cookie in cookies:
+                        if '=' in cookie:
+                            name, value = cookie.split('=', 1)
+                            driver.add_cookie({'name': name, 'value': value, 'domain': 'facebook.com'})
+                    driver.get("https://www.facebook.com")
+                    time.sleep(2)
+                except Exception as e2:
+                    print(f"Error setting cookies with alternative domain: {e2}")
+        
+        # Detect login success with timeout mechanism
+        login_detected = detect_login_success(driver, timeout=30)
+        if login_detected:
+            print("Login confirmed via cookies. Proceeding...")
+        else:
+            print("Login not confirmed via cookies, but proceeding with automation anyway...")
 
-        # Close the second tab after successful login
+        # Close the second tab after login attempt
         driver.close()
 
         # Switch back to the first tab (original tab)
         driver.switch_to.window(driver.window_handles[0])
 
 def set_cookies(driver):
-    cookies = cookie_entry.get("1.0", tk.END).strip()
-    if cookies:
-        cookies = [cookie.strip() for cookie in cookies.split(';')]
-        for cookie in cookies:
-            if '=' in cookie:  # Check if '=' exists in the cookie
-                name, value = cookie.split('=', 1)
-                # Setting the domain is necessary to avoid the InvalidCookieDomainException
-                driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
+    """Set cookies on the current Facebook page. Should only be called when already on a Facebook domain."""
+    try:
+        # Check if we're on a Facebook domain
+        current_url = driver.current_url
+        if 'facebook.com' not in current_url:
+            print("Warning: Not on Facebook domain. Navigating to Facebook first...")
+            driver.get("https://www.facebook.com")
+            time.sleep(2)
+        
+        cookies = cookie_entry.get("1.0", "end-1c").strip()
+        if cookies:
+            cookies_list = [cookie.strip() for cookie in cookies.split(';')]
+            for cookie in cookies_list:
+                if '=' in cookie:  # Check if '=' exists in the cookie
+                    name, value = cookie.split('=', 1)
+                    try:
+                        # Try with .facebook.com domain first
+                        driver.add_cookie({'name': name, 'value': value, 'domain': '.facebook.com'})
+                    except Exception as e:
+                        # If that fails, try with facebook.com (without dot)
+                        try:
+                            driver.add_cookie({'name': name, 'value': value, 'domain': 'facebook.com'})
+                        except Exception as e2:
+                            print(f"Error setting cookie {name}: {e2}")
+            
+            # Reload page to apply cookies
+            driver.refresh()
+            time.sleep(2)
+    except Exception as e:
+        print(f"Error in set_cookies: {e}")
 
 def create_item(driver, item_title, available_image_paths, uploaded_images):
   
@@ -972,78 +1126,104 @@ def publish_item(driver, window_handles, tabs_data):
         
 # Main automation logic
 def fb_new_id(driver=None):
-    # Save user data
-    save_user_data()
-
-    # Update UI (only if running in the main thread)
+    global automation_running
+    driver_created_here = False
+    
+    # Only check and set flag if running in main thread (driver is None)
     if driver is None:
+        # Prevent multiple simultaneous executions
+        if automation_running:
+            print("Automation is already running. Ignoring duplicate call.")
+            return
+        
+        automation_running = True
+        driver_created_here = True
+        
+        # Save user data
+        save_user_data()
+
+        # Update UI
         run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
         root.update_idletasks()
-        root.after(1000, task_completed)
 
-    # Initialize WebDriver if not provided
-    if driver is None:
+        # Initialize WebDriver
         chrome_options = configure_chrome_options()
         driver = initialize_chrome_driver(chrome_options)
+    else:
+        # If driver is provided (from thread), just save data
+        save_user_data()
 
-    # Get number of iterations and selected option
-    num_iterations = int(iterations_entry.get()) if iterations_entry.get().isdigit() else 3
-    selected_option = selected_fblink.get()
-    cookies_str = cookie_entry.get("1.0", "end-1c")
+    try:
+        # Get number of iterations and selected option
+        num_iterations = int(iterations_entry.get()) if iterations_entry.get().isdigit() else 3
+        selected_option = selected_fblink.get()
+        cookies_str = cookie_entry.get("1.0", "end-1c")
 
-    # Login to Facebook
-    login_to_facebook(driver, selected_option)
-    set_cookies(driver)
+        # Login to Facebook
+        login_to_facebook(driver, selected_option)
+        
+        # Only set cookies separately for Username/Password mode (cookies already set in login_to_facebook for Cookies Access Token)
+        if selected_option == "Username/Password":
+            set_cookies(driver)
 
-    # Inject custom text overlay
-  
-
-    # Define and initialize tabs_data
-    tabs_data = list(zip(user_data["item_titles"], image_paths))[:num_iterations]
-    uploaded_images = set()
-
-    # Create items and perform Marketplace tasks
-    for i, (item_title, _) in enumerate(tabs_data):
-        create_item(driver, item_title, image_paths, uploaded_images)
-     
-        select_category(driver)
-        select_condition(driver)
-        add_description(driver)
-        set_availability(driver)
-        set_visibility(driver)
-    
-
-    # Save drafts and close unnecessary tabs
-    window_handles = driver.window_handles
-    save_draft(driver, window_handles, tabs_data)
-    close_all_tabs_except_first(driver)
-
-    # Inject custom text in each window handle
-    window_handles = driver.window_handles
-    for handle in window_handles:
-        driver.switch_to.window(handle)
-    
-
-    # Handle continue buttons and check for completion
-    handle_continue_buttons(driver)
-
-   
-
-    # Set location for all items
-    window_handles = driver.window_handles
-    for handle in window_handles[1:]:
-        driver.switch_to.window(handle)
-        locations_text = locations_entry.get("1.0", "end-1c").split('\n')
-        set_location(driver, locations_text)
+        # Inject custom text overlay
       
 
-    # Proceed with publishing items
-    publish_item(driver, window_handles, tabs_data)
+        # Define and initialize tabs_data
+        tabs_data = list(zip(user_data["item_titles"], image_paths))[:num_iterations]
+        uploaded_images = set()
 
-    # Show completion message (only if running in the main thread)
-    if driver is None:
-        messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
+        # Create items and perform Marketplace tasks
+        for i, (item_title, _) in enumerate(tabs_data):
+            create_item(driver, item_title, image_paths, uploaded_images)
+         
+            select_category(driver)
+            select_condition(driver)
+            add_description(driver)
+            set_availability(driver)
+            set_visibility(driver)
+        
 
-    # Quit the driver if it was created in this function
-    if driver is not None and driver is not driver_from_thread:
-        driver.quit()
+        # Save drafts and close unnecessary tabs
+        window_handles = driver.window_handles
+        save_draft(driver, window_handles, tabs_data)
+        close_all_tabs_except_first(driver)
+
+        # Inject custom text in each window handle
+        window_handles = driver.window_handles
+        for handle in window_handles:
+            driver.switch_to.window(handle)
+        
+
+        # Handle continue buttons and check for completion
+        handle_continue_buttons(driver)
+
+       
+
+        # Set location for all items
+        window_handles = driver.window_handles
+        for handle in window_handles[1:]:
+            driver.switch_to.window(handle)
+            locations_text = locations_entry.get("1.0", "end-1c").split('\n')
+            set_location(driver, locations_text)
+          
+
+        # Proceed with publishing items
+        publish_item(driver, window_handles, tabs_data)
+
+        # Show completion message (only if running in the main thread)
+        if driver_created_here:
+            messagebox.showinfo("Task Information", "Task Completed, Powered by AK Universe. WhatsApp +92 306-3294901")
+    except Exception as e:
+        print(f"Error in fb_new_id: {e}")
+        if driver_created_here:
+            messagebox.showerror("Error", f"An error occurred during automation: {str(e)}")
+    finally:
+        # Quit the driver if it was created in this function
+        if driver_created_here and driver is not None:
+            try:
+                driver.quit()
+            except:
+                pass
+            automation_running = False
+            task_completed()
