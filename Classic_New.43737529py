@@ -1126,23 +1126,21 @@ def publish_item(driver, window_handles, tabs_data):
         
 # Main automation logic
 def fb_new_id(driver=None):
-    global automation_running
     driver_created_here = False
     
     # Only check and set flag if running in main thread (driver is None)
     if driver is None:
-        # Prevent multiple simultaneous executions
-        if automation_running:
+        # Prevent multiple simultaneous executions by checking button state
+        if run_button['state'] == tk.DISABLED:
             print("Automation is already running. Ignoring duplicate call.")
             return
         
-        automation_running = True
         driver_created_here = True
         
         # Save user data
         save_user_data()
 
-        # Update UI
+        # Update UI - disable button to prevent multiple executions
         run_button.config(text="Processing Task...", state=tk.DISABLED, bg='#777', fg='orange')
         root.update_idletasks()
 
@@ -1225,5 +1223,4 @@ def fb_new_id(driver=None):
                 driver.quit()
             except:
                 pass
-            automation_running = False
             task_completed()
